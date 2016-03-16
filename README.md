@@ -5,13 +5,13 @@ More details forthcoming.
 
 To use
 ------
-install.packages("devtools")
-library(devtools)
-install_github(repo = "senamhi", username = "ConorIA")
-library(senamhi)
+1. install.packages("devtools")
+2. library(devtools)
+3. install_github("ConorIA/senamhi")
+4. library(senamhi)
 
 Included functions
 ------------------
-senamhi()
-senamhiDownload()
-senamhiWriteCSV()
+* senamhi() ... Runs both funtions below
+* senamhiDownload() ... Downloads data in HTML tables for a specific station and range of dates
+* senamhiWriteCSV() ... Generates a .csv file for use in R from the downloaded data
