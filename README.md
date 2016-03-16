@@ -7,7 +7,7 @@ To use
 ------
 1. install.packages("devtools")
 2. library(devtools)
-3. install_github(repo = "senamhi", username = "ConorIA")
+3. install_github("ConorIA/senamhi")
 4. library(senamhi)
 
 Included functions
