@@ -25,8 +25,9 @@ senamhi <-
            startYear,
            endYear,
            startMonth,
-           endMonth) {
-
+           endMonth,
+           append = FALSE,
+           custom = FALSE) {
     if (missing(tasks)) {
       print("Please choose the series of command you wish to run.")
       tasks <-
@@ -39,7 +40,8 @@ senamhi <-
     if (missing(MorH))
       MorH <- readline(prompt = "Enter Field M or H: ")
     if (missing(startYear))
-      startYear <- as.integer(readline(prompt = "Enter start year: "))
+      startYear <-
+        as.integer(readline(prompt = "Enter start year: "))
     if (missing(endYear))
       endYear <- as.integer(readline(prompt = "Enter end year: "))
     if (missing(startMonth))
@@ -50,25 +52,32 @@ senamhi <-
 
     if (tasks == 1) {
       senamhiDownload(station,
-                   type,
-                   MorH,
-                   startYear,
-                   endYear,
-                   startMonth,
-                   endMonth)
+                      type,
+                      MorH,
+                      startYear,
+                      endYear,
+                      startMonth,
+                      endMonth)
     } else {
       if (tasks == 2) {
         senamhiWriteCSV(station, MorH, startYear, endYear, startMonth, endMonth)
       } else {
         if (tasks == 3) {
           senamhiDownload(station,
-                       type,
-                       MorH,
-                       startYear,
-                       endYear,
-                       startMonth,
-                       endMonth)
-          senamhiWriteCSV(station, MorH, startYear, endYear, startMonth, endMonth)
+                          type,
+                          MorH,
+                          startYear,
+                          endYear,
+                          startMonth,
+                          endMonth)
+          senamhiWriteCSV(station,
+                          MorH,
+                          startYear,
+                          endYear,
+                          startMonth,
+                          endMonth,
+                          custom,
+                          append)
         } else
           print("Please choose an option between 1 and 3")
       }
