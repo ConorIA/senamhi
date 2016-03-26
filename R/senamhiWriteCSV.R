@@ -21,19 +21,19 @@
 ## Requires the "XML" library
 
 senamhiWriteCSV <- function(station,
-                           MorH,
-                           startYear,
-                           endYear,
-                           startMonth,
-                           endMonth,
-                           append = FALSE,
-                           custom = FALSE) {
+                            MorH = "z",
+                            startYear,
+                            endYear,
+                            startMonth,
+                            endMonth,
+                            append = FALSE,
+                            custom = FALSE) {
+
   if ("XML" %in% rownames(installed.packages()) == FALSE) {
     print("Installing the XML package")
     install.packages("XML")
   }
   require(XML)
-
 
   # This snippet of code from Stack Overflow user Grzegorz Szpetkowski at
   # http://stackoverflow.com/questions/6243088/find-out-the-number-of-days-of-a-month-in-r
@@ -51,7 +51,7 @@ senamhiWriteCSV <- function(station,
 
   if (missing(station))
     station <- readline(prompt = "Enter station number: ")
-  if (missing(MorH))
+  while (!(MorH == "M" | MorH == "H"))
     MorH <- readline(prompt = "Enter Field M or H: ")
   if (missing(startYear))
     startYear <- as.integer(readline(prompt = "Enter start year: "))
@@ -79,7 +79,7 @@ senamhiWriteCSV <- function(station,
       paste(x[2], x[1], sep = "-"))
   datelist <- paste(datelist, "01", sep = "-")
 
-  ## Add code to handle custom column headers (for inactive stations, for example)
+  ## Code to handle custom column headers (for inactive stations, for example)
   ## Use the argument "custom = TRUE" to activate this functionality
 
   if (custom == TRUE) {
@@ -94,8 +94,6 @@ senamhiWriteCSV <- function(station,
       } else
         c = 0
     }
-
-
   } else {
     if (MorH == "H") {
       colnames <-

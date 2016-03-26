@@ -20,8 +20,8 @@
 
 senamhiDownload <-
   function(station,
-           type,
-           MorH,
+           type = "z",
+           MorH = "z",
            startYear,
            endYear,
            startMonth,
@@ -35,16 +35,20 @@ senamhiDownload <-
     ## Ask user to input variables
     if (missing(station))
       station <- readline(prompt = "Enter station number: ")
-    if (missing(type))
+    while (!(type == "CON" |
+             type == "SUT"))
       type <- readline(prompt = "Enter Type CON or SUT: ")
-    if (missing(MorH))
+    while (!(MorH == "M" |
+             MorH == "H"))
       MorH <- readline(prompt = "Enter Field M or H: ")
     if (missing(startYear))
-      startYear <- as.integer(readline(prompt = "Enter start year: "))
+      startYear <-
+        as.integer(readline(prompt = "Enter start year: "))
     if (missing(endYear))
       endYear <- as.integer(readline(prompt = "Enter end year: "))
     if (missing(startMonth))
-      startMonth <- as.integer(readline(prompt = "Enter start month: "))
+      startMonth <-
+        as.integer(readline(prompt = "Enter start month: "))
     if (missing(endMonth))
       endMonth <- as.integer(readline(prompt = "Enter end month: "))
 
@@ -56,25 +60,17 @@ senamhiDownload <-
       paste(x[2], x[1], sep = ""))
 
     ##genURLs
-    urlList = NULL
-    for (i in 1:length(dates)) {
-      filtro <- dates[i]
-      currentURL <-
-        paste(
-          "http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo02.php?estaciones=",
-          station,
-          "&tipo=",
-          type,
-          "&CBOFiltro=",
-          filtro,
-          "&t_e=",
-          MorH,
-          sep = ""
-        )
-
-      urlList <- c(urlList, currentURL)
-      i++1
-    }
+    urlList <- paste(
+      "http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo02.php?estaciones=",
+      station,
+      "&tipo=",
+      type,
+      "&CBOFiltro=",
+      dates,
+      "&t_e=",
+      MorH,
+      sep = ""
+    )
 
     if (!dir.exists(as.character(station)))
       dir.create(as.character(station))

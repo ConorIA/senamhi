@@ -20,8 +20,8 @@
 senamhi <-
   function(tasks,
            station,
-           type,
-           MorH,
+           type = "z",
+           MorH = "z",
            startYear,
            endYear,
            startMonth,
@@ -35,9 +35,11 @@ senamhi <-
     }
     if (missing(station))
       station <- readline(prompt = "Enter station number: ")
-    if (missing(type))
+    while (!(type == "CON" |
+             type == "SUT"))
       type <- readline(prompt = "Enter Type CON or SUT: ")
-    if (missing(MorH))
+    while (!(MorH == "M" |
+             MorH == "H"))
       MorH <- readline(prompt = "Enter Field M or H: ")
     if (missing(startYear))
       startYear <-
