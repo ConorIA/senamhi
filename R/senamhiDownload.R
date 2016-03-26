@@ -72,9 +72,19 @@ senamhiDownload <-
       sep = ""
     )
 
-    if (!dir.exists(as.character(station)))
-      dir.create(as.character(station))
+    if (!dir.exists(as.character(station))) {
+      check <- try(dir.create(as.character(station)))
+      if (inherits(check, "try-error")) {
+        stop("I couldn't write out the directory. Check your permissions.")
+      }
+    }
+
+    print("Downloading the requested data.")
+    prog <- txtProgressBar(min = 0, max = length(urlList), style = 3)
+    on.exit(close(prog))
+
     for (i in 1:length(urlList)) {
       curl_download(urlList[i], paste(station, "/", dates[i], ".html", sep = ""))
+      setTxtProgressBar(prog, value = i)
     }
   }
