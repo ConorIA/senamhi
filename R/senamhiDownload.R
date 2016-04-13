@@ -1,4 +1,4 @@
-## Copyright (C) 2016 Conor Anderson <conor.anderson@utoronto.ca>
+## Copyright (C) 2016 Conor Anderson <conor.anderson@mail.utoronto.ca>
 ##
 ## This program is free software: you can redistribute it and/or modify it under
 ## the terms of the GNU General Public License as published by the Free Software
@@ -79,10 +79,12 @@ senamhiDownload <-
       }
     }
 
-    print("Downloading the requested data.")
+    ## Set up a progress Bar
     prog <- txtProgressBar(min = 0, max = length(urlList), style = 3)
     on.exit(close(prog))
 
+    ##Download the data
+    print("Downloading the requested data.")
     for (i in 1:length(urlList)) {
       curl_download(urlList[i], paste(station, "/", dates[i], ".html", sep = ""))
       setTxtProgressBar(prog, value = i)
