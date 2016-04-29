@@ -15,7 +15,8 @@
 ## exports to a CSV file. First you MUST run the downladData.R script that accompanies this one;
 ## they should never be distributed seperately.
 ##
-## Version 1.0 Requires the "XML" library
+## Version 1.0.1
+## Requires the "XML" library
 
 senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear, startMonth, endMonth,
                             append = FALSE, custom = FALSE) {

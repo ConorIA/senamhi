@@ -15,7 +15,7 @@
 ## This script batch downloads HTML climate data from the Peruvian Meterological
 ## Service. Run this script BEFORE senamhiWriteCSV.R
 ##
-## Version 1.0
+## Version 1.0.1
 ## Requires the "curl" library
 
 senamhiDownload <-
