@@ -1,93 +1,71 @@
 ## Copyright (C) 2016 Conor Anderson <conor.anderson@mail.utoronto.ca>
 ##
-## This program is free software: you can redistribute it and/or modify it under
-## the terms of the GNU General Public License as published by the Free Software
-## Foundation, either version 2 or (at your option) version 3 of the License.
+## This program is free software: you can redistribute it and/or modify it under the terms of the
+## GNU General Public License as published by the Free Software Foundation, either version 2 or (at
+## your option) version 3 of the License.
 ##
-## This program is distributed in the hope that it will be useful, but WITHOUT
-## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-## FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
-## details.
+## This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+## even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
 ##
-## You should have received a copy of the GNU General Public License along with
-## this program.  If not, see <http://www.gnu.org/licenses/>.
+## You should have received a copy of the GNU General Public License along with this program.  If
+## not, see <http://www.gnu.org/licenses/>.
 ##
-## This script batch downloads HTML climate data from the Peruvian Meterological
-## Service. Run this script BEFORE senamhiWriteCSV.R
+## This script batch downloads HTML climate data from the Peruvian Meterological Service. Run this
+## script BEFORE senamhiWriteCSV.R
 ##
 ## Version 1.0.1
 ## Requires the "curl" library
 
-senamhiDownload <-
-  function(station,
-           type = "z",
-           MorH = "z",
-           startYear,
-           endYear,
-           startMonth,
-           endMonth) {
-    if ("curl" %in% rownames(installed.packages()) == FALSE) {
-      print("Installing the curl package")
-      install.packages("curl")
-    }
-    require(curl)
+senamhiDownload <- function(station, type = "z", MorH = "z", startYear, endYear, startMonth, endMonth) {
 
-    ## Ask user to input variables
-    if (missing(station))
-      station <- readline(prompt = "Enter station number: ")
-    while (!(type == "CON" |
-             type == "SIA"|
-             type == "SUT"))
-      type <- readline(prompt = "Enter Type CON, SUT, or SIA: ")
-    while (!(MorH == "M" |
-             MorH == "H"))
-      MorH <- readline(prompt = "Enter Field M or H: ")
-    if (missing(startYear))
-      startYear <-
-        as.integer(readline(prompt = "Enter start year: "))
-    if (missing(endYear))
-      endYear <- as.integer(readline(prompt = "Enter end year: "))
-    if (missing(startMonth))
-      startMonth <-
-        as.integer(readline(prompt = "Enter start month: "))
-    if (missing(endMonth))
-      endMonth <- as.integer(readline(prompt = "Enter end month: "))
+  if ("curl" %in% rownames(installed.packages()) == FALSE) {
+    print("Installing the curl package")
+    install.packages("curl")
+  }
+  require(curl)
 
-    #GenDates
-    years <- seq(startYear, endYear)
-    months <- seq(startMonth, endMonth)
-    months <- sprintf("%02d", months)
-    dates <- apply(expand.grid(months, years), 1, function(x)
-      paste(x[2], x[1], sep = ""))
+  ## Ask user to input variables
+  if (missing(station))
+    station <- readline(prompt = "Enter station number: ")
+  while (!(type == "CON" | type == "SIA" | type == "SUT"))
+    type <- readline(prompt = "Enter Type CON, SUT, or SIA: ")
+  while (!(MorH == "M" | MorH == "H"))
+    MorH <- readline(prompt = "Enter Field M or H: ")
+  if (missing(startYear))
+    startYear <- as.integer(readline(prompt = "Enter start year: "))
+  if (missing(endYear))
+    endYear <- as.integer(readline(prompt = "Enter end year: "))
+  if (missing(startMonth))
+    startMonth <- as.integer(readline(prompt = "Enter start month: "))
+  if (missing(endMonth))
+    endMonth <- as.integer(readline(prompt = "Enter end month: "))
 
-    ##genURLs
-    urlList <- paste(
-      "http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo02.php?estaciones=",
-      station,
-      "&tipo=",
-      type,
-      "&CBOFiltro=",
-      dates,
-      "&t_e=",
-      MorH,
-      sep = ""
-    )
+  #GenDates
+  years <- seq(startYear, endYear)
+  months <- seq(startMonth, endMonth)
+  months <- sprintf("%02d", months)
+  dates <- apply(expand.grid(months, years), 1, function(x) paste(x[2], x[1], sep = ""))
 
-    if (!dir.exists(as.character(station))) {
-      check <- try(dir.create(as.character(station)))
-      if (inherits(check, "try-error")) {
-        stop("I couldn't write out the directory. Check your permissions.")
-      }
-    }
+  ##genURLs
+  urlList <- paste("http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo02.php?estaciones=",
+    station, "&tipo=", type, "&CBOFiltro=", dates, "&t_e=", MorH, sep = "")
 
-    ## Set up a progress Bar
-    prog <- txtProgressBar(min = 0, max = length(urlList), style = 3)
-    on.exit(close(prog))
-
-    ##Download the data
-    print("Downloading the requested data.")
-    for (i in 1:length(urlList)) {
-      curl_download(urlList[i], paste(station, "/", dates[i], ".html", sep = ""))
-      setTxtProgressBar(prog, value = i)
+  if (!dir.exists(as.character(station))) {
+    check <- try(dir.create(as.character(station)))
+    if (inherits(check, "try-error")) {
+      stop("I couldn't write out the directory. Check your permissions.")
     }
   }
+
+  ## Set up a progress Bar
+  prog <- txtProgressBar(min = 0, max = length(urlList), style = 3)
+  on.exit(close(prog))
+
+  ##Download the data
+  cat("Downloading the requested data.\n")
+  for (i in 1:length(urlList)) {
+    curl_download(urlList[i], paste(station, "/", dates[i], ".html", sep = ""))
+    setTxtProgressBar(prog, value = i)
+  }
+}
