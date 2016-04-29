@@ -36,8 +36,9 @@ senamhi <-
     if (missing(station))
       station <- readline(prompt = "Enter station number: ")
     while (!(type == "CON" |
+             type == "SIA"|
              type == "SUT"))
-      type <- readline(prompt = "Enter Type CON or SUT: ")
+      type <- readline(prompt = "Enter Type CON, SUT, or SIA: ")
     while (!(MorH == "M" |
              MorH == "H"))
       MorH <- readline(prompt = "Enter Field M or H: ")
@@ -73,6 +74,7 @@ senamhi <-
                           startMonth,
                           endMonth)
           senamhiWriteCSV(station,
+                          type,
                           MorH,
                           startYear,
                           endYear,

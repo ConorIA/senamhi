@@ -1,33 +1,24 @@
 ## Copyright (C) 2016 Conor Anderson <conor.anderson@mail.utoronto.ca>
 ##
-## This program is free software: you can redistribute it and/or modify it under
-## the terms of the GNU General Public License as published by the Free Software
-## Foundation, either version 2 or (at your option) version 3 of the License.
+## This program is free software: you can redistribute it and/or modify it under the terms of the
+## GNU General Public License as published by the Free Software Foundation, either version 2 or (at
+## your option) version 3 of the License.
 ##
-## This program is distributed in the hope that it will be useful, but WITHOUT
-## ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-## FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
-## details.
+## This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+## even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+## General Public License for more details.
 ##
-## You should have received a copy of the GNU General Public License along with
-## this program.  If not, see <http://www.gnu.org/licenses/>.
+## You should have received a copy of the GNU General Public License along with this program.  If
+## not, see <http://www.gnu.org/licenses/>.
 ##
-## This script reads downloaded HTML climate data from the Peruvian
-## Meterological Service and exports to a CSV file. First you MUST run the
-## downladData.R script that accompanies this one; they should never be
-## distributed seperately.
+## This script reads downloaded HTML climate data from the Peruvian Meterological Service and
+## exports to a CSV file. First you MUST run the downladData.R script that accompanies this one;
+## they should never be distributed seperately.
 ##
-## Version 1.0
-## Requires the "XML" library
+## Version 1.0 Requires the "XML" library
 
-senamhiWriteCSV <- function(station,
-                            MorH = "z",
-                            startYear,
-                            endYear,
-                            startMonth,
-                            endMonth,
-                            append = FALSE,
-                            custom = FALSE) {
+senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear, startMonth, endMonth,
+                            append = FALSE, custom = FALSE) {
 
   if ("XML" %in% rownames(installed.packages()) == FALSE) {
     print("Installing the XML package")
@@ -51,6 +42,8 @@ senamhiWriteCSV <- function(station,
 
   if (missing(station))
     station <- readline(prompt = "Enter station number: ")
+  while (!(type == "CON" | type == "SIA" | type == "SUT"))
+    type <- readline(prompt = "Enter Type CON, SUT, or SIA: ")
   while (!(MorH == "M" | MorH == "H"))
     MorH <- readline(prompt = "Enter Field M or H: ")
   if (missing(startYear))
@@ -58,8 +51,7 @@ senamhiWriteCSV <- function(station,
   if (missing(endYear))
     endYear <- as.integer(readline(prompt = "Enter end year: "))
   if (missing(startMonth))
-    startMonth <-
-    as.integer(readline(prompt = "Enter start month: "))
+    startMonth <- as.integer(readline(prompt = "Enter start month: "))
   if (missing(endMonth))
     endMonth <- as.integer(readline(prompt = "Enter end month: "))
 
@@ -67,16 +59,11 @@ senamhiWriteCSV <- function(station,
   years <- seq(startYear, endYear)
   months <- seq(startMonth, endMonth)
   months <- sprintf("%02d", months)
-  files <-
-    apply(expand.grid(months, years), 1, function(x)
-      paste(x[2], x[1], sep = ""))
-  files <-
-    paste(as.character(station), "/", files, ".html", sep = "")
+  files <- apply(expand.grid(months, years), 1, function(x) paste(x[2], x[1], sep = ""))
+  files <- paste(as.character(station), "/", files, ".html", sep = "")
 
   #GenDates
-  datelist <-
-    apply(expand.grid(months, years), 1, function(x)
-      paste(x[2], x[1], sep = "-"))
+  datelist <- apply(expand.grid(months, years), 1, function(x) paste(x[2], x[1], sep = "-"))
   datelist <- paste(datelist, "01", sep = "-")
 
   ## Code to handle custom column headers (for inactive stations, for example)
@@ -94,32 +81,13 @@ senamhiWriteCSV <- function(station,
       } else
         c = 0
     }
-  } else {
+  } else { ## If we want to try a built-in template (but there are a lot of combinations)
     if (MorH == "H") {
-      colnames <-
-        c("Fecha",
-          "Nivel06",
-          "Nivel10",
-          "Nivel14",
-          "Nivel18",
-          "Caudal")
+      if (type == "CON") colnames <- c("Fecha", "Nivel06 (m)", "Nivel10 (m)", "Nivel14 (m)", "Nivel18         (m)", "Caudal (m³/s)")
+      if (type == "SUT") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humidity (%)"        , "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", "Nivel Medio (m)")
     } else {
-      colnames <-
-        c(
-          "Fecha",
-          "Tmax",
-          "Tmin",
-          "TBS07",
-          "TBS13",
-          "TBS19",
-          "TBH07",
-          "TBH13",
-          "TBH19",
-          "Prec07",
-          "Prec19",
-          "DirViento",
-          "VelViento"
-        )
+      if (type == "CON") colnames <- c("Fecha", "Tmax (°C)", "Tmin (°C)", "TBS07 (°C)", "TBS13 (°C)",         "TBS19 (°C)", "TBH07 (°C)", "TBH13 (°C)", "TBH19 (°C)", "Prec07 (mm)", "Prec19 (mm)", "Direccion del Viento", "Velocidad del Viento (m/s)")
+      if (type == "SUT" | type == "SIA") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humedad (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento")
     }
   }
 
@@ -133,34 +101,14 @@ senamhiWriteCSV <- function(station,
       table <- subset(table[2:length(table[, 1]), 2:length(table)])
       table <- cbind(datecolumn, table)
     } else {
-      table <-
-        matrix("NA",
-               nrow = length(datecolumn),
-               ncol = (length(colnames) - 1))
+      table <- matrix("NA", nrow = length(datecolumn), ncol = (length(colnames) - 1))
       table <- cbind(datecolumn, as.data.frame(table))
     }
     names(table) <- names(data)
     data <- rbind(data, table)
     ++i
   }
-
   names(data) <- (colnames)
-
-  if (append == TRUE) {
-    write.table(
-      data,
-      paste(as.character(station), ".csv", sep = ""),
-      append = TRUE,
-      sep = ",",
-      col.names = FALSE,
-      row.names = FALSE
-    )
-  } else {
-    write.table(
-      data,
-      paste(as.character(station), ".csv", sep = ""),
-      sep = ",",
-      row.names = FALSE
-    )
-  }
+  if (append == TRUE) write.table(data, paste(as.character(station), ".csv", sep = ""), append = TRUE, sep = ",", col.names = FALSE,row.names = FALSE)
+  else write.table(data, paste(as.character(station), ".csv", sep = ""), sep = ",", row.names = FALSE)
 }
