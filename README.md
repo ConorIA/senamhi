@@ -5,10 +5,12 @@ More details forthcoming.
 
 To use
 ------
-1. install.packages("devtools")
-2. library(devtools)
-3. install_github("ConorIA/senamhi")
-4. library(senamhi)
+``` r
+install.packages("devtools")
+library(devtools)
+install_github("ConorIA/senamhi")
+library(senamhi)
+```
 
 Included functions
 ------------------
