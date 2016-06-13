@@ -7,9 +7,7 @@ To use
 ------
 ``` r
 install.packages("devtools")
-library(devtools)
-install_github("ConorIA/senamhi")
-library(senamhi)
+devtools::install_github("ConorIA/senamhi")
 ```
 
 Included functions
