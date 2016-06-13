@@ -4,7 +4,12 @@ Title: A collection of functions to obtain Peruvian climate data
 Version: 1.0.1
 Author: Conor Anderson
 Maintainer: Conor Anderson <conor.anderson@mail.utoronto.ca>
-Description: A collection of scripts to obtain Peruvian climatological or hydrological data form the Peruvian National Meterology and Hydrology Service.
-Depends: R (>= 3.1.0), curl, XML
+Description: A collection of scripts to obtain Peruvian climatological or
+    hydrological data form the Peruvian National Meterology and Hydrology Service.
+Depends:
+    R (>= 3.1.0),
+    curl,
+    XML
 License: GPL (>= 3)
 LazyData: TRUE
+RoxygenNote: 5.0.1

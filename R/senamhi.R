@@ -1,23 +1,29 @@
-## Copyright (C) 2016 Conor Anderson <conor.anderson@mail.utoronto.ca>
-##
-## This program is free software: you can redistribute it and/or modify it under the terms of the
-## GNU General Public License as published by the Free Software Foundation, either version 2 or (at
-## your option) version 3 of the License.
-##
-## This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
-## even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-## General Public License for more details.
-##
-## You should have received a copy of the GNU General Public License along with this program.  If
-## not, see <http://www.gnu.org/licenses/>.
-##
-## This script batch downloads HTML climate data from the Peruvian Meterological Service. Run this
-## script BEFORE senamhiWriteCSV.R
-##
-## Version 1.0.1
-## Requires the "curl" and "XML" libraries
+##' @title A wrapper function to download and compile data from the Peruvian National Hydrological and Meterological Service
+##'
+##' @description Download and/or compile Peruvian historical climate data from the Senamhi web portal.
+##'
+##' @param tasks numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.
+##' @param station numerical; the number of the station id number to process.
+##' @param type character; defines if the station is (CON)ventional, (SUT)ron, or (SIA)p. Must be "CON", "SUT" or "SIA".
+##' @param MorH character; defines if the station is (M)eterological or (H)ydrological. Must be "M" or "H".
+##' @param startYear numerical; the first year to process.
+##' @param endYear numerical; the last year to process.
+##' @param startMonth numerical; the first month to process. Defaults to 1.
+##' @param endMonth numerical; the last month to process. Defaults to 12.
+##' @param append logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.
+##' @param custom logical; if true, the script will provide the opportunity to manually enter column headers.
+##'
+##' @return None
+##'
+##' @export
+##'
+##' @author Conor I. Anderson
+##'
+##' @examples
+##' senamhi()
+##' senamhi(3, 000401, type = "CON", MorH = "M", 1971, 2000)
 
-senamhi <- function(tasks, station, type = "z", MorH = "z", startYear, endYear, startMonth, endMonth,
+senamhi <- function(tasks, station, type = "z", MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                     append = FALSE, custom = FALSE) {
 
     if (missing(tasks)) {
@@ -34,10 +40,6 @@ senamhi <- function(tasks, station, type = "z", MorH = "z", startYear, endYear, 
       startYear <- as.integer(readline(prompt = "Enter start year: "))
     if (missing(endYear))
       endYear <- as.integer(readline(prompt = "Enter end year: "))
-    if (missing(startMonth))
-      startMonth <- as.integer(readline(prompt = "Enter start month: "))
-    if (missing(endMonth))
-      endMonth <- as.integer(readline(prompt = "Enter end month: "))
 
     if (tasks == 1) {
       senamhiDownload(station, type, MorH, startYear, endYear, startMonth, endMonth)
