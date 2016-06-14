@@ -11,7 +11,7 @@ senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z",
 \arguments{
 \item{tasks}{numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.}
 
-\item{station}{numerical; the number of the station id number to process.}
+\item{station}{character; the number of the station id number to process. Can also be a vector of station ids.}
 
 \item{automatic}{logical; if set to true (default), the script will attempt to guess the type and MorH values}
 

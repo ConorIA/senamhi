@@ -3,7 +3,7 @@
 ##' @description Download and/or compile Peruvian historical climate data from the Senamhi web portal.
 ##'
 ##' @param tasks numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.
-##' @param station numerical; the number of the station id number to process.
+##' @param station character; the number of the station id number to process. Can also be a vector of station ids.
 ##' @param automatic logical; if set to true (default), the script will attempt to guess the type and MorH values
 ##' @param dataAvail logical; if set to true (default), the script will return a(n outdated) table of the data available for your station.
 ##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
@@ -34,8 +34,12 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "
     }
     if (missing(station))
       station <- readline(prompt = "Enter station number: ")
-
-    ## Input Station Characteristics
+    
+    ##Add a work-around to download multiple stations
+    if (length(station) > 1) lapply(station, senamhi, tasks = tasks, automatic, dataAvail = dataAvail, type = type, MorH = MorH, startYear = startYear, endYear = endYear, startMonth = startMonth, endMonth = endMonth,
+                                    append = append, custom = custom)
+    
+    ## Input Station Characteristics for single stations
     if (automatic == TRUE) {
       guess <- senamhiGuess(station)
       type <- guess[1]
@@ -60,7 +64,7 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "
       startYear <- as.integer(readline(prompt = "Enter start year: "))
     if (missing(endYear))
       endYear <- as.integer(readline(prompt = "Enter end year: "))
-
+    
     if (tasks == 1) {
       senamhiDownload(station, type, MorH, startYear, endYear, startMonth, endMonth)
     } else {

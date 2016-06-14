@@ -1,6 +1,6 @@
 ##' @title A function to determine the full catalogue of available Peruvian National Hydrological and Meterological Service stations
 ##'
-##' @description Generate a .rda file containing a list of all of the stations operated by Senamhi.
+##' @description Generate a .rda file containing a list of all of the stations operated by Senamhi. You should not need to execute this function, as the data is already included in the package.
 ##'
 ##' @return catalogue.rda
 ##'
@@ -12,6 +12,13 @@
 ##' senamhiCatalogue()
 
 senamhiCatalogue <- function () {
+  
+  if ("XML" %in% rownames(installed.packages()) == FALSE) {
+    print("Installing the XML package")
+    install.packages("XML")
+  }
+  require(XML)
+  
   vector <- seq(1, 25, by = 1)
   vector <- vector[-7]
   vector <- sprintf("%02d", vector)
@@ -23,9 +30,9 @@ senamhiCatalogue <- function () {
       stop("I couldn't write out the directory. Check your permissions.")
     }
   }
-
-  df = NULL
+  
   Sys.setlocale('LC_ALL','C') 
+  catalogue = NULL
   for (i in 1:length(vector)) {
     test <- file.exists(paste("data/", vector[i], ".html", sep = ""))
     if (!test) curl_download(urlList[i], paste("data/", vector[i], ".html", sep = ""))
@@ -37,21 +44,32 @@ senamhiCatalogue <- function () {
     j <- 2
     while (j <= length(data)) {
       row <- strsplit(data[j], ",")[[1]]
-      name <- strsplit(row[3], "-")[[1]]
-      row <- c(name, row[6:10], row[12:13])
+      name <- strsplit(row[3], " - ")[[1]]
+      ## There are a couple of cases where the station name is formatted with a spaced hyphen
+      if (length(name) == 3) name <- c(paste(name[1:2], collapse=" - "), name[3])
+      row <- c(name, row[4:10])
+      
+      ## Commands to clean up the data
+      row <- gsub("Meteorol&oacute;gica", "Meteorologica", row)
+      row <- gsub("Hidrol&oacute;gica", "Hidrologica", row)
+      row <- gsub("\303\221", 'N', row)
+      row <- gsub("\321", 'N', row)
       row <- gsub("'", '', row)
       row <- gsub("\\\\", '', row)
       row <- gsub("));", '', row)
       row <- gsub("}\r\n}", '', row)
       row <- gsub("^\\s+|\\s+$", "", row)
-      df <- rbind(df, row)
+      
+      # Add it to the catalogue
+      catalogue <- rbind(catalogue, row)
       j <- j+1
     }
     i <- i+1
-    colnames(df) <- c("Station", "StationID", "Lat", "Lon", "Region", "Provincia", "Local", "Class", "Type")
+    colnames(catalogue) <- c("Station", "StationID", "Class", "Type", "Lat", "Lon", "Region", "Province", "District")
   }
-  save(df, file = "catalogue.rda")
-  return(df)
+  rownames(catalogue) <- NULL
+  save(catalogue, file = "catalogue.rda")
+  return(catalogue)
 }
 
 

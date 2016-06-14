@@ -10,7 +10,7 @@ senamhiCatalogue()
 catalogue.rda
 }
 \description{
-Generate a .rda file containing a list of all of the stations operated by Senamhi.
+Generate a .rda file containing a list of all of the stations operated by Senamhi. You should not need to execute this function, as the data is already included in the package.
 }
 \examples{
 senamhiCatalogue()

@@ -44,7 +44,7 @@ senamhiGetPeriod <- function(station) {
   }
 
  ##Download the data
-  cat("Checking for available data.\n")
+  cat(paste0("Checking data at ", station, ".\n"))
   curl_download(url, paste(station, "/", "availableData.html", sep = ""))
 
   table <- readHTMLTable(paste(station, "/", "availableData.html", sep = ""))
