@@ -49,6 +49,7 @@ senamhiGetPeriod <- function(station) {
 
   table <- readHTMLTable(paste(station, "/", "availableData.html", sep = ""))
   table <- as.data.frame(table[3])
-  names(table) <- c("Parameter", "DataFrom", "DataTo")
+  if (ncol(table) > 1) names(table) <- c("Parameter", "DataFrom", "DataTo")
+  else stop("We could not determine data availability for this station.")
   return(table)
 }
