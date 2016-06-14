@@ -10,9 +10,9 @@ senamhiDownload(station, type = "z", MorH = "z", startYear, endYear,
 \arguments{
 \item{station}{numerical; the number of the station id number to process.}
 
-\item{type}{character; defines if the station is (CON)ventional, (SUT)ron, or (SIA)p. Must be "CON", "SUT" or "SIA".}
+\item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
 
-\item{MorH}{character; defines if the station is (M)eterological or (H)ydrological. Must be "M" or "H".}
+\item{MorH}{character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".}
 
 \item{startYear}{numerical; the first year to process.}
 

@@ -4,8 +4,10 @@
 ##'
 ##' @param tasks numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.
 ##' @param station numerical; the number of the station id number to process.
-##' @param type character; defines if the station is (CON)ventional, (SUT)ron, or (SIA)p. Must be "CON", "SUT" or "SIA".
-##' @param MorH character; defines if the station is (M)eterological or (H)ydrological. Must be "M" or "H".
+##' @param automatic logical; if set to true, the script will attempt to guess the type and MorH values
+##' @param dataAvail logical; if set to true, the script will return a(n outdated) table of the data available for your station.
+##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
+##' @param MorH character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
@@ -23,7 +25,7 @@
 ##' senamhi()
 ##' senamhi(3, 000401, type = "CON", MorH = "M", 1971, 2000)
 
-senamhi <- function(tasks, station, type = "z", MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
+senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z", MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                     append = FALSE, custom = FALSE) {
 
     if (missing(tasks)) {
@@ -32,10 +34,26 @@ senamhi <- function(tasks, station, type = "z", MorH = "z", startYear, endYear, 
     }
     if (missing(station))
       station <- readline(prompt = "Enter station number: ")
-    while (!(type == "CON" | type == "SIA" | type == "SUT"))
-      type <- readline(prompt = "Enter Type CON, SUT, or SIA: ")
-    while (!(MorH == "M" | MorH == "H"))
-      MorH <- readline(prompt = "Enter Field M or H: ")
+
+    ## Input Station Characteristics
+    if (automatic == TRUE) {
+      guess <- senamhiGuess(station)
+      type <- guess[1]
+      MorH <- guess[2]
+      if (guess[1] == "ERROR" | guess[2] == "ERROR") print("Something went wrong. Please enter manually")
+    }
+    while (!(type == "CON" | type == "DAV" | type == "SIA" | type == "SUT"))
+      type <- readline(prompt = "Enter Type CON, DAV, SUT, or SIA: ")
+    while (!(MorH == "M" | MorH == "M2" | MorH == "H"))
+      MorH <- readline(prompt = "Enter Field M, M2 or H: ")
+
+    ## Choose Data Range
+    if (dataAvail == TRUE & (missing(startYear) | missing(endYear))) {
+      guess <- senamhiGetPeriod(station)
+      print("The following data is available.")
+      print(guess)
+      print("Note that data often exists past 2010, but the database has not been updated.")
+    }
     if (missing(startYear))
       startYear <- as.integer(readline(prompt = "Enter start year: "))
     if (missing(endYear))

@@ -3,8 +3,8 @@
 ##' @description Download Peruvian historical climate data from the Senamhi web portal.
 ##'
 ##' @param station numerical; the number of the station id number to process.
-##' @param type character; defines if the station is (CON)ventional, (SUT)ron, or (SIA)p. Must be "CON", "SUT" or "SIA".
-##' @param MorH character; defines if the station is (M)eterological or (H)ydrological. Must be "M" or "H".
+##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
+##' @param MorH character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
@@ -31,10 +31,10 @@ senamhiDownload <- function(station, type = "z", MorH = "z", startYear, endYear,
   ## Ask user to input variables
   if (missing(station))
     station <- readline(prompt = "Enter station number: ")
-  while (!(type == "CON" | type == "SIA" | type == "SUT"))
-    type <- readline(prompt = "Enter Type CON, SUT, or SIA: ")
-  while (!(MorH == "M" | MorH == "H"))
-    MorH <- readline(prompt = "Enter Field M or H: ")
+  while (!(type == "CON" | type == "DAV" | type == "SIA" | type == "SUT"))
+    type <- readline(prompt = "Enter Type CON, DAV, SUT, or SIA: ")
+  while (!(MorH == "M" | MorH == "M2" | MorH == "H"))
+    MorH <- readline(prompt = "Enter Field M, M2 or H: ")
   if (missing(startYear))
     startYear <- as.integer(readline(prompt = "Enter start year: "))
   if (missing(endYear))

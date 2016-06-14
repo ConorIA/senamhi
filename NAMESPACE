@@ -2,4 +2,6 @@
 
 export(senamhi)
 export(senamhiDownload)
+export(senamhiGetPeriod)
+export(senamhiGuess)
 export(senamhiWriteCSV)

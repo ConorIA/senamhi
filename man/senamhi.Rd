@@ -4,17 +4,22 @@
 \alias{senamhi}
 \title{A wrapper function to download and compile data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-senamhi(tasks, station, type = "z", MorH = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, append = FALSE, custom = FALSE)
+senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z",
+  MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
+  append = FALSE, custom = FALSE)
 }
 \arguments{
 \item{tasks}{numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.}
 
 \item{station}{numerical; the number of the station id number to process.}
 
-\item{type}{character; defines if the station is (CON)ventional, (SUT)ron, or (SIA)p. Must be "CON", "SUT" or "SIA".}
+\item{automatic}{logical; if set to true, the script will attempt to guess the type and MorH values}
 
-\item{MorH}{character; defines if the station is (M)eterological or (H)ydrological. Must be "M" or "H".}
+\item{dataAvail}{logical; if set to true, the script will return a(n outdated) table of the data available for your station.}
+
+\item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
+
+\item{MorH}{character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".}
 
 \item{startYear}{numerical; the first year to process.}
 
