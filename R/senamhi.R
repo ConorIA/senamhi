@@ -12,6 +12,7 @@
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
 ##' @param endMonth numerical; the last month to process. Defaults to 12.
+##' @param overwrite logical; if true, the script will overwrite downloaded files if they exist.
 ##' @param append logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.
 ##' @param custom logical; if true, the script will provide the opportunity to manually enter column headers.
 ##'
@@ -26,7 +27,7 @@
 ##' senamhi(3, 000401, type = "CON", MorH = "M", 1971, 2000)
 
 senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z", MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
-                    append = FALSE, custom = FALSE) {
+                    overwrite = FALSE, append = FALSE, custom = FALSE) {
 
     if (missing(tasks)) {
       print("Please choose the series of command you wish to run.")
@@ -72,7 +73,7 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "
         senamhiWriteCSV(station, type, MorH, startYear, endYear, startMonth, endMonth)
       } else {
         if (tasks == 3) {
-          senamhiDownload(station, type, MorH, startYear, endYear, startMonth, endMonth)
+          senamhiDownload(station, type, MorH, startYear, endYear, startMonth, endMonth, overwrite)
           senamhiWriteCSV(station, type, MorH, startYear, endYear, startMonth, endMonth, custom, append)
         } else
           print("Please choose an option between 1 and 3")

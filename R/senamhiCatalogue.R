@@ -68,6 +68,7 @@ senamhiCatalogue <- function () {
     colnames(catalogue) <- c("Station", "StationID", "Class", "Type", "Lat", "Lon", "Region", "Province", "District")
   }
   rownames(catalogue) <- NULL
+  catalogue <- as.data.frame(catalogue)
   save(catalogue, file = "catalogue.rda")
   return(catalogue)
 }

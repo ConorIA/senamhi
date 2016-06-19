@@ -9,6 +9,7 @@
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
 ##' @param endMonth numerical; the last month to process. Defaults to 12.
+##' @param endMonth numerical; the last month to process. Defaults to 12.
 ##'
 ##' @return None
 ##'
@@ -20,7 +21,7 @@
 ##' senamhiDownload()
 ##' senamhiDownload(000401, type = "CON", MorH = "M", 1971, 2000)
 
-senamhiDownload <- function(station, type = "z", MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12) {
+senamhiDownload <- function(station, type = "z", MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12, overwrite = FALSE) {
 
   if ("curl" %in% rownames(installed.packages()) == FALSE) {
     print("Installing the curl package")
@@ -64,7 +65,10 @@ senamhiDownload <- function(station, type = "z", MorH = "z", startYear, endYear,
   ##Download the data
   cat("Downloading the requested data.\n")
   for (i in 1:length(urlList)) {
-    curl_download(urlList[i], paste(station, "/", dates[i], ".html", sep = ""))
+    filename <- paste(station, "/", dates[i], ".html", sep = "")
+    if (!file.exists(filename) | overwrite) {
+      curl_download(urlList[i], filename)
+    }
     setTxtProgressBar(prog, value = i)
   }
 }

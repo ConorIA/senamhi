@@ -5,7 +5,7 @@
 \title{Download from the Peruvian National Hydrological and Meterological Service}
 \usage{
 senamhiDownload(station, type = "z", MorH = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12)
+  startMonth = 1, endMonth = 12, overwrite = FALSE)
 }
 \arguments{
 \item{station}{numerical; the number of the station id number to process.}
@@ -19,6 +19,8 @@ senamhiDownload(station, type = "z", MorH = "z", startYear, endYear,
 \item{endYear}{numerical; the last year to process.}
 
 \item{startMonth}{numerical; the first month to process. Defaults to 1.}
+
+\item{endMonth}{numerical; the last month to process. Defaults to 12.}
 
 \item{endMonth}{numerical; the last month to process. Defaults to 12.}
 }

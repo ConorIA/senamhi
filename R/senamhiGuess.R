@@ -50,9 +50,13 @@ senamhiGuess <- function(station) {
   stationData <- stationData[3]
 
   ##Check MorH
-  test <- grep("Meteorológica 2", stationData)
+  test <- grep("Meteorológica 1", stationData)
   if (length(test) > 0) {
-    MorH <- "M2"
+    MorH <- "M1"
+  } else {
+    test <- grep("Meteorológica 2", stationData)
+    if (length(test) > 0) {
+      MorH <- "M2"
     } else {
       test <- grep("Meteorológica", stationData)
       if (length(test) > 0) {
@@ -66,6 +70,7 @@ senamhiGuess <- function(station) {
         }
       }
     }
+  }
 
   ##Check station type
   test <- grep("Convencional", stationData)

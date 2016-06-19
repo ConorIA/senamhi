@@ -6,7 +6,7 @@
 \usage{
 senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z",
   MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
-  append = FALSE, custom = FALSE)
+  overwrite = FALSE, append = FALSE, custom = FALSE)
 }
 \arguments{
 \item{tasks}{numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.}
@@ -28,6 +28,8 @@ senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z",
 \item{startMonth}{numerical; the first month to process. Defaults to 1.}
 
 \item{endMonth}{numerical; the last month to process. Defaults to 12.}
+
+\item{overwrite}{logical; if true, the script will overwrite downloaded files if they exist.}
 
 \item{append}{logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.}
 
