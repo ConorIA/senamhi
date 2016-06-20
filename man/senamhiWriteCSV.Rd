@@ -5,7 +5,8 @@
 \title{Compile data from the Peruvian National Hydrological and Meterological Service}
 \usage{
 senamhiWriteCSV(station, type = "z", MorH = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, append = FALSE, custom = FALSE)
+  startMonth = 1, endMonth = 12, overwrite = FALSE, append = FALSE,
+  custom = FALSE)
 }
 \arguments{
 \item{station}{numerical; the number of the station id number to process.}
@@ -21,6 +22,8 @@ senamhiWriteCSV(station, type = "z", MorH = "z", startYear, endYear,
 \item{startMonth}{numerical; the first month to process. Defaults to 1.}
 
 \item{endMonth}{numerical; the last month to process. Defaults to 12.}
+
+\item{overwrite}{logical; if true, the script will overwrite the compiled csv file if it exists.}
 
 \item{append}{logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.}
 

@@ -45,8 +45,8 @@ senamhiGuess <- function(station) {
 
   ##Download the data
   cat(paste0("Checking station characteristics for ", station, ".\n"))
-  curl_download(url, paste(station, "/", "availableData.html", sep = ""))
-  stationData <- htmlTreeParse(paste(station, "/", "availableData.html", sep = ""))
+  curl_download(url, paste(station, "/", "stationInfo.html", sep = ""))
+  stationData <- htmlTreeParse(paste(station, "/", "stationInfo.html", sep = ""))
   stationData <- stationData[3]
 
   ##Check MorH

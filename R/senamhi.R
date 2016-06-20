@@ -13,7 +13,7 @@
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
 ##' @param endMonth numerical; the last month to process. Defaults to 12.
-##' @param overwrite logical; if true, the script will overwrite downloaded files if they exist.
+##' @param overwrite logical; if true, the script will overwrite downloaded files and compiled csv files if they exist.
 ##' @param append logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.
 ##' @param custom logical; if true, the script will provide the opportunity to manually enter column headers.
 ##'
@@ -38,8 +38,11 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback
       station <- readline(prompt = "Enter station number: ")
     
     ##Add a work-around to download multiple stations
-    if (length(station) > 1) lapply(station, senamhi, tasks = tasks, automatic, dataAvail = dataAvail, fallback = fallback, type = type, MorH = MorH, startYear = startYear, endYear = endYear, startMonth = startMonth, endMonth = endMonth,
-                                    append = append, custom = custom)
+    if (length(station) > 1) {
+      lapply(station, senamhi, tasks = tasks, automatic, dataAvail = dataAvail, fallback = fallback, type = type, MorH = MorH, startYear = startYear, endYear = endYear, startMonth = startMonth, endMonth = endMonth,
+                                    overwrite = overwrite, append = append, custom = custom)
+      return("Batch jobs completed")
+    }
     
     ## Input Station Characteristics for single stations
     if (automatic == TRUE) {
@@ -85,7 +88,7 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback
       } else {
         if (tasks == 3) {
           senamhiDownload(station, type, MorH, startYear, endYear, startMonth, endMonth, overwrite)
-          senamhiWriteCSV(station, type, MorH, startYear, endYear, startMonth, endMonth, custom, append)
+          senamhiWriteCSV(station, type, MorH, startYear, endYear, startMonth, endMonth, overwrite, custom, append)
         } else
           print("Please choose an option between 1 and 3")
       }

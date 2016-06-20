@@ -30,7 +30,7 @@ senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE,
 
 \item{endMonth}{numerical; the last month to process. Defaults to 12.}
 
-\item{overwrite}{logical; if true, the script will overwrite downloaded files if they exist.}
+\item{overwrite}{logical; if true, the script will overwrite downloaded files and compiled csv files if they exist.}
 
 \item{append}{logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.}
 

@@ -9,6 +9,7 @@
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
 ##' @param endMonth numerical; the last month to process. Defaults to 12.
+##' @param overwrite logical; if true, the script will overwrite the compiled csv file if it exists.
 ##' @param append logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.
 ##' @param custom logical; if true, the script will provide the opportunity to manually enter column headers.
 ##'
@@ -23,8 +24,17 @@
 ##' senamhiWriteCSV(000401, type = "CON", MorH = "M", 1971, 2000, 1, 12)
 
 senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
-                            append = FALSE, custom = FALSE) {
-
+                            overwrite = FALSE, append = FALSE, custom = FALSE) {
+  
+  stationName <- senamhi:::catalogue$StationID==station
+  stationName <- as.character(senamhi:::catalogue$Station[stationName])
+  filename <- paste(as.character(station), " - ", stationName, ".csv", sep = "")
+  
+  if(file.exists(filename) & !overwrite) {
+    warning(paste("File ", filename, " exists. Not overwriting.", sep = ""), call. = FALSE, immediate. = TRUE)
+    return()
+  }
+  
   if ("XML" %in% rownames(installed.packages()) == FALSE) {
     print("Installing the XML package")
     install.packages("XML")
@@ -116,8 +126,17 @@ senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear,
           } 
         }
         else {
-          table <- subset(table[2:length(table[, 1]), 2:length(table)])
-          table <- cbind(datecolumn, table)
+          if (ncol(table) != length(colnames)) {
+            ## Assuming that this only happens with precipitation for now.
+            table2 <- table[-1,]
+            table <- matrix(data = as.character("NA"), nrow = length(datecolumn), ncol = (length(colnames)-1))
+            table <- cbind(datecolumn, as.data.frame(table, stringsAsFactors = FALSE))
+            table[,10] <- table2[,2]
+            table[,11] <- table2[,3]
+          } else {
+            table <- subset(table[2:length(table[, 1]), 2:length(table)])
+            table <- cbind(datecolumn, table)
+          }
         }
     } else {
       table <- matrix("NA", nrow = length(datecolumn), ncol = (length(colnames) - 1))
@@ -128,8 +147,6 @@ senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear,
     ++i
   }
   names(data) <- (colnames)
-  stationName <- senamhi:::catalogue$StationID==station
-  stationName <- as.character(senamhi:::catalogue$Station[stationName])
-  if (append == TRUE) write.table(data, paste(as.character(station), " - ", stationName, ".csv", sep = ""), append = TRUE, sep = ",", col.names = FALSE,row.names = FALSE)
-  else write.table(data, paste(as.character(station), " - ", stationName, ".csv", sep = ""), sep = ",", row.names = FALSE)
+  if (append == TRUE) write.table(data, filename, append = TRUE, sep = ",", col.names = FALSE,row.names = FALSE)
+  else write.table(data, filename, sep = ",", row.names = FALSE)
 }
