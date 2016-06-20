@@ -1,5 +1,5 @@
-Senamhi Script
-==============
+SenamhiR
+========
 A collection of functions to obtain Peruvian climate data in R.
 The package attempts to provide a mostly automated solution for the bulk download and compilation of data.
 It is important to note that the info on the Senamhi website has not undergone quality control.
