@@ -67,8 +67,16 @@ senamhiDownload <- function(station, type = "z", MorH = "z", startYear, endYear,
   cat("Downloading the requested data.")
   for (i in 1:length(urlList)) {
     filename <- paste(station, "/", dates[i], ".html", sep = "")
-    if (!file.exists(filename) | overwrite) {
-      curl_download(urlList[i], filename)
+    if (!file.exists(filename) | overwrite | file.info(filename)$size == 0) {
+      download <- try(curl_download(urlList[i], filename))
+      if (inherits(download, "try-error")) {
+        warn("Caught an error. Retrying file.")
+        unlink(filename)
+        download <- try(curl_download(urlList[i], filename))
+        if (inherits(download, "try-error")) {
+          stop("Could not download the requested file.")
+        }
+      }
     }
     setTxtProgressBar(prog, value = i)
   }
