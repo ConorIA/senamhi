@@ -60,10 +60,11 @@ senamhiDownload <- function(station, type = "z", MorH = "z", startYear, endYear,
 
   ## Set up a progress Bar
   prog <- txtProgressBar(min = 0, max = length(urlList), style = 3)
+  cat("\n")
   on.exit(close(prog))
 
   ##Download the data
-  cat("Downloading the requested data.\n")
+  cat("\n Downloading the requested data.\n")
   for (i in 1:length(urlList)) {
     filename <- paste(station, "/", dates[i], ".html", sep = "")
     if (!file.exists(filename) | overwrite) {

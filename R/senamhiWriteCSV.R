@@ -110,6 +110,8 @@ senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear,
     ++i
   }
   names(data) <- (colnames)
-  if (append == TRUE) write.table(data, paste(as.character(station), ".csv", sep = ""), append = TRUE, sep = ",", col.names = FALSE,row.names = FALSE)
-  else write.table(data, paste(as.character(station), ".csv", sep = ""), sep = ",", row.names = FALSE)
+  stationName <- senamhi:::catalogue$StationID==station
+  stationName <- as.character(senamhi:::catalogue$Station[stationName])
+  if (append == TRUE) write.table(data, paste(as.character(station), " - ", stationName, ".csv", sep = ""), append = TRUE, sep = ",", col.names = FALSE,row.names = FALSE)
+  else write.table(data, paste(as.character(station), " - ", stationName, ".csv", sep = ""), sep = ",", row.names = FALSE)
 }
