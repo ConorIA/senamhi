@@ -84,10 +84,10 @@ senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear,
     }
   } else { ## If we want to try a built-in template (but there are a lot of combinations)
     if (MorH == "H") {
-      if (type == "CON") colnames <- c("Fecha", "Nivel06 (m)", "Nivel10 (m)", "Nivel14 (m)", "Nivel18         (m)", "Caudal (m³/s)")
-      if (type == "SUT") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humidity (%)"        , "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", "Nivel Medio (m)")
+      if (type == "CON") colnames <- c("Fecha", "Nivel06 (m)", "Nivel10 (m)", "Nivel14 (m)", "Nivel18 (m)", "Caudal (m³/s)")
+      if (type == "SUT") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humidity (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", "Nivel Medio (m)")
     } else {
-      if (type == "CON") colnames <- c("Fecha", "Tmax (°C)", "Tmin (°C)", "TBS07 (°C)", "TBS13 (°C)",         "TBS19 (°C)", "TBH07 (°C)", "TBH13 (°C)", "TBH19 (°C)", "Prec07 (mm)", "Prec19 (mm)", "Direccion del Viento", "Velocidad del Viento (m/s)")
+      if (type == "CON") colnames <- c("Fecha", "Tmax (°C)", "Tmin (°C)", "TBS07 (°C)", "TBS13 (°C)", "TBS19 (°C)", "TBH07 (°C)", "TBH13 (°C)", "TBH19 (°C)", "Prec07 (mm)", "Prec19 (mm)", "Direccion del Viento", "Velocidad del Viento (m/s)")
       if (type == "SUT" | type == "SIA") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humedad (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento")
     }
   }
@@ -96,11 +96,29 @@ senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear,
   for (i in 1:length(files)) {
     date <- as.Date(datelist[i], format = "%Y-%m-%d")
     datecolumn <- seq(date, by = 1, length.out = numberOfDays(date))
-    table <- readHTMLTable(files[i])
+    table <- readHTMLTable(files[i], stringsAsFactors = FALSE)
     table <- as.data.frame(table[1])
     if (nrow(table) > 1) {
-      table <- subset(table[2:length(table[, 1]), 2:length(table)])
-      table <- cbind(datecolumn, table)
+      if (nrow(table)-1 != length(datecolumn)) {
+        table2 <- table[-1,]
+        table <- matrix(data = as.character("NA"), nrow = length(datecolumn), ncol = (length(colnames) - 1))
+        table <- cbind(datecolumn, as.data.frame(table, stringsAsFactors = FALSE))
+        j <- 1
+        while (j <= nrow(table2)) {
+          datadate <- as.character(table2[j,1])
+          datadate <- strsplit(datadate, split = "-")[[1]]
+          datadate <- datadate[1]
+          datadate <- sprintf("%02d", as.numeric(datadate))
+          index <- format(datecolumn, "%d") == datadate
+          thisrow <- c(as.character(datecolumn[index]), table2[j,2:ncol(table2)])
+          table[index,] <- thisrow
+          j <- j+1
+          } 
+        }
+        else {
+          table <- subset(table[2:length(table[, 1]), 2:length(table)])
+          table <- cbind(datecolumn, table)
+        }
     } else {
       table <- matrix("NA", nrow = length(datecolumn), ncol = (length(colnames) - 1))
       table <- cbind(datecolumn, as.data.frame(table))
