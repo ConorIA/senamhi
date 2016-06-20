@@ -38,7 +38,7 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback
       station <- readline(prompt = "Enter station number: ")
     
     ##Add a work-around to download multiple stations
-    if (length(station) > 1) lapply(station, senamhi, tasks = tasks, automatic, dataAvail = dataAvail, type = type, MorH = MorH, startYear = startYear, endYear = endYear, startMonth = startMonth, endMonth = endMonth,
+    if (length(station) > 1) lapply(station, senamhi, tasks = tasks, automatic, dataAvail = dataAvail, fallback = fallback, type = type, MorH = MorH, startYear = startYear, endYear = endYear, startMonth = startMonth, endMonth = endMonth,
                                     append = append, custom = custom)
     
     ## Input Station Characteristics for single stations
