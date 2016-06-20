@@ -8,15 +8,16 @@ To use
 ------
 ``` {r, eval = FALSE}
 install.packages("devtools")
-devtools::install_github("ConorIA/senamhi")
+devtools::install_github("ConorIA/senamhiR")
 ```
 
 Included functions
 ------------------
-* senamhi() ... A wrapper for most of the funtions below
-* senamhiDownload() ... Downloads data in HTML tables for a specific station and range of dates
-* senamhiWriteCSV() ... Generates a .csv file for use in R from the downloaded data
-* senamhiGetPeriod() ... Attempts to determine the availability of data for a given station
-* senamhiGuess() ... Attempts to determine station class and type
-* senamhiCatalogue() ... Generates a catalogue of stations from the Senamhi Google Maps (this information is included in sysdata.rda)
+* senamhiR() ... A wrapper for most of the funtions below
+* downloadData() ... Downloads data in HTML tables for a specific station and range of dates
+* downloadAction() ... A helper to download files in the various functions
+* writeCSV() ... Generates a .csv file for use in R from the downloaded data
+* guessPeriod() ... Attempts to determine the availability of data for a given station
+* guessConfig() ... Attempts to determine station class and type
+* generateCatalogue() ... Generates a catalogue of stations from the Senamhi Google Maps (this information is included in sysdata.rda)
 * stationExplorerGUI() ... a Shiny app to explore the catalogue of stations

@@ -4,11 +4,11 @@
 ##'
 ##' @param tasks numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.
 ##' @param station character; the number of the station id number to process. Can also be a vector of station ids.
-##' @param automatic logical; if set to true (default), the script will attempt to guess the type and MorH values as well as startYear and endYear
+##' @param automatic logical; if set to true (default), the script will attempt to guess the type and config values as well as startYear and endYear
 ##' @param dataAvail logical; if set to true (default), the script will either automatically attempt to choose start and end datas, or return a(n outdated) table of the data available for your station.
 ##' @param fallbacl vector; if dataAvail is used, this vector will provide a fallback start and end year to download if the auto find fails.
 ##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
-##' @param MorH character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M1", "M2" or "H".
+##' @param config character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M1", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
@@ -19,15 +19,15 @@
 ##'
 ##' @return None
 ##'
-##' @export
-##'
 ##' @author Conor I. Anderson
-##'
+##' 
+##' @export
+##' 
 ##' @examples
-##' senamhi()
-##' senamhi(3, 000401, type = "CON", MorH = "M", 1971, 2000)
+##' senamhiR()
+##' senamhiR(3, 000401, type = "CON", config = "M", 1971, 2000)
 
-senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback = NULL, type = "z", MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
+senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback = NULL, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                     overwrite = FALSE, append = FALSE, custom = FALSE) {
 
     if (missing(tasks)) {
@@ -39,37 +39,37 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback
     
     ##Add a work-around to download multiple stations
     if (length(station) > 1) {
-      lapply(station, senamhi, tasks = tasks, automatic, dataAvail = dataAvail, fallback = fallback, type = type, MorH = MorH, startYear = startYear, endYear = endYear, startMonth = startMonth, endMonth = endMonth,
+      lapply(station, senamhiR, tasks = tasks, automatic, dataAvail = dataAvail, fallback = fallback, type = type, config = config, startYear = startYear, endYear = endYear, startMonth = startMonth, endMonth = endMonth,
                                     overwrite = overwrite, append = append, custom = custom)
       return("Batch jobs completed")
     }
     
     ## Input Station Characteristics for single stations
     if (automatic == TRUE) {
-      guess <- senamhiGuess(station)
+      guess <- guessConfig(station, overwrite)
       type <- guess[1]
-      MorH <- guess[2]
+      config <- guess[2]
       if (guess[1] == "ERROR" | guess[2] == "ERROR") print("Something went wrong. Please enter manually")
     }
     while (!(type == "CON" | type == "DAV" | type == "SIA" | type == "SUT"))
       type <- readline(prompt = "Must be one of CON, DAV, SUT, or SIA: ")
-    while (!(MorH == "M" |MorH == "M1" | MorH == "M2" | MorH == "H"))
-      MorH <- readline(prompt = "Must be one of M, M1, M2 or H: ")
+    while (!(config == "M" |config == "M1" | config == "M2" | config == "H"))
+      config <- readline(prompt = "Must be one of M, M1, M2 or H: ")
 
     ## Choose Data Range
     if (dataAvail == TRUE & (missing(startYear) | missing(endYear))) {
-      result <- try(senamhiGetPeriod(station, automatic))
+      result <- try(guessPeriod(station, automatic, overwrite))
       if (!inherits(result, "try-error")) {
         if (automatic == TRUE) {
           startYear <- result[1]
           endYear <- result[2]
         } else {
-          cat("The following data is available.\n")
+          print("The following data is available.")
           print(result)
         }
       } else {
         if (length(fallback) == 2) {
-          cat("Using fallback dates")
+          print("Using fallback dates")
           startYear <- fallback[1]
           endYear <- fallback[2]
         }
@@ -81,14 +81,14 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback
       endYear <- as.integer(readline(prompt = "Enter end year: "))
     
     if (tasks == 1) {
-      senamhiDownload(station, type, MorH, startYear, endYear, startMonth, endMonth)
+      downloadData(station, type, config, startYear, endYear, startMonth, endMonth)
     } else {
       if (tasks == 2) {
-        senamhiWriteCSV(station, type, MorH, startYear, endYear, startMonth, endMonth)
+        writeCSV(station, type, config, startYear, endYear, startMonth, endMonth)
       } else {
         if (tasks == 3) {
-          senamhiDownload(station, type, MorH, startYear, endYear, startMonth, endMonth, overwrite)
-          senamhiWriteCSV(station, type, MorH, startYear, endYear, startMonth, endMonth, overwrite, custom, append)
+          downloadData(station, type, config, startYear, endYear, startMonth, endMonth, overwrite)
+          writeCSV(station, type, config, startYear, endYear, startMonth, endMonth, overwrite, custom, append)
         } else
           print("Please choose an option between 1 and 3")
       }

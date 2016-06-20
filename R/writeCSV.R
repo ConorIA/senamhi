@@ -4,7 +4,7 @@
 ##'
 ##' @param station numerical; the number of the station id number to process.
 ##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
-##' @param MorH character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".
+##' @param config character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
@@ -15,15 +15,17 @@
 ##'
 ##' @return None
 ##'
-##' @export
-##'
 ##' @author Conor I. Anderson
 ##'
+##' @importFrom XML readHTMLTable
+##'
+##' @export
+##'
 ##' @examples
-##' senamhiWriteCSV()
-##' senamhiWriteCSV(000401, type = "CON", MorH = "M", 1971, 2000, 1, 12)
+##' writeCSV()
+##' writeCSV(000401, type = "CON", config = "M", 1971, 2000, 1, 12)
 
-senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
+writeCSV <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                             overwrite = FALSE, append = FALSE, custom = FALSE) {
   
   stationName <- senamhi:::catalogue$StationID==station
@@ -34,12 +36,6 @@ senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear,
     warning(paste("File ", filename, " exists. Not overwriting.", sep = ""), call. = FALSE, immediate. = TRUE)
     return()
   }
-  
-  if ("XML" %in% rownames(installed.packages()) == FALSE) {
-    print("Installing the XML package")
-    install.packages("XML")
-  }
-  require(XML)
 
   # This snippet of code from Stack Overflow user Grzegorz Szpetkowski at
   # http://stackoverflow.com/questions/6243088/find-out-the-number-of-days-of-a-month-in-r
@@ -59,8 +55,8 @@ senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear,
     station <- readline(prompt = "Enter station number: ")
   while (!(type == "CON" | type == "DAV" | type == "SIA" | type == "SUT"))
     type <- readline(prompt = "Must be one of CON, DAV, SUT, or SIA: ")
-  while (!(MorH == "M" | MorH == "M1" | MorH == "M2" | MorH == "H"))
-    MorH <- readline(prompt = "Must be one of M, M1, M2 or H: ")
+  while (!(config == "M" | config == "M1" | config == "M2" | config == "H"))
+    config <- readline(prompt = "Must be one of M, M1, M2 or H: ")
   if (missing(startYear))
     startYear <- as.integer(readline(prompt = "Enter start year: "))
   if (missing(endYear))
@@ -93,7 +89,7 @@ senamhiWriteCSV <- function(station, type = "z", MorH = "z", startYear, endYear,
         c = 0
     }
   } else { ## If we want to try a built-in template (but there are a lot of combinations)
-    if (MorH == "H") {
+    if (config == "H") {
       if (type == "CON") colnames <- c("Fecha", "Nivel06 (m)", "Nivel10 (m)", "Nivel14 (m)", "Nivel18 (m)", "Caudal (m³/s)")
       if (type == "SUT") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humidity (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", "Nivel Medio (m)")
     } else {

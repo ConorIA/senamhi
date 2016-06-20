@@ -4,30 +4,21 @@
 ##'
 ##' @param station numerical; the number of the station id number to process.
 ##' @param automatic logical; if set to true (default), the script will attempt to guess the startYear and endYear values.
+##' @param overwrite logical; if true, the script will overwrite downloaded files if they exist.
 ##'
 ##' @return data.frame
 ##'
-##' @export
-##'
 ##' @author Conor I. Anderson
-##'
+##' 
+##' @importFrom XML readHTMLTable
+##' 
+##' @export
+##'  
 ##' @examples
-##' senamhiGetPeriod()
-##' senamhiGetPeriod(000401)
+##' guessPeriod()
+##' guessPeriod(000401)
 
-senamhiGetPeriod <- function(station, automatic = TRUE) {
-
-  if ("curl" %in% rownames(installed.packages()) == FALSE) {
-    print("Installing the curl package")
-    install.packages("curl")
-  }
-  require(curl)
-
-  if ("XML" %in% rownames(installed.packages()) == FALSE) {
-    print("Installing the XML package")
-    install.packages("XML")
-  }
-  require(XML)
+guessPeriod <- function(station, automatic = TRUE, overwrite = FALSE) {
 
   ## Ask user to input variables
   if (missing(station))
@@ -45,9 +36,10 @@ senamhiGetPeriod <- function(station, automatic = TRUE) {
   }
 
  ##Download the data
-  cat(paste0("Checking data at ", station, ".\n"))
-  curl_download(url, paste(station, "/", "availableData.html", sep = ""))
-
+  print(paste0("Checking data at ", station, "."))
+  filename <- paste(station, "/", "availableData.html", sep = "")
+  downloadAction(url, filename, overwrite)
+  
   table <- readHTMLTable(paste(station, "/", "availableData.html", sep = ""), as.data.frame = TRUE)
   table <- as.data.frame(table[3])
   if (ncol(table) > 1) {
@@ -56,7 +48,7 @@ senamhiGetPeriod <- function(station, automatic = TRUE) {
       startYear <- min(as.numeric(levels(table$DataFrom)))
       endYear <- max(as.numeric(levels(table$DataTo)))
       if (endYear == 2010) {
-        cat("Highest year is 2010, assuming newer data. Trying to last year.")
+        print("Highest year is 2010, assuming newer data. Trying to last year.")
         currentYear <- as.numeric(format(Sys.time(), "%Y"))
         endYear <- currentYear - 1
       }

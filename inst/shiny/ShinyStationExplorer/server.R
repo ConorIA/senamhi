@@ -7,9 +7,9 @@ shinyServer(function(input, output) {
   
   # Filter data based on selections
   output$table <- DT::renderDataTable(DT::datatable({
-    data <- senamhi:::catalogue
-    if (input$class != "All") {
-      data <- data[data$Class == input$class,]
+    data <- senamhiR:::catalogue
+    if (input$config != "All") {
+      data <- data[data$Configuration == input$config,]
     }
     if (input$type != "All") {
       data <- data[data$Type == input$type,]

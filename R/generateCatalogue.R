@@ -4,28 +4,24 @@
 ##'
 ##' @return catalogue.rda
 ##'
-##' @export
-##'
 ##' @author Conor I. Anderson
 ##'
+##' @importFrom XML htmlTreeParse
+##'
+##' @export
+##' 
 ##' @examples
-##' senamhiCatalogue()
+##' generateCatalogue()
 
-senamhiCatalogue <- function () {
-  
-  if ("XML" %in% rownames(installed.packages()) == FALSE) {
-    print("Installing the XML package")
-    install.packages("XML")
-  }
-  require(XML)
+generateCatalogue <- function () {
   
   vector <- seq(1, 25, by = 1)
   vector <- vector[-7]
   vector <- sprintf("%02d", vector)
   urlList <- paste("http://www.senamhi.gob.pe/include_mapas/_map_data_hist03.php?drEsta=", vector, sep = "")
   
-  if (!dir.exists("data")) {
-    check <- try(dir.create("data"))
+  if (!dir.exists("catalogue data")) {
+    check <- try(dir.create("catalogue data"))
     if (inherits(check, "try-error")) {
       stop("I couldn't write out the directory. Check your permissions.")
     }
@@ -34,9 +30,8 @@ senamhiCatalogue <- function () {
   Sys.setlocale('LC_ALL','C') 
   catalogue = NULL
   for (i in 1:length(vector)) {
-    test <- file.exists(paste("data/", vector[i], ".html", sep = ""))
-    if (!test) curl_download(urlList[i], paste("data/", vector[i], ".html", sep = ""))
-    data <- htmlTreeParse(paste("data/", vector[i], ".html", sep = ""))
+    downloadAction(url = urlList[i], filename = paste("catalogue data/", vector[i], ".html", sep = ""))
+    data <- htmlTreeParse(paste("catalogue data/", vector[i], ".html", sep = ""))
     data <- data[3]
     data <- unlist(data)
     data <- data[21]
@@ -65,10 +60,10 @@ senamhiCatalogue <- function () {
       j <- j+1
     }
     i <- i+1
-    colnames(catalogue) <- c("Station", "StationID", "Class", "Type", "Lat", "Lon", "Region", "Province", "District")
+    colnames(catalogue) <- c("Station", "StationID", "Type", "Configuration", "Latitude", "Longitude", "Region", "Province", "District")
   }
   rownames(catalogue) <- NULL
-  catalogue <- as.data.frame(catalogue)
+  catalogue <- as.data.frame(catalogue, stringsAsFactors = FALSE)
   save(catalogue, file = "catalogue.rda")
   return(catalogue)
 }

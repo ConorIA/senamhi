@@ -3,30 +3,21 @@
 ##' @description Attempt to guess station characteristics.
 ##'
 ##' @param station numerical; the number of the station id number to process.
+##' @param overwrite logical; if true, the script will overwrite downloaded files if they exist.
 ##'
 ##' @return vector
 ##'
-##' @export
-##'
 ##' @author Conor I. Anderson
 ##'
+##' @importFrom XML htmlTreeParse
+##'
+##' @export
+##'
 ##' @examples
-##' senamhiGuess()
-##' senamhiGuess("000401")
+##' guessConfig()
+##' guessConfig("000401")
 
-senamhiGuess <- function(station) {
-
-  if ("curl" %in% rownames(installed.packages()) == FALSE) {
-    print("Installing the curl package")
-    install.packages("curl")
-  }
-  require(curl)
-
-  if ("XML" %in% rownames(installed.packages()) == FALSE) {
-    print("Installing the XML package")
-    install.packages("XML")
-  }
-  require(XML)
+guessConfig <- function(station, overwrite = FALSE) {
 
   ## Ask user to input variables
   if (missing(station))
@@ -44,29 +35,30 @@ senamhiGuess <- function(station) {
   }
 
   ##Download the data
-  cat(paste0("Checking station characteristics for ", station, ".\n"))
-  curl_download(url, paste(station, "/", "stationInfo.html", sep = ""))
+  print(paste0("Checking station characteristics for ", station, "."))
+  filename <- paste(station, "/", "stationInfo.html", sep = "")
+  downloadAction(url, filename, overwrite)
   stationData <- htmlTreeParse(paste(station, "/", "stationInfo.html", sep = ""))
   stationData <- stationData[3]
 
-  ##Check MorH
+  ##Check config
   test <- grep("Meteorológica 1", stationData)
   if (length(test) > 0) {
-    MorH <- "M1"
+    config <- "M1"
   } else {
     test <- grep("Meteorológica 2", stationData)
     if (length(test) > 0) {
-      MorH <- "M2"
+      config <- "M2"
     } else {
       test <- grep("Meteorológica", stationData)
       if (length(test) > 0) {
-        MorH <- "M"
+        config <- "M"
       } else {
         test <- grep("Hidrológica", stationData)
         if (length(test) > 0) {
-          MorH <- "H"
+          config <- "H"
         } else {
-          MorH <- "ERROR"
+          config <- "ERROR"
         }
       }
     }
@@ -104,5 +96,5 @@ senamhiGuess <- function(station) {
       }
     }
   }
-  result <- c(type, MorH)
+  result <- c(type, config)
 }

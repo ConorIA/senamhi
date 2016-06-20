@@ -12,4 +12,7 @@ none
 \description{
 A function to launch a shiny web app to explore Senamhi stations.
 }
+\author{
+Conor I. Anderson
+}
 
