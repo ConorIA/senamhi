@@ -7,7 +7,7 @@
 ##' @param automatic logical; if set to true (default), the script will attempt to guess the type and MorH values as well as startYear and endYear
 ##' @param dataAvail logical; if set to true (default), the script will either automatically attempt to choose start and end datas, or return a(n outdated) table of the data available for your station.
 ##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
-##' @param MorH character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".
+##' @param MorH character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M1", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
@@ -48,9 +48,9 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "
       if (guess[1] == "ERROR" | guess[2] == "ERROR") print("Something went wrong. Please enter manually")
     }
     while (!(type == "CON" | type == "DAV" | type == "SIA" | type == "SUT"))
-      type <- readline(prompt = "Enter Type CON, DAV, SUT, or SIA: ")
-    while (!(MorH == "M" | MorH == "M2" | MorH == "H"))
-      MorH <- readline(prompt = "Enter Field M, M2 or H: ")
+      type <- readline(prompt = "Must be one of CON, DAV, SUT, or SIA: ")
+    while (!(MorH == "M" |MorH == "M1" | MorH == "M2" | MorH == "H"))
+      MorH <- readline(prompt = "Must be one of M, M1, M2 or H: ")
 
     ## Choose Data Range
     if (dataAvail == TRUE & (missing(startYear) | missing(endYear))) {

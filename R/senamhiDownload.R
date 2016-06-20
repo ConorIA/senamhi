@@ -4,7 +4,7 @@
 ##'
 ##' @param station numerical; the number of the station id number to process.
 ##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
-##' @param MorH character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".
+##' @param MorH character; defines if the station is (M)eterological (1/2) or (H)ydrological. Must be "M", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
@@ -33,9 +33,9 @@ senamhiDownload <- function(station, type = "z", MorH = "z", startYear, endYear,
   if (missing(station))
     station <- readline(prompt = "Enter station number: ")
   while (!(type == "CON" | type == "DAV" | type == "SIA" | type == "SUT"))
-    type <- readline(prompt = "Enter Type CON, DAV, SUT, or SIA: ")
-  while (!(MorH == "M" | MorH == "M2" | MorH == "H"))
-    MorH <- readline(prompt = "Enter Field M, M2 or H: ")
+    type <- readline(prompt = "Must be one of CON, DAV, SUT, or SIA: ")
+  while (!(MorH == "M" | MorH == "M1" | MorH == "M2" | MorH == "H"))
+    MorH <- readline(prompt = "Must be one of M, M1, M2 or H: ")
   if (missing(startYear))
     startYear <- as.integer(readline(prompt = "Enter start year: "))
   if (missing(endYear))
@@ -64,7 +64,7 @@ senamhiDownload <- function(station, type = "z", MorH = "z", startYear, endYear,
   on.exit(close(prog))
 
   ##Download the data
-  cat("\n Downloading the requested data.\n")
+  cat("Downloading the requested data.")
   for (i in 1:length(urlList)) {
     filename <- paste(station, "/", dates[i], ".html", sep = "")
     if (!file.exists(filename) | overwrite) {
