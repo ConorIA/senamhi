@@ -4,9 +4,10 @@
 \alias{senamhi}
 \title{A wrapper function to download and compile data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z",
-  MorH = "z", startYear, endYear, startMonth = 1, endMonth = 12,
-  overwrite = FALSE, append = FALSE, custom = FALSE)
+senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE,
+  fallback = NULL, type = "z", MorH = "z", startYear, endYear,
+  startMonth = 1, endMonth = 12, overwrite = FALSE, append = FALSE,
+  custom = FALSE)
 }
 \arguments{
 \item{tasks}{numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.}
@@ -19,7 +20,7 @@ senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z",
 
 \item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
 
-\item{MorH}{character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".}
+\item{MorH}{character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M1", "M2" or "H".}
 
 \item{startYear}{numerical; the first year to process.}
 
@@ -34,6 +35,8 @@ senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z",
 \item{append}{logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.}
 
 \item{custom}{logical; if true, the script will provide the opportunity to manually enter column headers.}
+
+\item{fallbacl}{vector; if dataAvail is used, this vector will provide a fallback start and end year to download if the auto find fails.}
 }
 \value{
 None

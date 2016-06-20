@@ -61,14 +61,14 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback
           startYear <- result[1]
           endYear <- result[2]
         } else {
-          if (length(fallback) == 2) {
-            cat("Using fallback dates")
-            startYear <- fallback[1]
-            endYear <- fallback[2]
-          } else {
-            cat("The following data is available.\n")
-            print(result)
-          }
+          cat("The following data is available.\n")
+          print(result)
+        }
+      } else {
+        if (length(fallback) == 2) {
+          cat("Using fallback dates")
+          startYear <- fallback[1]
+          endYear <- fallback[2]
         }
       }
     }
