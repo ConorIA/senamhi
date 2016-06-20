@@ -28,8 +28,8 @@
 writeCSV <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                             overwrite = FALSE, append = FALSE, custom = FALSE) {
   
-  stationName <- senamhi:::catalogue$StationID==station
-  stationName <- as.character(senamhi:::catalogue$Station[stationName])
+  stationName <- senamhiR:::catalogue$StationID==station
+  stationName <- as.character(senamhiR:::catalogue$Station[stationName])
   filename <- paste(as.character(station), " - ", stationName, ".csv", sep = "")
   
   if(file.exists(filename) & !overwrite) {
