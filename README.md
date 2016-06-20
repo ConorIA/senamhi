@@ -13,7 +13,7 @@ devtools::install_github("ConorIA/senamhi")
 
 Included functions
 ------------------
-* senamhi() ... Runs both funtions below
+* senamhi() ... A wrapper for most of the funtions below
 * senamhiDownload() ... Downloads data in HTML tables for a specific station and range of dates
 * senamhiWriteCSV() ... Generates a .csv file for use in R from the downloaded data
 * senamhiGetPeriod() ... Attempts to determine the availability of data for a given station
