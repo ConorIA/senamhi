@@ -13,9 +13,9 @@ senamhi(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "z",
 
 \item{station}{character; the number of the station id number to process. Can also be a vector of station ids.}
 
-\item{automatic}{logical; if set to true (default), the script will attempt to guess the type and MorH values}
+\item{automatic}{logical; if set to true (default), the script will attempt to guess the type and MorH values as well as startYear and endYear}
 
-\item{dataAvail}{logical; if set to true (default), the script will return a(n outdated) table of the data available for your station.}
+\item{dataAvail}{logical; if set to true (default), the script will either automatically attempt to choose start and end datas, or return a(n outdated) table of the data available for your station.}
 
 \item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
 

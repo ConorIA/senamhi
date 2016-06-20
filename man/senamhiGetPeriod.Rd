@@ -4,10 +4,12 @@
 \alias{senamhiGetPeriod}
 \title{Query available data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-senamhiGetPeriod(station)
+senamhiGetPeriod(station, automatic = TRUE)
 }
 \arguments{
 \item{station}{numerical; the number of the station id number to process.}
+
+\item{automatic}{logical; if set to true (default), the script will attempt to guess the startYear and endYear values.}
 }
 \value{
 data.frame

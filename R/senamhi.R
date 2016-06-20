@@ -4,8 +4,8 @@
 ##'
 ##' @param tasks numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.
 ##' @param station character; the number of the station id number to process. Can also be a vector of station ids.
-##' @param automatic logical; if set to true (default), the script will attempt to guess the type and MorH values
-##' @param dataAvail logical; if set to true (default), the script will return a(n outdated) table of the data available for your station.
+##' @param automatic logical; if set to true (default), the script will attempt to guess the type and MorH values as well as startYear and endYear
+##' @param dataAvail logical; if set to true (default), the script will either automatically attempt to choose start and end datas, or return a(n outdated) table of the data available for your station.
 ##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
 ##' @param MorH character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
@@ -54,11 +54,15 @@ senamhi <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, type = "
 
     ## Choose Data Range
     if (dataAvail == TRUE & (missing(startYear) | missing(endYear))) {
-      result <- try(senamhiGetPeriod(station))
+      result <- try(senamhiGetPeriod(station, automatic))
       if (!inherits(result, "try-error")) {
-        print("The following data is available.")
-        print(result)
-        print("Note that data often exists past 2010, but the database has not been updated.")
+        if (automatic == TRUE) {
+          startYear <- result[1]
+          endYear <- result[2]
+        } else {
+          cat("The following data is available.\n")
+          print(table)
+        }
       }
     }
     if (missing(startYear))
