@@ -7,11 +7,6 @@
 ##' @author Conor I. Anderson
 ##'
 ##' @importFrom XML htmlTreeParse
-##'
-##' @export
-##' 
-##' @examples
-##' generateCatalogue()
 
 generateCatalogue <- function () {
   

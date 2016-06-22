@@ -5,3 +5,4 @@ appveyor.yml
 .gitattributes
 .gitignore
 README.md
+LICENSE.md

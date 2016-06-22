@@ -11,8 +11,7 @@
 ##' @export
 ##'  
 ##' @examples
-##' sortFiles()
-##' sortFiles("000401")
+##' \dontrun{sortFiles("000401")}
 
 sortFiles <- function(station) {
   ## What is the name of the csv file?

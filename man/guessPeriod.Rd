@@ -20,7 +20,7 @@ data.frame
 Query the available data for a given station from the Senamhi web portal.
 }
 \examples{
-guessPeriod("000401")
+\dontrun{guessPeriod("000401")}
 }
 \author{
 Conor I. Anderson

@@ -24,8 +24,8 @@
 ##' @export
 ##' 
 ##' @examples
-##' senamhiR(3, "000401", fallback = c(1961,1990))
-##' senamhiR(3, c("000401", "000152", "000219"), fallback = c(1961,1990))
+##' \dontrun{senamhiR(3, "000401", startYear = 1998, endYear = 2015)}
+##' \dontrun{senamhiR(3, c("000401", "000152", "000219"), fallback = c(1961,1990))}
 
 senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback = NULL, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                     overwrite = FALSE, append = FALSE, custom = FALSE) {

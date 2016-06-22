@@ -14,7 +14,7 @@
 ##' @export
 ##'
 ##' @examples
-##' guessConfig("000401")
+##' \dontrun{guessConfig("000401")}
 
 guessConfig <- function(station, overwrite = FALSE) {
 

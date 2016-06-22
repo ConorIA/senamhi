@@ -18,11 +18,12 @@
 ##' @author Conor I. Anderson
 ##'
 ##' @importFrom XML readHTMLTable
+##' @importFrom utils write.table
 ##'
 ##' @export
 ##'
 ##' @examples
-##' writeCSV("000401", type = "CON", config = "M", 1971, 2000, 1, 12)
+##' \dontrun{writeCSV("000401", type = "CON", config = "M", 1971, 2000, 1, 12)}
 
 writeCSV <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                             overwrite = FALSE, append = FALSE, custom = FALSE) {

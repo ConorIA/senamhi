@@ -18,7 +18,7 @@ vector
 Attempt to guess station characteristics.
 }
 \examples{
-guessConfig("000401")
+\dontrun{guessConfig("000401")}
 }
 \author{
 Conor I. Anderson

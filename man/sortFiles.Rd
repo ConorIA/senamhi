@@ -16,8 +16,7 @@ none
 Sort downloaded html and compiled csv files into folders sorted by region.
 }
 \examples{
-sortFiles()
-sortFiles("000401")
+\dontrun{sortFiles("000401")}
 }
 \author{
 Conor I. Anderson

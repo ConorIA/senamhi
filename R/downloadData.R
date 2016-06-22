@@ -14,19 +14,17 @@
 ##' @return None
 ##'
 ##' @author Conor I. Anderson
+##' 
+##' @importFrom curl curl_download
+##' @importFrom utils setTxtProgressBar 
+##' @importFrom utils txtProgressBar
 ##'
 ##' @export
 ##' 
 ##' @examples
-##' downloadData("000401", type = "CON", config = "M", 1971, 2000)
+##' \dontrun{downloadData("000401", type = "CON", config = "M", 1971, 2000)}
 
 downloadData <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, overwrite = FALSE) {
-
-  if ("curl" %in% rownames(installed.packages()) == FALSE) {
-    print("Installing the curl package")
-    install.packages("curl")
-  }
-  require(curl)
 
   ## Ask user to input variables
   if (missing(station))

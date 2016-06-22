@@ -45,8 +45,8 @@ None
 Download and/or compile Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-senamhiR(3, "000401", fallback = c(1961,1990))
-senamhiR(3, c("000401", "000152", "000219"), fallback = c(1961,1990))
+\dontrun{senamhiR(3, "000401", startYear = 1998, endYear = 2015)}
+\dontrun{senamhiR(3, c("000401", "000152", "000219"), fallback = c(1961,1990))}
 }
 \author{
 Conor I. Anderson

@@ -15,7 +15,7 @@
 ##' @export
 ##'  
 ##' @examples
-##' guessPeriod("000401")
+##' \dontrun{guessPeriod("000401")}
 
 guessPeriod <- function(station, automatic = TRUE, overwrite = FALSE) {
 
