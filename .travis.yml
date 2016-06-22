@@ -6,6 +6,8 @@ r:
 
 cache: packages
 
+warnings_are_errors: false
+
 sudo: false
 
 after_success:
