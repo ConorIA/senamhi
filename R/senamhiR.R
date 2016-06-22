@@ -6,7 +6,7 @@
 ##' @param station character; the number of the station id number to process. Can also be a vector of station ids.
 ##' @param automatic logical; if set to true (default), the script will attempt to guess the type and config values as well as startYear and endYear
 ##' @param dataAvail logical; if set to true (default), the script will either automatically attempt to choose start and end datas, or return a(n outdated) table of the data available for your station.
-##' @param fallbacl vector; if dataAvail is used, this vector will provide a fallback start and end year to download if the auto find fails.
+##' @param fallback vector; if dataAvail is used, this vector will provide a fallback start and end year to download if the auto find fails.
 ##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
 ##' @param config character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M1", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
@@ -24,9 +24,8 @@
 ##' @export
 ##' 
 ##' @examples
-##' senamhiR()
-##' senamhiR(3, "000401", type = "CON", config = "M", 1971, 2000)
-##' senamhiR(3, c("000401", "000152", "000219"), type = "CON", config = "M", 1971, 2000)
+##' senamhiR(3, "000401", fallback = c(1961,1990))
+##' senamhiR(3, c("000401", "000152", "000219"), fallback = c(1961,1990))
 
 senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback = NULL, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                     overwrite = FALSE, append = FALSE, custom = FALSE) {

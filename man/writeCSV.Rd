@@ -36,7 +36,6 @@ None
 Compile as CSV file of Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-writeCSV()
 writeCSV("000401", type = "CON", config = "M", 1971, 2000, 1, 12)
 }
 \author{

@@ -18,6 +18,8 @@ senamhiR(tasks, station, automatic = TRUE, dataAvail = TRUE,
 
 \item{dataAvail}{logical; if set to true (default), the script will either automatically attempt to choose start and end datas, or return a(n outdated) table of the data available for your station.}
 
+\item{fallback}{vector; if dataAvail is used, this vector will provide a fallback start and end year to download if the auto find fails.}
+
 \item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
 
 \item{config}{character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M1", "M2" or "H".}
@@ -35,8 +37,6 @@ senamhiR(tasks, station, automatic = TRUE, dataAvail = TRUE,
 \item{append}{logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.}
 
 \item{custom}{logical; if true, the script will provide the opportunity to manually enter column headers.}
-
-\item{fallbacl}{vector; if dataAvail is used, this vector will provide a fallback start and end year to download if the auto find fails.}
 }
 \value{
 None
@@ -45,9 +45,8 @@ None
 Download and/or compile Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-senamhiR()
-senamhiR(3, "000401", type = "CON", config = "M", 1971, 2000)
-senamhiR(3, c("000401", "000152", "000219"), type = "CON", config = "M", 1971, 2000)
+senamhiR(3, "000401", fallback = c(1961,1990))
+senamhiR(3, c("000401", "000152", "000219"), fallback = c(1961,1990))
 }
 \author{
 Conor I. Anderson

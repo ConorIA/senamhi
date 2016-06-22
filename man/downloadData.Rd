@@ -23,8 +23,6 @@ downloadData(station, type = "z", config = "z", startYear, endYear,
 \item{endMonth}{numerical; the last month to process. Defaults to 12.}
 
 \item{overwrite}{logical; if true, the script will overwrite downloaded files if they exist.}
-
-\item{endMonth}{numerical; the last month to process. Defaults to 12.}
 }
 \value{
 None
@@ -33,7 +31,6 @@ None
 Download Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-downloadData()
 downloadData("000401", type = "CON", config = "M", 1971, 2000)
 }
 \author{

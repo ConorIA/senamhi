@@ -20,7 +20,6 @@ data.frame
 Query the available data for a given station from the Senamhi web portal.
 }
 \examples{
-guessPeriod()
 guessPeriod("000401")
 }
 \author{

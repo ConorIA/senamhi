@@ -14,7 +14,6 @@
 ##' @export
 ##'
 ##' @examples
-##' guessConfig()
 ##' guessConfig("000401")
 
 guessConfig <- function(station, overwrite = FALSE) {

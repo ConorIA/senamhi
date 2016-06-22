@@ -9,7 +9,6 @@
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
 ##' @param endMonth numerical; the last month to process. Defaults to 12.
-##' @param endMonth numerical; the last month to process. Defaults to 12.
 ##' @param overwrite logical; if true, the script will overwrite downloaded files if they exist.
 ##'
 ##' @return None
@@ -19,7 +18,6 @@
 ##' @export
 ##' 
 ##' @examples
-##' downloadData()
 ##' downloadData("000401", type = "CON", config = "M", 1971, 2000)
 
 downloadData <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, overwrite = FALSE) {

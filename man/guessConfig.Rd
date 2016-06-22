@@ -18,7 +18,6 @@ vector
 Attempt to guess station characteristics.
 }
 \examples{
-guessConfig()
 guessConfig("000401")
 }
 \author{

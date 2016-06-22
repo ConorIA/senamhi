@@ -15,7 +15,6 @@
 ##' @export
 ##'  
 ##' @examples
-##' guessPeriod()
 ##' guessPeriod("000401")
 
 guessPeriod <- function(station, automatic = TRUE, overwrite = FALSE) {
