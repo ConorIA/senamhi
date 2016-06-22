@@ -30,8 +30,8 @@ Example for downloading an entire region
 ------
 ``` {r, eval = FALSE}
 ## Identify all stations in the Tacna Region
-index <- senamhiR:::catalogue$Region == "TACNA"
-stations <- senamhiR:::catalogue$StationID[index]
+index <- catalogue$Region == "TACNA"
+stations <- catalogue$StationID[index]
 ## Download and compile data from all station (using a period of 2000-2015 if automatic detection fails)
 senamhiR(3, stations, fallback = c(2000,2015))
 ## Sort those files into a folder called "TACNA"
