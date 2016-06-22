@@ -27,11 +27,11 @@
 
 writeCSV <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                             overwrite = FALSE, append = FALSE, custom = FALSE) {
-  
+
   stationName <- catalogue$StationID==station
   stationName <- as.character(catalogue$Station[stationName])
   filename <- paste(as.character(station), " - ", stationName, ".csv", sep = "")
-  
+
   if(file.exists(filename) & !overwrite) {
     warning(paste("File ", filename, " exists. Not overwriting.", sep = ""), call. = FALSE, immediate. = TRUE)
     return()
@@ -90,11 +90,11 @@ writeCSV <- function(station, type = "z", config = "z", startYear, endYear, star
     }
   } else { ## If we want to try a built-in template (but there are a lot of combinations)
     if (config == "H") {
-      if (type == "CON") colnames <- c("Fecha", "Nivel06 (m)", "Nivel10 (m)", "Nivel14 (m)", "Nivel18 (m)", "Caudal (m³/s)")
-      if (type == "SUT") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humidity (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", "Nivel Medio (m)")
+      if (type == "CON") colnames <- c("Fecha", "Nivel06 (m)", "Nivel10 (m)", "Nivel14 (m)", "Nivel18 (m)", "Caudal (m\u00B3/s)")
+      if (type == "SUT") colnames <- c("Fecha", "Tmean (\u00B0C)", "Tmax (\u00B0C)", "Tmin (\u00B0C)", "Humidity (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", "Nivel Medio (m)")
     } else {
-      if (type == "CON") colnames <- c("Fecha", "Tmax (°C)", "Tmin (°C)", "TBS07 (°C)", "TBS13 (°C)", "TBS19 (°C)", "TBH07 (°C)", "TBH13 (°C)", "TBH19 (°C)", "Prec07 (mm)", "Prec19 (mm)", "Direccion del Viento", "Velocidad del Viento (m/s)")
-      if (type == "SUT" | type == "SIA" | type == "DAV") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humedad (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento")
+      if (type == "CON") colnames <- c("Fecha", "Tmax (\u00B0C)", "Tmin (\u00B0C)", "TBS07 (\u00B0C)", "TBS13 (\u00B0C)", "TBS19 (\u00B0C)", "TBH07 (\u00B0C)", "TBH13 (\u00B0C)", "TBH19 (\u00B0C)", "Prec07 (mm)", "Prec19 (mm)", "Direccion del Viento", "Velocidad del Viento (m/s)")
+      if (type == "SUT" | type == "SIA" | type == "DAV") colnames <- c("Fecha", "Tmean (\u00B0C)", "Tmax (\u00B0C)", "Tmin (\u00B0C)", "Humedad (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento")
     }
   }
 
@@ -119,7 +119,7 @@ writeCSV <- function(station, type = "z", config = "z", startYear, endYear, star
           thisrow <- c(as.character(datecolumn[index]), table2[j,2:ncol(table2)])
           table[index,] <- thisrow
           j <- j+1
-          } 
+          }
         }
         else {
           if (ncol(table) != length(colnames)) {

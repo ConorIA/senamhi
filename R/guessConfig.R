@@ -41,19 +41,19 @@ guessConfig <- function(station, overwrite = FALSE) {
   stationData <- stationData[3]
 
   ##Check config
-  test <- grep("Meteorológica 1", stationData)
+  test <- grep("Meteorol\u00F3gica 1", stationData)
   if (length(test) > 0) {
     config <- "M1"
   } else {
-    test <- grep("Meteorológica 2", stationData)
+    test <- grep("Meteorol\u00F3gica 2", stationData)
     if (length(test) > 0) {
       config <- "M2"
     } else {
-      test <- grep("Meteorológica", stationData)
+      test <- grep("Meteorol\u00F3gica", stationData)
       if (length(test) > 0) {
         config <- "M"
       } else {
-        test <- grep("Hidrológica", stationData)
+        test <- grep("Hidrol\u00F3gica", stationData)
         if (length(test) > 0) {
           config <- "H"
         } else {
