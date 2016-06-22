@@ -4,6 +4,9 @@ A collection of functions to obtain Peruvian climate data in R.
 The package attempts to provide a mostly automated solution for the bulk download and compilation of data.
 It is important to note that the info on the Senamhi website has not undergone quality control.
 
+#### Build Status
+[![Build Status](https://travis-ci.org/ConorIA/senamhiR.svg?branch=master)](https://travis-ci.org/ConorIA/senamhiR) [![Build status](https://ci.appveyor.com/api/projects/status/8731y41f53b8me78?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir)
+
 To use
 ------
 ``` {r, eval = FALSE}
