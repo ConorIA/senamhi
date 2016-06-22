@@ -9,14 +9,14 @@
 ##' @export
 
 stationExplorerGUI <- function() {
-  if ("shiny" %in% rownames(installed.packages()) == FALSE | "DT" %in% rownames(installed.packages()) == FALSE) {
+  if ("shiny" %in% rownames(utils::installed.packages()) == FALSE | "DT" %in% rownames(utils::installed.packages()) == FALSE) {
     cat("This optional function requires the shiny and DT packages. \n")
     res <- readline(prompt = "Do you want to install them now? (y/N) ")
     if (res == "y") {
       install <- NULL
-      if ("shiny" %in% rownames(installed.packages()) == FALSE) install <- c(install, "shiny")
-      if ("DT" %in% rownames(installed.packages()) == FALSE) install <- c(install, "DT")
-      install.packages(install)
+      if ("shiny" %in% rownames(utils::installed.packages()) == FALSE) install <- c(install, "shiny")
+      if ("DT" %in% rownames(utils::installed.packages()) == FALSE) install <- c(install, "DT")
+      utils::install.packages(install)
     } else {
       stop("Cannot continue without the required packages.", call. = FALSE)
     }

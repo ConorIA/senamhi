@@ -15,11 +15,11 @@
 
 sortFiles <- function(station) {
   ## What is the name of the csv file?
-  index <- senamhiR:::catalogue$StationID==station
+  index <- catalogue$StationID==station
   ## What region is the station from
-  region <- as.character(senamhiR:::catalogue$Region[index])
+  region <- as.character(catalogue$Region[index])
   
-  stationName <- as.character(senamhiR:::catalogue$Station[index])
+  stationName <- as.character(catalogue$Station[index])
   filename <- paste(as.character(station), " - ", stationName, ".csv", sep = "")
   
   if (!dir.exists(region)) dir.create(region)
