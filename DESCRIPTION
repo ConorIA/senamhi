@@ -1,7 +1,7 @@
 Package: senamhiR
 Type: Package
 Title: A collection of functions to obtain Peruvian climate data
-Version: 1.2.2
+Version: 0.1
 Author: Conor Anderson
 Maintainer: Conor Anderson <conor.anderson@mail.utoronto.ca>
 Description: A collection of scripts to obtain Peruvian climatological or
