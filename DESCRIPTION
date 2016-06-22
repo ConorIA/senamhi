@@ -1,16 +1,16 @@
 Package: senamhiR
 Type: Package
 Title: A collection of functions to obtain Peruvian climate data
-Version: 1.2.1
+Version: 1.2.2
 Author: Conor Anderson
 Maintainer: Conor Anderson <conor.anderson@mail.utoronto.ca>
 Description: A collection of scripts to obtain Peruvian climatological or
     hydrological data form the Peruvian National Meterology and Hydrology Service.
 Depends:
-    R (>= 3.1.0),
-    curl,
-    XML
+    R (>= 3.1.0)
 Imports:
+    curl,
+    XML,
     utils,
     shiny,
     DT
