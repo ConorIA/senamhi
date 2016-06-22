@@ -21,3 +21,16 @@ Included functions
 * guessConfig() ... Attempts to determine station class and type
 * generateCatalogue() ... Generates a catalogue of stations from the Senamhi Google Maps (this information is included in sysdata.rda)
 * stationExplorerGUI() ... a Shiny app to explore the catalogue of stations
+* sortFiles() ... sorts files into folders by region. Useful if downloading in bulk
+
+Example for downloading an entire region
+------
+``` {r, eval = FALSE}
+## Identify all stations in the Tacna Region
+index <- senamhiR:::catalogue$Region == "TACNA"
+stations <- senamhiR:::catalogue$StationID[index]
+## Download and compile data from all station (using a period of 2000-2015 if automatic detection fails)
+senamhiR(3, stations, fallback = c(2000,2015))
+## Sort those files into a folder called "TACNA"
+sortFiles(stations)
+```
