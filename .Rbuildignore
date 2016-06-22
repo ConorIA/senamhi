@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.travis\.yml$
+appveyor.yml
+.gitattributes
+.gitignore
+README.md
