@@ -25,7 +25,8 @@
 ##' 
 ##' @examples
 ##' senamhiR()
-##' senamhiR(3, 000401, type = "CON", config = "M", 1971, 2000)
+##' senamhiR(3, "000401", type = "CON", config = "M", 1971, 2000)
+##' senamhiR(3, c("000401", "000152", "000219"), type = "CON", config = "M", 1971, 2000)
 
 senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback = NULL, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                     overwrite = FALSE, append = FALSE, custom = FALSE) {

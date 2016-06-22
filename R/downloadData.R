@@ -2,7 +2,7 @@
 ##'
 ##' @description Download Peruvian historical climate data from the Senamhi web portal.
 ##'
-##' @param station numerical; the number of the station id number to process.
+##' @param station character; the number of the station id number to process.
 ##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
 ##' @param config character; defines if the station is (M)eterological (1/2) or (H)ydrological. Must be "M", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
@@ -20,7 +20,7 @@
 ##' 
 ##' @examples
 ##' downloadData()
-##' downloadData(000401, type = "CON", config = "M", 1971, 2000)
+##' downloadData("000401", type = "CON", config = "M", 1971, 2000)
 
 downloadData <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, overwrite = FALSE) {
 

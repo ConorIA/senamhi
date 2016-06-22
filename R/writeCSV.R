@@ -2,7 +2,7 @@
 ##'
 ##' @description Compile as CSV file of Peruvian historical climate data from the Senamhi web portal.
 ##'
-##' @param station numerical; the number of the station id number to process.
+##' @param station character; the number of the station id number to process.
 ##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
 ##' @param config character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".
 ##' @param startYear numerical; the first year to process.
@@ -23,7 +23,7 @@
 ##'
 ##' @examples
 ##' writeCSV()
-##' writeCSV(000401, type = "CON", config = "M", 1971, 2000, 1, 12)
+##' writeCSV("000401", type = "CON", config = "M", 1971, 2000, 1, 12)
 
 writeCSV <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
                             overwrite = FALSE, append = FALSE, custom = FALSE) {
@@ -94,7 +94,7 @@ writeCSV <- function(station, type = "z", config = "z", startYear, endYear, star
       if (type == "SUT") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humidity (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", "Nivel Medio (m)")
     } else {
       if (type == "CON") colnames <- c("Fecha", "Tmax (°C)", "Tmin (°C)", "TBS07 (°C)", "TBS13 (°C)", "TBS19 (°C)", "TBH07 (°C)", "TBH13 (°C)", "TBH19 (°C)", "Prec07 (mm)", "Prec19 (mm)", "Direccion del Viento", "Velocidad del Viento (m/s)")
-      if (type == "SUT" | type == "SIA") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humedad (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento")
+      if (type == "SUT" | type == "SIA" | type == "DAV") colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humedad (%)", "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento")
     }
   }
 

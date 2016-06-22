@@ -7,7 +7,7 @@
 guessPeriod(station, automatic = TRUE, overwrite = FALSE)
 }
 \arguments{
-\item{station}{numerical; the number of the station id number to process.}
+\item{station}{character; the number of the station id number to process.}
 
 \item{automatic}{logical; if set to true (default), the script will attempt to guess the startYear and endYear values.}
 
@@ -21,7 +21,7 @@ Query the available data for a given station from the Senamhi web portal.
 }
 \examples{
 guessPeriod()
-guessPeriod(000401)
+guessPeriod("000401")
 }
 \author{
 Conor I. Anderson

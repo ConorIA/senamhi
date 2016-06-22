@@ -9,7 +9,7 @@ writeCSV(station, type = "z", config = "z", startYear, endYear,
   custom = FALSE)
 }
 \arguments{
-\item{station}{numerical; the number of the station id number to process.}
+\item{station}{character; the number of the station id number to process.}
 
 \item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
 
@@ -37,7 +37,7 @@ Compile as CSV file of Peruvian historical climate data from the Senamhi web por
 }
 \examples{
 writeCSV()
-writeCSV(000401, type = "CON", config = "M", 1971, 2000, 1, 12)
+writeCSV("000401", type = "CON", config = "M", 1971, 2000, 1, 12)
 }
 \author{
 Conor I. Anderson

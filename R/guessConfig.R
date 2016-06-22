@@ -2,7 +2,7 @@
 ##'
 ##' @description Attempt to guess station characteristics.
 ##'
-##' @param station numerical; the number of the station id number to process.
+##' @param station character; the number of the station id number to process.
 ##' @param overwrite logical; if true, the script will overwrite downloaded files if they exist.
 ##'
 ##' @return vector

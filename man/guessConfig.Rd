@@ -7,7 +7,7 @@
 guessConfig(station, overwrite = FALSE)
 }
 \arguments{
-\item{station}{numerical; the number of the station id number to process.}
+\item{station}{character; the number of the station id number to process.}
 
 \item{overwrite}{logical; if true, the script will overwrite downloaded files if they exist.}
 }

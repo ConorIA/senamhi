@@ -8,7 +8,7 @@ downloadData(station, type = "z", config = "z", startYear, endYear,
   startMonth = 1, endMonth = 12, overwrite = FALSE)
 }
 \arguments{
-\item{station}{numerical; the number of the station id number to process.}
+\item{station}{character; the number of the station id number to process.}
 
 \item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
 
@@ -34,7 +34,7 @@ Download Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
 downloadData()
-downloadData(000401, type = "CON", config = "M", 1971, 2000)
+downloadData("000401", type = "CON", config = "M", 1971, 2000)
 }
 \author{
 Conor I. Anderson
