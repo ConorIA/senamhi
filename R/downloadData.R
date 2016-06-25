@@ -9,7 +9,7 @@
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
 ##' @param endMonth numerical; the last month to process. Defaults to 12.
-##' @param overwrite logical; if true, the script will overwrite downloaded files if they exist.
+##' @param writeMode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
 ##'
 ##' @return None
 ##'
@@ -24,7 +24,7 @@
 ##' @examples
 ##' \dontrun{downloadData("000401", type = "CON", config = "M", 1971, 2000)}
 
-downloadData <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, overwrite = FALSE) {
+downloadData <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, writeMode = NULL) {
 
   ## Ask user to input variables
   if (missing(station))
@@ -62,7 +62,7 @@ downloadData <- function(station, type = "z", config = "z", startYear, endYear, 
   on.exit(close(prog))
   for (i in 1:length(urlList)) {
     filename <- paste(station, "/", dates[i], ".html", sep = "")
-    downloadAction(url = urlList[i], filename, overwrite)
+    downloadAction(url = urlList[i], filename, writeMode)
     setTxtProgressBar(prog, value = i)
   }
 }

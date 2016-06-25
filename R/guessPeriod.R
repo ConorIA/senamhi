@@ -4,7 +4,7 @@
 ##'
 ##' @param station character; the number of the station id number to process.
 ##' @param automatic logical; if set to true (default), the script will attempt to guess the startYear and endYear values.
-##' @param overwrite logical; if true, the script will overwrite downloaded files if they exist.
+##' @param writeMode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
 ##'
 ##' @return data.frame
 ##'
@@ -17,7 +17,7 @@
 ##' @examples
 ##' \dontrun{guessPeriod("000401")}
 
-guessPeriod <- function(station, automatic = TRUE, overwrite = FALSE) {
+guessPeriod <- function(station, automatic = TRUE, writeMode = NULL) {
 
   ## Ask user to input variables
   if (missing(station))
@@ -37,7 +37,7 @@ guessPeriod <- function(station, automatic = TRUE, overwrite = FALSE) {
  ##Download the data
   print(paste0("Checking data at ", station, "."))
   filename <- paste(station, "/", "availableData.html", sep = "")
-  downloadAction(url, filename, overwrite)
+  downloadAction(url, filename, writeMode)
   
   table <- readHTMLTable(paste(station, "/", "availableData.html", sep = ""), as.data.frame = TRUE)
   table <- as.data.frame(table[3])

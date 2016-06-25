@@ -4,14 +4,14 @@
 \alias{guessPeriod}
 \title{Query available data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-guessPeriod(station, automatic = TRUE, overwrite = FALSE)
+guessPeriod(station, automatic = TRUE, writeMode = NULL)
 }
 \arguments{
 \item{station}{character; the number of the station id number to process.}
 
 \item{automatic}{logical; if set to true (default), the script will attempt to guess the startYear and endYear values.}
 
-\item{overwrite}{logical; if true, the script will overwrite downloaded files if they exist.}
+\item{writeMode}{character; if set to 'overwrite', the script will overwrite downloaded files if they exist.}
 }
 \value{
 data.frame

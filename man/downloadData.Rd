@@ -5,7 +5,7 @@
 \title{Download from the Peruvian National Hydrological and Meterological Service}
 \usage{
 downloadData(station, type = "z", config = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, overwrite = FALSE)
+  startMonth = 1, endMonth = 12, writeMode = NULL)
 }
 \arguments{
 \item{station}{character; the number of the station id number to process.}
@@ -22,7 +22,7 @@ downloadData(station, type = "z", config = "z", startYear, endYear,
 
 \item{endMonth}{numerical; the last month to process. Defaults to 12.}
 
-\item{overwrite}{logical; if true, the script will overwrite downloaded files if they exist.}
+\item{writeMode}{character; if set to 'overwrite', the script will overwrite downloaded files if they exist.}
 }
 \value{
 None

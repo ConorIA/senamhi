@@ -3,7 +3,7 @@
 ##' @description Attempt to guess station characteristics.
 ##'
 ##' @param station character; the number of the station id number to process.
-##' @param overwrite logical; if true, the script will overwrite downloaded files if they exist.
+##' @param writeMode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
 ##'
 ##' @return vector
 ##'
@@ -16,7 +16,7 @@
 ##' @examples
 ##' \dontrun{guessConfig("000401")}
 
-guessConfig <- function(station, overwrite = FALSE) {
+guessConfig <- function(station, writeMode = NULL) {
 
   ## Ask user to input variables
   if (missing(station))
@@ -36,7 +36,7 @@ guessConfig <- function(station, overwrite = FALSE) {
   ##Download the data
   print(paste0("Checking station characteristics for ", station, "."))
   filename <- paste(station, "/", "stationInfo.html", sep = "")
-  downloadAction(url, filename, overwrite)
+  downloadAction(url, filename, writeMode)
   stationData <- htmlTreeParse(paste(station, "/", "stationInfo.html", sep = ""))
   stationData <- stationData[3]
 
@@ -96,4 +96,6 @@ guessConfig <- function(station, overwrite = FALSE) {
     }
   }
   result <- c(type, config)
+  if (result[1] == "ERROR" | result[2] == "ERROR") stop("We could not determine the configuration of this station.")
+  return(result)
 }

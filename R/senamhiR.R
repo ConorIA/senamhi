@@ -13,9 +13,7 @@
 ##' @param endYear numerical; the last year to process.
 ##' @param startMonth numerical; the first month to process. Defaults to 1.
 ##' @param endMonth numerical; the last month to process. Defaults to 12.
-##' @param overwrite logical; if true, the script will overwrite downloaded files and compiled csv files if they exist.
-##' @param append logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.
-##' @param custom logical; if true, the script will provide the opportunity to manually enter column headers.
+##' @param writeMode character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.
 ##'
 ##' @return None
 ##'
@@ -27,8 +25,7 @@
 ##' \dontrun{senamhiR(3, "000401", startYear = 1998, endYear = 2015)}
 ##' \dontrun{senamhiR(3, c("000401", "000152", "000219"), fallback = c(1961,1990))}
 
-senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback = NULL, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12,
-                    overwrite = FALSE, append = FALSE, custom = FALSE) {
+senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback = NULL, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, writeMode = NULL) {
 
     if (missing(tasks)) {
       print("Please choose the series of command you wish to run.")
@@ -39,17 +36,18 @@ senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallbac
     
     ##Add a work-around to download multiple stations
     if (length(station) > 1) {
-      lapply(station, senamhiR, tasks = tasks, automatic, dataAvail = dataAvail, fallback = fallback, type = type, config = config, startYear = startYear, endYear = endYear, startMonth = startMonth, endMonth = endMonth,
-                                    overwrite = overwrite, append = append, custom = custom)
+      lapply(station, senamhiR, tasks, automatic, dataAvail, fallback, type, config, startYear, endYear, startMonth, endMonth, writeMode)
       return("Batch jobs completed")
     }
     
     ## Input Station Characteristics for single stations
     if (automatic == TRUE) {
-      guess <- guessConfig(station, overwrite)
-      type <- guess[1]
-      config <- guess[2]
-      if (guess[1] == "ERROR" | guess[2] == "ERROR") print("Something went wrong. Please enter manually")
+      guess <- try(guessConfig(station, writeMode))
+      if (!inherits(guess, "try-error")) {
+        type <- guess[1]
+        config <- guess[2]
+      }
+      else print("Something went wrong. Please enter manually")
     }
     while (!(type == "CON" | type == "DAV" | type == "SIA" | type == "SUT"))
       type <- readline(prompt = "Must be one of CON, DAV, SUT, or SIA: ")
@@ -58,7 +56,7 @@ senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallbac
 
     ## Choose Data Range
     if (dataAvail == TRUE & (missing(startYear) | missing(endYear))) {
-      result <- try(guessPeriod(station, automatic, overwrite))
+      result <- try(guessPeriod(station, automatic, writeMode))
       if (!inherits(result, "try-error")) {
         if (automatic == TRUE) {
           startYear <- result[1]
@@ -84,11 +82,11 @@ senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallbac
       downloadData(station, type, config, startYear, endYear, startMonth, endMonth)
     } else {
       if (tasks == 2) {
-        writeCSV(station, type, config, startYear, endYear, startMonth, endMonth)
+        writeCSV(station, type, config, startYear, endYear, startMonth, endMonth, writeMode)
       } else {
         if (tasks == 3) {
-          downloadData(station, type, config, startYear, endYear, startMonth, endMonth, overwrite)
-          writeCSV(station, type, config, startYear, endYear, startMonth, endMonth, overwrite, custom, append)
+          downloadData(station, type, config, startYear, endYear, startMonth, endMonth, writeMode)
+          writeCSV(station, type, config, startYear, endYear, startMonth, endMonth, writeMode)
         } else
           print("Please choose an option between 1 and 3")
       }

@@ -6,8 +6,7 @@
 \usage{
 senamhiR(tasks, station, automatic = TRUE, dataAvail = TRUE,
   fallback = NULL, type = "z", config = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, overwrite = FALSE, append = FALSE,
-  custom = FALSE)
+  startMonth = 1, endMonth = 12, writeMode = NULL)
 }
 \arguments{
 \item{tasks}{numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.}
@@ -32,11 +31,7 @@ senamhiR(tasks, station, automatic = TRUE, dataAvail = TRUE,
 
 \item{endMonth}{numerical; the last month to process. Defaults to 12.}
 
-\item{overwrite}{logical; if true, the script will overwrite downloaded files and compiled csv files if they exist.}
-
-\item{append}{logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.}
-
-\item{custom}{logical; if true, the script will provide the opportunity to manually enter column headers.}
+\item{writeMode}{character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.}
 }
 \value{
 None

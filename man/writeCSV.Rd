@@ -5,8 +5,7 @@
 \title{Compile data from the Peruvian National Hydrological and Meterological Service}
 \usage{
 writeCSV(station, type = "z", config = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, overwrite = FALSE, append = FALSE,
-  custom = FALSE)
+  startMonth = 1, endMonth = 12, writeMode = NULL)
 }
 \arguments{
 \item{station}{character; the number of the station id number to process.}
@@ -23,17 +22,13 @@ writeCSV(station, type = "z", config = "z", startYear, endYear,
 
 \item{endMonth}{numerical; the last month to process. Defaults to 12.}
 
-\item{overwrite}{logical; if true, the script will overwrite the compiled csv file if it exists.}
-
-\item{append}{logical; if true, the script will append the data to an exisiting file, otherwise it will overwrite.}
-
-\item{custom}{logical; if true, the script will provide the opportunity to manually enter column headers.}
+\item{writeMode}{character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.}
 }
 \value{
 None
 }
 \description{
-Compile as CSV file of Peruvian historical climate data from the Senamhi web portal.
+Compile a CSV file of Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
 \dontrun{writeCSV("000401", type = "CON", config = "M", 1971, 2000, 1, 12)}

@@ -12,7 +12,7 @@
 catalogue
 }
 \description{
-A data.frame containing the identifiers, names, and other characteristics of climate and hydro stations in Peru
+A \code{data.frame} containing the identifiers, names, and other characteristics of climate and hydro stations in Peru
 }
 \keyword{datasets}
 

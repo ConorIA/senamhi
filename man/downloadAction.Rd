@@ -4,14 +4,14 @@
 \alias{downloadAction}
 \title{Curl helper}
 \usage{
-downloadAction(url, filename, overwrite = FALSE)
+downloadAction(url, filename, writeMode = NULL)
 }
 \arguments{
 \item{url}{character; address to be downloaded.}
 
 \item{filename}{character; name to save the downloaded file under.}
 
-\item{overwrite}{logical; if true, the script will overwrite file if it exists.}
+\item{writeMode}{character; if set to 'overwrite' the script will overwrite file if it exists.}
 }
 \value{
 None
