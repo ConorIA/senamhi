@@ -16,7 +16,7 @@
 ##' @examples
 ##' \dontrun{guessConfig("000401")}
 
-guessConfig <- function(station, writeMode = NULL) {
+guessConfig <- function(station, writeMode = "z") {
 
   ## Ask user to input variables
   if (missing(station))

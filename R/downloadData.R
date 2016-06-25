@@ -24,7 +24,7 @@
 ##' @examples
 ##' \dontrun{downloadData("000401", type = "CON", config = "M", 1971, 2000)}
 
-downloadData <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, writeMode = NULL) {
+downloadData <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, writeMode = "z") {
 
   ## Ask user to input variables
   if (missing(station))

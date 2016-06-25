@@ -24,7 +24,7 @@
 ##' \dontrun{writeCSV("000401", type = "CON", config = "M", 1971, 2000, 1, 12)}
 
 writeCSV <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1,        
-                           endMonth = 12, writeMode = NULL) {
+                           endMonth = 12, writeMode = "z") {
   
   stationName <- catalogue$StationID==station
   stationName <- as.character(catalogue$Station[stationName])

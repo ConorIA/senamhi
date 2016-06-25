@@ -17,7 +17,7 @@
 ##' @examples
 ##' \dontrun{guessPeriod("000401")}
 
-guessPeriod <- function(station, automatic = TRUE, writeMode = NULL) {
+guessPeriod <- function(station, automatic = TRUE, writeMode = "z") {
 
   ## Ask user to input variables
   if (missing(station))

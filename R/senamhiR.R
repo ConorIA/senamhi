@@ -25,7 +25,7 @@
 ##' \dontrun{senamhiR(3, "000401", startYear = 1998, endYear = 2015)}
 ##' \dontrun{senamhiR(3, c("000401", "000152", "000219"), fallback = c(1961,1990))}
 
-senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback = NULL, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, writeMode = NULL) {
+senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallback = NULL, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, writeMode = "z") {
 
     if (missing(tasks)) {
       print("Please choose the series of command you wish to run.")
@@ -36,7 +36,7 @@ senamhiR <- function(tasks, station, automatic = TRUE, dataAvail = TRUE, fallbac
     
     ##Add a work-around to download multiple stations
     if (length(station) > 1) {
-      lapply(station, senamhiR, tasks, automatic, dataAvail, fallback, type, config, startYear, endYear, startMonth, endMonth, writeMode)
+      lapply(station, senamhiR, tasks = tasks, automatic = automatic, dataAvail = dataAvail, fallback = fallback, type = type, config = config, startYear = startYear, endYear = endYear, startMonth = startMonth, endMonth = endMonth, writeMode = writeMode)
       return("Batch jobs completed")
     }
     
