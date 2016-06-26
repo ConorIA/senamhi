@@ -6,7 +6,7 @@
 \usage{
 senamhiR(tasks, station, automatic = TRUE, dataAvail = TRUE,
   fallback = NULL, type = "z", config = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, writeMode = NULL)
+  startMonth = 1, endMonth = 12, writeMode = "z")
 }
 \arguments{
 \item{tasks}{numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.}

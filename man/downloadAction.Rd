@@ -4,7 +4,7 @@
 \alias{downloadAction}
 \title{Curl helper}
 \usage{
-downloadAction(url, filename, writeMode = NULL)
+downloadAction(url, filename, writeMode = "z")
 }
 \arguments{
 \item{url}{character; address to be downloaded.}

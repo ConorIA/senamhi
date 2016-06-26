@@ -5,7 +5,7 @@
 \title{Compile data from the Peruvian National Hydrological and Meterological Service}
 \usage{
 writeCSV(station, type = "z", config = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, writeMode = NULL)
+  startMonth = 1, endMonth = 12, writeMode = "z")
 }
 \arguments{
 \item{station}{character; the number of the station id number to process.}

@@ -86,10 +86,10 @@ writeCSV <- function(station, type = "z", config = "z", startYear, endYear, star
   numberOfDates <- as.Date(endDate) - as.Date(startDate)
   numberOfDates <- as.numeric(numberOfDates) + 1
   datecolumn <- seq(as.Date(startDate), by = "day", length.out = numberOfDates)
-  DF <- matrix(nrow = length(datecolumn), ncol = length(colnames))
-  DF <- as.data.frame(DF)
-  names(DF) <- colnames
-  DF$Fecha <- datecolumn
+  dat <- matrix(nrow = length(datecolumn), ncol = length(colnames))
+  dat <- as.data.frame(dat)
+  names(dat) <- colnames
+  dat$Fecha <- datecolumn
   
   ## Loop through files and input data to table
   row <- 1
@@ -108,7 +108,7 @@ writeCSV <- function(station, type = "z", config = "z", startYear, endYear, star
           datadate <- strsplit(datadate, split = "-")[[1]]
           datadate <- as.numeric(datadate[1])
           thisrow <- row + datadate - 1
-          DF[thisrow, 2:length(DF)] <- table[j,2:ncol(table)]
+          dat[thisrow, 2:length(dat)] <- table[j,2:ncol(table)]
           j <- j+1
         }
       }
@@ -117,16 +117,16 @@ writeCSV <- function(station, type = "z", config = "z", startYear, endYear, star
         if (ncol(table) != length(colnames)) {
           ## Assuming that this only happens with precipitation for now.
           table <- table[-1,]
-          DF$`Prec07 (mm)`[row:(row+nrow(table)-1)] <- table[,2]
-          DF$`Prec19 (mm)`[row:(row+nrow(table)-1)] <- table[,3]
+          dat$`Prec07 (mm)`[row:(row+nrow(table)-1)] <- table[,2]
+          dat$`Prec19 (mm)`[row:(row+nrow(table)-1)] <- table[,3]
         } else {
-          DF[row:(row+numberOfDays(date)-1),2:length(DF)] <- subset(table[2:length(table[, 1]), 2:length(table)])
+          dat[row:(row+numberOfDays(date)-1),2:length(dat)] <- subset(table[2:length(table[, 1]), 2:length(table)])
         }
       }
     } 
     row <- row+numberOfDays(date)
     ++i
   }
-  if (writeMode == "append") write.table(data, filename, append = TRUE, sep = ",", col.names = FALSE,row.names = FALSE)
-  else write.table(DF, filename, sep = ",", row.names = FALSE)
+  if (writeMode == "append") write.table(dat, filename, append = TRUE, sep = ",", col.names = FALSE,row.names = FALSE)
+  else write.table(dat, filename, sep = ",", row.names = FALSE)
 }

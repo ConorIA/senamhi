@@ -4,7 +4,7 @@
 \alias{guessConfig}
 \title{Guess station characteristics}
 \usage{
-guessConfig(station, writeMode = NULL)
+guessConfig(station, writeMode = "z")
 }
 \arguments{
 \item{station}{character; the number of the station id number to process.}

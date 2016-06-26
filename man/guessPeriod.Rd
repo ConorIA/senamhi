@@ -4,7 +4,7 @@
 \alias{guessPeriod}
 \title{Query available data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-guessPeriod(station, automatic = TRUE, writeMode = NULL)
+guessPeriod(station, automatic = TRUE, writeMode = "z")
 }
 \arguments{
 \item{station}{character; the number of the station id number to process.}
