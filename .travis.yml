@@ -11,4 +11,4 @@ warnings_are_errors: false
 sudo: false
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+  - Rscript -e 'covr::codecov()'
