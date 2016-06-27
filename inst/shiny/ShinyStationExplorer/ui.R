@@ -1,7 +1,6 @@
 ## Adapted from http://shiny.rstudio.com/gallery/basic-datatable.html
 
 library(shiny)
-library(senamhiR)
 
 # Define the overall UI
 shinyUI(
@@ -14,19 +13,19 @@ shinyUI(
              selectInput("config",
                          "Configuration:",
                          c("All",
-                           unique(as.character(senamhiR:::catalogue$Configuration))))
+                           unique(as.character(catalogue$Configuration))))
       ),
       column(4,
              selectInput("type",
                          "Type:",
                          c("All",
-                           unique(as.character(senamhiR:::catalogue$Type))))
+                           unique(as.character(catalogue$Type))))
       ),
       column(4,
              selectInput("reg",
                          "Region:",
                          c("All",
-                           unique(as.character(senamhiR:::catalogue$Region))))
+                           unique(as.character(catalogue$Region))))
       )
     ),
     # Create a new row for the table.
