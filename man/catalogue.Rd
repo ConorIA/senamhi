@@ -3,8 +3,8 @@
 \docType{data}
 \name{catalogue}
 \alias{catalogue}
-\title{Catalogue of Senamhi stations.}
-\format{An object of class \code{data.frame} with 1765 rows and 9 columns.}
+\title{Catalogue of Senamhi stations}
+\format{An object of class \code{data.frame} with 1770 rows and 12 columns.}
 \source{
 \url{http://www.senamhi.gob.pe/}
 }
@@ -12,7 +12,7 @@
 catalogue
 }
 \description{
-A \code{data.frame} containing the identifiers, names, and other characteristics of climate and hydro stations in Peru
+A \code{data.frame} containing the identifiers, names, and other characteristics of climate and hydro stations in Peru.
 }
 \keyword{datasets}
 

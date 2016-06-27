@@ -22,4 +22,5 @@ A helper function to execute download actions using curl.
 \author{
 Conor I. Anderson
 }
+\keyword{internal}
 

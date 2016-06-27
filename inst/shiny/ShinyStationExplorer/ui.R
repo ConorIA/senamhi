@@ -9,19 +9,25 @@ shinyUI(
     
     # Create a new Row in the UI for selectInputs
     fluidRow(
-      column(4,
+      column(2,
              selectInput("config",
                          "Configuration:",
                          c("All",
                            unique(as.character(catalogue$Configuration))))
       ),
-      column(4,
+      column(2,
              selectInput("type",
                          "Type:",
                          c("All",
                            unique(as.character(catalogue$Type))))
       ),
-      column(4,
+      column(2,
+             selectInput("sta",
+                         "Station Status:",
+                         c("All",
+                           unique(as.character(catalogue$`Station Status`))))
+      ),
+      column(2,
              selectInput("reg",
                          "Region:",
                          c("All",
@@ -30,7 +36,7 @@ shinyUI(
     ),
     # Create a new row for the table.
     fluidRow(
-      DT::dataTableOutput("table")
-    )
+      DT::dataTableOutput("table")),
+    fluidRow(br(em(comment(catalogue))))
   )
 )

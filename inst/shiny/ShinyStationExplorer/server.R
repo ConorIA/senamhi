@@ -14,6 +14,9 @@ shinyServer(function(input, output) {
     if (input$type != "All") {
       data <- data[data$Type == input$type,]
     }
+    if (input$sta != "All") {
+      data <- data[data$`Station Status` == input$sta,]
+    }
     if (input$reg != "All") {
       data <- data[data$Region == input$reg,]
     }

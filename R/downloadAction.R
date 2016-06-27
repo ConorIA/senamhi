@@ -7,12 +7,12 @@
 ##' @param writeMode character; if set to 'overwrite' the script will overwrite file if it exists.
 ##'
 ##' @return None
+##' 
+##' @keywords internal
 ##'
 ##' @author Conor I. Anderson
 ##'
 ##' @importFrom curl curl_download
-##'
-##' @export
 
 downloadAction <- function(url, filename, writeMode = "z") {
   if (!file.exists(filename) | writeMode == "overwrite" | file.info(filename)$size == 0) {
