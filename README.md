@@ -35,5 +35,5 @@ stations <- catalogue$StationID[index]
 ## Download and compile data from all station (using a period of 2000-2015 if automatic detection fails)
 senamhiR(3, stations, fallback = c(2000,2015))
 ## Sort those files into a folder called "TACNA"
-sortFiles(stations)
+lapply(stations, sortFiles)
 ```
