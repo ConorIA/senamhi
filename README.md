@@ -16,11 +16,11 @@ devtools::install_github("ConorIA/senamhiR")
 
 Included functions
 ------------------
-* senamhiR() ... A wrapper for the two following functions
-    * downloadData() ... Downloads data in HTML tables for a specific station and range of dates
-    * writeCSV() ... Generates a .csv file for use in R from the downloaded data
-* stationSearch() ... A function to search the stations in catalogue.rda by various criteria
-* stationExplorerGUI() ... a Shiny app to explore the catalogue of stations
+* `senamhiR()` ... A wrapper for the two following functions
+    * `downloadData()` ... Downloads data in HTML tables for a specific station and range of dates
+    * `writeCSV()` ... Generates a .csv file for use in R from the downloaded data
+* `stationSearch()` ... A function to search the stations in catalogue.rda by various criteria
+* `stationExplorerGUI()` ... a Shiny app to explore the catalogue of stations
 
 Example for downloading an entire region
 ------
