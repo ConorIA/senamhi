@@ -15,22 +15,16 @@
   vector <- seq(1, 25, by = 1)
   vector <- vector[-7]
   vector <- sprintf("%02d", vector)
-  urlList <- paste("http://www.senamhi.gob.pe/include_mapas/_map_data_hist03.php?drEsta=", vector, sep = "")
+  urlList <- paste0("http://www.senamhi.gob.pe/include_mapas/_map_data_hist03.php?drEsta=", vector)
   
-  if (!dir.exists("catalogue data")) {
-    check <- try(dir.create("catalogue data"))
-    if (inherits(check, "try-error")) {
-      stop("I couldn't write out the directory. Check your permissions.")
-    }
-  }
-  
-  Sys.setlocale('LC_ALL','C') 
+  Sys.setlocale(category = "LC_ALL", locale = "C")
   catalogue = NULL
+  dir <- tempdir()
+  
   for (i in 1:length(vector)) {
-    downloadAction(url = urlList[i], filename = paste("catalogue data/", vector[i], ".html", sep = ""))
-    data <- htmlTreeParse(paste("catalogue data/", vector[i], ".html", sep = ""))
-    data <- data[3]
-    data <- unlist(data)
+    .downloadAction(url = urlList[i], filename = paste0(dir, "/", vector[i], ".html"))
+    data <- htmlTreeParse(paste0(dir, "/", vector[i], ".html"))
+    data <- unlist(data[3])
     data <- data[21]
     data <- strsplit(data, "var ubica")[[1]]
     j <- 2
@@ -40,7 +34,8 @@
       ## There are a couple of cases where the station name is formatted with a spaced hyphen
       if (length(name) == 3) name <- c(paste(name[1:2], collapse=" - "), name[3])
       name <- gsub("'", '', name)
-      period <- try(guessPeriod(name[2]))
+      station <- as.character(name[2])
+      period <- try(.guessPeriod(station))
       if (!inherits(period, "try-error")) {
         start <- period[1]
         end <- period[2]
@@ -48,12 +43,17 @@
         start <- NA
         end <- NA
       }
-      unlink(name[2], recursive = TRUE)
-      row <- c(name, row[4:5], start, end, row[13], row[6:10])
+      config <- try(.guessConfig(station))
+      if (!inherits(config, "try-error")) {
+        type <- config[1]
+        config <- config[2]
+      } else {
+        type <- NA
+        config <- NA
+      }
+      row <- c(name, type, config, start, end, row[13], row[6:10])
       
       ## Commands to clean up the data
-      row <- gsub("Meteorol&oacute;gica", "Meteorologica", row)
-      row <- gsub("Hidrol&oacute;gica", "Hidrologica", row)
       row <- gsub("\303\221", 'N', row)
       row <- gsub("\321", 'N', row)
       row <- gsub("'", '', row)
@@ -61,9 +61,16 @@
       row <- gsub("));", '', row)
       row <- gsub("}\r\n}", '', row)
       row <- gsub("^\\s+|\\s+$", "", row)
+      # Set station status
       if (row[7] == "C" | row[7] == "P") row[7] <- "closed"
       if (row[7] == "F") row[7] <- "working"
-      
+      # Convert lat/long to decimal degrees
+      latitude <- as.numeric(unlist(strsplit(row[8], split = " ")))
+      latitude <- -(latitude[1] + (latitude[2]/60) + (latitude[3]/3600))
+      row[8] <- latitude
+      longitude <- as.numeric(unlist(strsplit(row[9], split = " ")))
+      longitude <- -(longitude[1] + (longitude[2]/60) + (longitude[3]/3600))
+      row[9] <- longitude
       # Add it to the catalogue
       catalogue <- rbind(catalogue, row)
       j <- j+1
@@ -73,6 +80,8 @@
   }
   rownames(catalogue) <- NULL
   catalogue <- as.data.frame(catalogue, stringsAsFactors = FALSE)
+  catalogue$Latitude <- as.numeric(catalogue$Latitude)
+  catalogue$Longitude <- as.numeric(catalogue$Longitude)
   comment(catalogue) <- "Note: The Senamhi database detailing available historical information has not been updated since 2010, as such, any station with data available until 2010 is assumed to be current, and has been marked as having data until 2015. Actual data availability may vary for these stations. Especially for closed stations."
   save(catalogue, file = "catalogue.rda")
   return("Catalogue saved as catalogue.rda")

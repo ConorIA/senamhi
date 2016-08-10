@@ -2,58 +2,52 @@
 ##'
 ##' @description Attempt to guess station characteristics.
 ##'
-##' @param station character; the number of the station id number to process.
+##' @param station character; the station id number to process.
 ##' @param writeMode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
 ##'
 ##' @return vector
 ##'
+##' @keywords internal
+##'
 ##' @author Conor I. Anderson
-##'
+##' 
 ##' @importFrom XML htmlTreeParse
-##'
-##' @export
 ##'
 ##' @examples
 ##' \dontrun{guessConfig("000401")}
 
-guessConfig <- function(station, writeMode = "z") {
+.guessConfig <- function(station, writeMode = "z") {
 
   ## Ask user to input variables
   if (missing(station))
     station <- readline(prompt = "Enter station number: ")
 
   ##genURL
-  url <- paste("http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo.php?estaciones=",
-    station, sep = "")
-
-  if (!dir.exists(as.character(station))) {
-    check <- try(dir.create(as.character(station)))
-    if (inherits(check, "try-error")) {
-      stop("I couldn't write out the directory. Check your permissions.")
-    }
-  }
+  url <- paste0("http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo.php?estaciones=",
+    station)
 
   ##Download the data
   print(paste0("Checking station characteristics for ", station, "."))
-  filename <- paste(station, "/", "stationInfo.html", sep = "")
-  downloadAction(url, filename, writeMode)
-  stationData <- htmlTreeParse(paste(station, "/", "stationInfo.html", sep = ""))
-  stationData <- stationData[3]
+  filename <- tempfile()
+  .downloadAction(url, filename, writeMode)
+  stationData <- htmlTreeParse(filename)
+  stationData <- unlist(stationData[3])
+  stationData <- stationData[grep("_dat_esta_tipo02.php", stationData)]
 
   ##Check config
-  test <- grep("Meteorol\u00F3gica 1", stationData)
+  test <- grep("t_e=M1", stationData)
   if (length(test) > 0) {
     config <- "M1"
   } else {
-    test <- grep("Meteorol\u00F3gica 2", stationData)
+    test <- grep("t_e=M2", stationData)
     if (length(test) > 0) {
       config <- "M2"
     } else {
-      test <- grep("Meteorol\u00F3gica", stationData)
+      test <- grep("t_e=M", stationData)
       if (length(test) > 0) {
         config <- "M"
       } else {
-        test <- grep("Hidrol\u00F3gica", stationData)
+        test <- grep("t_e=H", stationData)
         if (length(test) > 0) {
           config <- "H"
         } else {
@@ -64,29 +58,19 @@ guessConfig <- function(station, writeMode = "z") {
   }
 
   ##Check station type
-  test <- grep("Convencional", stationData)
+  test <- grep("tipo=CON", stationData)
   if (length(test) > 0) {
     type <- "CON"
   } else {
-    test <- grep("Automtica", stationData)
-    if (length(test) > 0) {
-      type <- "AUT"
-    } else {
-      type <- "ERROR"
-    }
-  }
-
-  if (type == "AUT") {
-    print("Automatic station detected. Trying known types.")
-    test <- grep("DAV", stationData)
+    test <- grep("tipo=DAV", stationData)
     if (length(test) > 0) {
       type <- "DAV"
     } else {
-      test <- grep("SUT", stationData)
+      test <- grep("tipo=SUT", stationData)
       if (length(test) > 0) {
         type <- "SUT"
       } else {
-        test <- grep("SIA", stationData)
+        test <- grep("tipo=SIA", stationData)
         if (length(test) > 0) {
           type <- "SIA"
         } else {

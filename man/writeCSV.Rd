@@ -4,23 +4,14 @@
 \alias{writeCSV}
 \title{Compile data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-writeCSV(station, type = "z", config = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, writeMode = "z")
+writeCSV(station, year, month = 1:12, writeMode = "z")
 }
 \arguments{
-\item{station}{character; the number of the station id number to process.}
+\item{station}{character; the station id number to process.}
 
-\item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
+\item{year}{numerical; a vector of years to process.}
 
-\item{config}{character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M2" or "H".}
-
-\item{startYear}{numerical; the first year to process.}
-
-\item{endYear}{numerical; the last year to process.}
-
-\item{startMonth}{numerical; the first month to process. Defaults to 1.}
-
-\item{endMonth}{numerical; the last month to process. Defaults to 12.}
+\item{month}{numerical; a vector of months to process. Defaults to 1:12.}
 
 \item{writeMode}{character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.}
 }
@@ -31,7 +22,7 @@ None
 Compile a CSV file of Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-\dontrun{writeCSV("000401", type = "CON", config = "M", 1971, 2000, 1, 12)}
+\dontrun{writeCSV("000401", 2000:2005, 1:12)}
 }
 \author{
 Conor I. Anderson

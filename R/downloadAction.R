@@ -14,7 +14,7 @@
 ##'
 ##' @importFrom curl curl_download
 
-downloadAction <- function(url, filename, writeMode = "z") {
+.downloadAction <- function(url, filename, writeMode = "z") {
   if (!file.exists(filename) | writeMode == "overwrite" | file.info(filename)$size == 0) {
     download <- try(curl_download(url, filename))
     if (inherits(download, "try-error")) {

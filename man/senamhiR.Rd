@@ -2,45 +2,28 @@
 % Please edit documentation in R/senamhiR.R
 \name{senamhiR}
 \alias{senamhiR}
-\title{A wrapper function to download and compile data from the Peruvian National Hydrological and Meterological Service}
+\title{Download and/or compile data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-senamhiR(tasks, station, automatic = TRUE, dataAvail = TRUE,
-  fallback = NULL, type = "z", config = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, writeMode = "z")
+senamhiR(tasks, station, year, month = 1:12, fallback, writeMode = "z")
 }
 \arguments{
 \item{tasks}{numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.}
 
-\item{station}{character; the number of the station id number to process. Can also be a vector of station ids.}
+\item{station}{character; the station id number to process. Can also be a vector of station ids.}
 
-\item{automatic}{logical; if set to true (default), the script will attempt to guess the type and config values as well as startYear and endYear}
+\item{year}{numerical; a vector of years to process. Defaults to the full known range.}
 
-\item{dataAvail}{logical; if set to true (default), the script will either automatically attempt to choose start and end datas, or return a(n outdated) table of the data available for your station.}
+\item{month}{numerical; a vector of months to process. Defaults to 1:12.}
 
-\item{fallback}{vector; if dataAvail is used, this vector will provide a fallback start and end year to download if the auto find fails.}
-
-\item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
-
-\item{config}{character; defines if the station is (M)eterological (2) or (H)ydrological. Must be "M", "M1", "M2" or "H".}
-
-\item{startYear}{numerical; the first year to process.}
-
-\item{endYear}{numerical; the last year to process.}
-
-\item{startMonth}{numerical; the first month to process. Defaults to 1.}
-
-\item{endMonth}{numerical; the last month to process. Defaults to 12.}
+\item{fallback}{vector; if no year is specified, and the period of available data is unknown, this vector will provide a fallback start and end year to download if the auto find fails.}
 
 \item{writeMode}{character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.}
-}
-\value{
-None
 }
 \description{
 Download and/or compile Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-\dontrun{senamhiR(3, "000401", startYear = 1998, endYear = 2015)}
+\dontrun{senamhiR(3, "000401", 1998:2015)}
 \dontrun{senamhiR(3, c("000401", "000152", "000219"), fallback = c(1961,1990))}
 }
 \author{

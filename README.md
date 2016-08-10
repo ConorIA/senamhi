@@ -16,24 +16,18 @@ devtools::install_github("ConorIA/senamhiR")
 
 Included functions
 ------------------
-* senamhiR() ... A wrapper for most of the funtions below
-* downloadData() ... Downloads data in HTML tables for a specific station and range of dates
-* downloadAction() ... A helper to download files in the various functions
-* writeCSV() ... Generates a .csv file for use in R from the downloaded data
-* guessPeriod() ... Attempts to determine the availability of data for a given station
-* guessConfig() ... Attempts to determine station class and type
-* generateCatalogue() ... Generates a catalogue of stations from the Senamhi Google Maps (this information is included in sysdata.rda)
+* senamhiR() ... A wrapper for the two following functions
+    * downloadData() ... Downloads data in HTML tables for a specific station and range of dates
+    * writeCSV() ... Generates a .csv file for use in R from the downloaded data
+* stationSearch() ... A function to search the stations in catalogue.rda by various criteria
 * stationExplorerGUI() ... a Shiny app to explore the catalogue of stations
-* sortFiles() ... sorts files into folders by region. Useful if downloading in bulk
 
 Example for downloading an entire region
 ------
 ``` {r, eval = FALSE}
 ## Identify all stations in the Tacna Region
-index <- catalogue$Region == "TACNA"
-stations <- catalogue$StationID[index]
+search <- stationSearch(region = "Tacna")
+stations <- search$StationID
 ## Download and compile data from all station (using a period of 2000-2015 if automatic detection fails)
 senamhiR(3, stations, fallback = c(2000,2015))
-## Sort those files into a folder called "TACNA"
-lapply(stations, sortFiles)
 ```

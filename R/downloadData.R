@@ -2,13 +2,9 @@
 ##'
 ##' @description Download Peruvian historical climate data from the Senamhi web portal.
 ##'
-##' @param station character; the number of the station id number to process.
-##' @param type character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".
-##' @param config character; defines if the station is (M)eterological (1/2) or (H)ydrological. Must be "M", "M2" or "H".
-##' @param startYear numerical; the first year to process.
-##' @param endYear numerical; the last year to process.
-##' @param startMonth numerical; the first month to process. Defaults to 1.
-##' @param endMonth numerical; the last month to process. Defaults to 12.
+##' @param station character; the station id number to process.
+##' @param year numerical; a vector of years to process.
+##' @param month numerical; a vector of months to process. Defaults to 1:12.
 ##' @param writeMode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
 ##'
 ##' @return None
@@ -22,34 +18,26 @@
 ##' @export
 ##' 
 ##' @examples
-##' \dontrun{downloadData("000401", type = "CON", config = "M", 1971, 2000)}
+##' \dontrun{downloadData("000401", 1971:2000)}
 
-downloadData <- function(station, type = "z", config = "z", startYear, endYear, startMonth = 1, endMonth = 12, writeMode = "z") {
+downloadData <- function(station, year, month = 1:12, writeMode = "z") {
 
-  ## Ask user to input variables
-  if (missing(station))
-    station <- readline(prompt = "Enter station number: ")
-  while (!(type == "CON" | type == "DAV" | type == "SIA" | type == "SUT"))
-    type <- readline(prompt = "Must be one of CON, DAV, SUT, or SIA: ")
-  while (!(config == "M" | config == "M1" | config == "M2" | config == "H"))
-    config <- readline(prompt = "Must be one of M, M1, M2 or H: ")
-  if (missing(startYear))
-    startYear <- as.integer(readline(prompt = "Enter start year: "))
-  if (missing(endYear))
-    endYear <- as.integer(readline(prompt = "Enter end year: "))
-
-  #GenDates
-  years <- seq(startYear, endYear)
-  months <- seq(startMonth, endMonth)
-  months <- sprintf("%02d", months)
-  dates <- apply(expand.grid(months, years), 1, function(x) paste(x[2], x[1], sep = ""))
+  stationData <- catalogue[catalogue$StationID==station,]
+  stationName <- stationData$Station
+  region <- stationData$Region
+  type = stationData$Type
+  config = stationData$Configuration
+  
+  month <- sprintf("%02d", month)
+  dates <- apply(expand.grid(month, year), 1, function(x) paste0(x[2], x[1]))
 
   ##genURLs
-  urlList <- paste("http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo02.php?estaciones=",
-    station, "&tipo=", type, "&CBOFiltro=", dates, "&t_e=", config, sep = "")
-
-  if (!dir.exists(as.character(station))) {
-    check <- try(dir.create(as.character(station)))
+  urlList <- paste0("http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo02.php?estaciones=",
+    station, "&tipo=", type, "&CBOFiltro=", dates, "&t_e=", config)
+  
+  foldername <- paste0(region, "/HTML/", as.character(station), " - ", stationName)
+  if (!dir.exists(foldername)) {
+    check <- try(dir.create(foldername, recursive = TRUE))
     if (inherits(check, "try-error")) {
       stop("I couldn't write out the directory. Check your permissions.")
     }
@@ -61,8 +49,8 @@ downloadData <- function(station, type = "z", config = "z", startYear, endYear, 
   prog <- txtProgressBar(min = 0, max = length(urlList), style = 3)
   on.exit(close(prog))
   for (i in 1:length(urlList)) {
-    filename <- paste(station, "/", dates[i], ".html", sep = "")
-    downloadAction(url = urlList[i], filename, writeMode)
+    filename <- paste0(foldername, "/", dates[i], ".html")
+    .downloadAction(url = urlList[i], filename, writeMode)
     setTxtProgressBar(prog, value = i)
   }
 }

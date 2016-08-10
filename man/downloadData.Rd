@@ -4,23 +4,14 @@
 \alias{downloadData}
 \title{Download from the Peruvian National Hydrological and Meterological Service}
 \usage{
-downloadData(station, type = "z", config = "z", startYear, endYear,
-  startMonth = 1, endMonth = 12, writeMode = "z")
+downloadData(station, year, month = 1:12, writeMode = "z")
 }
 \arguments{
-\item{station}{character; the number of the station id number to process.}
+\item{station}{character; the station id number to process.}
 
-\item{type}{character; defines if the station is (CON)ventional, DAV, (SUT)ron, or (SIA)p. Must be "CON", "DAV", "SUT" or "SIA".}
+\item{year}{numerical; a vector of years to process.}
 
-\item{config}{character; defines if the station is (M)eterological (1/2) or (H)ydrological. Must be "M", "M2" or "H".}
-
-\item{startYear}{numerical; the first year to process.}
-
-\item{endYear}{numerical; the last year to process.}
-
-\item{startMonth}{numerical; the first month to process. Defaults to 1.}
-
-\item{endMonth}{numerical; the last month to process. Defaults to 12.}
+\item{month}{numerical; a vector of months to process. Defaults to 1:12.}
 
 \item{writeMode}{character; if set to 'overwrite', the script will overwrite downloaded files if they exist.}
 }
@@ -31,7 +22,7 @@ None
 Download Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-\dontrun{downloadData("000401", type = "CON", config = "M", 1971, 2000)}
+\dontrun{downloadData("000401", 1971:2000)}
 }
 \author{
 Conor I. Anderson

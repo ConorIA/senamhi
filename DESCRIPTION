@@ -1,7 +1,7 @@
 Package: senamhiR
 Type: Package
 Title: A collection of functions to obtain Peruvian climate data
-Version: 0.1
+Version: 0.2
 Author: Conor Anderson
 Maintainer: Conor Anderson <conor.anderson@mail.utoronto.ca>
 Description: A collection of scripts to obtain Peruvian climatological or
@@ -13,7 +13,8 @@ Imports:
     XML,
     utils,
     shiny,
-    DT
+    DT,
+    geosphere
 License: GPL (>= 3)
 LazyData: TRUE
 RoxygenNote: 5.0.1
