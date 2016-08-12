@@ -6,7 +6,7 @@
 ##' @param station character; the station id number to process. Can also be a vector of station ids.
 ##' @param year numerical; a vector of years to process. Defaults to the full known range.
 ##' @param month numerical; a vector of months to process. Defaults to 1:12.
-##' @param fallback vector; if no year is specified, and the period of available data is unknown, this vector will provide a fallback start and end year to download if the auto find fails.
+##' @param fallback vector; if no year is specified, and the period of available data is unknown, this vector will provide a fallback start and end year to download. If not specified, such stations will be skipped.
 ##' @param writeMode character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.
 ##'
 ##' @author Conor I. Anderson
@@ -38,7 +38,7 @@ senamhiR <- function(tasks, station, year, month = 1:12, fallback, writeMode = "
   if (missing(year)) {
     stationData <- catalogue[catalogue$StationID==station,]
     if (is.na(stationData$`Data Start`) || is.na(stationData$`Data End`)) {
-      if (missing(fallback)) fallback <- readline(prompt = "Please specify fall back dates as vector. ")
+      if (missing(fallback)) return("Available data undefined and no fallback specified. Skipping this station.")
       print(paste("Available data undefined. Using fallback from", fallback[1], "to", fallback[length(fallback)]))
       year <- fallback[1]:fallback[length(fallback)]
     } else {

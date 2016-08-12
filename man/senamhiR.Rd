@@ -15,7 +15,7 @@ senamhiR(tasks, station, year, month = 1:12, fallback, writeMode = "z")
 
 \item{month}{numerical; a vector of months to process. Defaults to 1:12.}
 
-\item{fallback}{vector; if no year is specified, and the period of available data is unknown, this vector will provide a fallback start and end year to download if the auto find fails.}
+\item{fallback}{vector; if no year is specified, and the period of available data is unknown, this vector will provide a fallback start and end year to download. If not specified, such stations will be skipped.}
 
 \item{writeMode}{character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.}
 }
