@@ -1,10 +1,14 @@
 Package: senamhiR
 Type: Package
-Title: A collection of functions to obtain Peruvian climate data
+Title: A Collection of Functions to Obtain Peruvian Climate Data
 Version: 0.2
-Author: Conor Anderson
-Maintainer: Conor Anderson <conor.anderson@mail.utoronto.ca>
-Description: A collection of scripts to obtain Peruvian climatological or
+Date: 2016-08-16
+Authors@R: c(person(given = c("Conor", "I."), family = "Anderson", 
+           role = c("aut","cre"), email = "conor.anderson@mail.utoronto.ca"),
+           person(given = c("William", "A."), family = "Gough", role = "ths",
+           email = "gough@utsc.utoronto.ca"))
+Maintainer: Conor I. Anderson <conor.anderson@mail.utoronto.ca>
+Description: A collection of functions to obtain Peruvian climatological or
     hydrological data form the Peruvian National Meterology and Hydrology Service.
 Depends:
     R (>= 3.1.0)
@@ -16,5 +20,7 @@ Imports:
     DT,
     geosphere
 License: GPL (>= 3)
+URL: https://github.com/ConorIA/senamhiR/
+BugReports: https://github.com/ConorIA/senamhiR/issues
 LazyData: TRUE
 RoxygenNote: 5.0.1
