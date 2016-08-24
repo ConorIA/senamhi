@@ -1,7 +1,7 @@
-image: jangorecki/r-base-dev
+image: conoria/ralpine-min
 test:
   script:
-    - apt-get update && apt-get install libxml2-dev
+    - apk update && apk add libxml2-dev
     - R -q -e "install.packages(c('shiny', 'curl', 'geosphere', 'XML', 'DT'), repos='http://cran.rstudio.com/')"
     - R CMD build . --no-build-vignettes --no-manual
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
