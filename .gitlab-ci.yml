@@ -1,4 +1,4 @@
-image: conoria/ralpine-min
+image: conoria/alpine-r
 test:
   script:
     - apk update && apk add libxml2-dev
