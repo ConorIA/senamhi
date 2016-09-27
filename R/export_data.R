@@ -130,9 +130,11 @@ export_data <- function(station, year, month = 1:12, write_mode = "z", trim = TR
   Dia <- format(dat$Fecha, format = "%d")
   dat <- cbind(dat[1], Anho, Mes, Dia, dat[2:ncol(dat)], stringsAsFactors = FALSE)
   
-  if (trim) 
-    dat <- .trim_data(dat)
+  if (trim) dat <- .trim_data(dat)
   
-  if (write_mode == "append") 
-    write.table(dat, filename, append = TRUE, sep = ",", col.names = FALSE, row.names = FALSE) else write.table(dat, filename, sep = ",", row.names = FALSE)
+  if (write_mode == "append") {
+    write.table(dat, filename, append = TRUE, sep = ",", col.names = FALSE, row.names = FALSE)
+  } else {
+    write.table(dat, filename, sep = ",", row.names = FALSE)
+  }
 }
