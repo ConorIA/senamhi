@@ -15,15 +15,16 @@
 ##' @importFrom curl curl_download
 
 .download_action <- function(url, filename, write_mode = "z") {
-  if (!file.exists(filename) | write_mode == "overwrite" | file.info(filename)$size == 0) {
-    download <- try(curl_download(url, filename))
-    if (inherits(download, "try-error")) {
-      warning("Caught an error. Retrying file.", immediate. = TRUE)
-      unlink(filename)
-      download <- try(curl_download(url, filename))
-      if (inherits(download, "try-error")) {
-        stop("Could not download the requested file.")
-      }
+    if (!file.exists(filename) | write_mode == "overwrite" | file.info(filename)$size == 
+        0) {
+        download <- try(curl_download(url, filename))
+        if (inherits(download, "try-error")) {
+            warning("Caught an error. Retrying file.", immediate. = TRUE)
+            unlink(filename)
+            download <- try(curl_download(url, filename))
+            if (inherits(download, "try-error")) {
+                stop("Could not download the requested file.")
+            }
+        }
     }
-  }
 }

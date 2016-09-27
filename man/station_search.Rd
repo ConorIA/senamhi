@@ -34,14 +34,14 @@ A data frame containing the details of matching stations.
 Search for Senamhi stations by name, region, available data, and/or distance to a target.
 }
 \examples{
-# Find all stations containing "Tarapoto" in their name.
-station_search("Tarapoto")
+# Find all stations containing 'Tarapoto' in their name.
+station_search('Tarapoto')
 
 # Find stations with data available from 1971 to 2000.
 station_search(baseline = c(1971, 2000))
 
-# Find all stations between 0 and 100 km from Station "000401"
-station_search(target = "000401", mindist = 0, maxdist = 100)
+# Find all stations between 0 and 100 km from Station '000401'
+station_search(target = '000401', mindist = 0, maxdist = 100)
 
 }
 \author{

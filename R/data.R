@@ -4,4 +4,4 @@
 #'
 #' @source \url{http://www.senamhi.gob.pe/}
 "catalogue"
-#> [1] "catalogue"
+# > [1] 'catalogue'

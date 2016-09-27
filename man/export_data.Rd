@@ -24,7 +24,7 @@ None
 Compile a CSV file of Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-\dontrun{export_data("000401", 2000:2005, 1:12, trim = TRUE)}
+\dontrun{export_data('000401', 2000:2005, 1:12, trim = TRUE)}
 }
 \author{
 Conor I. Anderson

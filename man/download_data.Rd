@@ -22,7 +22,7 @@ None
 Download Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-\dontrun{download_data("000401", 1971:2000)}
+\dontrun{download_data('000401', 1971:2000)}
 }
 \author{
 Conor I. Anderson
