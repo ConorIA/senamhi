@@ -21,36 +21,36 @@
 ##' \dontrun{download_data('000401', 1971:2000)}
 
 download_data <- function(station, year, month = 1:12, write_mode = "z") {
-    
-    stationData <- catalogue[catalogue$StationID == station, ]
-    stationName <- stationData$Station
-    region <- stationData$Region
-    type = stationData$Type
-    config = stationData$Configuration
-    
-    month <- sprintf("%02d", month)
-    dates <- apply(expand.grid(month, year), 1, function(x) paste0(x[2], x[1]))
-    
-    ## genURLs
-    urlList <- paste0("http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo02.php?estaciones=", 
-        station, "&tipo=", type, "&CBOFiltro=", dates, "&t_e=", config)
-    
-    foldername <- paste0(region, "/HTML/", as.character(station), " - ", stationName)
-    if (!dir.exists(foldername)) {
-        check <- try(dir.create(foldername, recursive = TRUE))
-        if (inherits(check, "try-error")) {
-            stop("I couldn't write out the directory. Check your permissions.")
-        }
+  
+  stationData <- catalogue[catalogue$StationID == station, ]
+  stationName <- stationData$Station
+  region <- stationData$Region
+  type = stationData$Type
+  config = stationData$Configuration
+  
+  month <- sprintf("%02d", month)
+  dates <- apply(expand.grid(month, year), 1, function(x) paste0(x[2], x[1]))
+  
+  ## genURLs
+  urlList <- paste0("http://www.senamhi.gob.pe/include_mapas/_dat_esta_tipo02.php?estaciones=", 
+    station, "&tipo=", type, "&CBOFiltro=", dates, "&t_e=", config)
+  
+  foldername <- paste0(region, "/HTML/", as.character(station), " - ", stationName)
+  if (!dir.exists(foldername)) {
+    check <- try(dir.create(foldername, recursive = TRUE))
+    if (inherits(check, "try-error")) {
+      stop("I couldn't write out the directory. Check your permissions.")
     }
-    
-    ## Download the data
-    print("Downloading the requested data.")
-    ## Set up a progress Bar
-    prog <- txtProgressBar(min = 0, max = length(urlList), style = 3)
-    on.exit(close(prog))
-    for (i in 1:length(urlList)) {
-        filename <- paste0(foldername, "/", dates[i], ".html")
-        .download_action(url = urlList[i], filename, write_mode)
-        setTxtProgressBar(prog, value = i)
-    }
+  }
+  
+  ## Download the data
+  print("Downloading the requested data.")
+  ## Set up a progress Bar
+  prog <- txtProgressBar(min = 0, max = length(urlList), style = 3)
+  on.exit(close(prog))
+  for (i in 1:length(urlList)) {
+    filename <- paste0(foldername, "/", dates[i], ".html")
+    .download_action(url = urlList[i], filename, write_mode)
+    setTxtProgressBar(prog, value = i)
+  }
 }

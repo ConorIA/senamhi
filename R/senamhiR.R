@@ -18,49 +18,49 @@
 ##' \dontrun{senamhiR(3, c('000401', '000152', '000219'), fallback = c(1961,1990))}
 
 senamhiR <- function(tasks, station, year, month = 1:12, fallback, write_mode = "z") {
-    if (missing(tasks)) 
-        tasks <- readline(prompt = "1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both: ")
-    while (tasks != 1 && tasks != 2 && tasks != 3) {
-        print("Please choose the series of command you wish to run.")
-        tasks <- readline(prompt = "1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both: ")
+  if (missing(tasks)) 
+    tasks <- readline(prompt = "1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both: ")
+  while (tasks != 1 && tasks != 2 && tasks != 3) {
+    print("Please choose the series of command you wish to run.")
+    tasks <- readline(prompt = "1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both: ")
+  }
+  if (missing(station)) {
+    station <- readline(prompt = "Enter station number(s) separated by commas: ")
+    station <- trimws(unlist(strsplit(station, split = ",")))
+  }
+  
+  ## Add a work-around to download multiple stations
+  if (length(station) > 1) {
+    lapply(station, senamhiR, tasks = tasks, year = year, month = month, fallback = fallback, 
+      write_mode = write_mode)
+    return("Bulk action completed.")
+  }
+  
+  ## Choose range of years
+  if (missing(year)) {
+    station_data <- catalogue[catalogue$StationID == station, ]
+    if (is.na(station_data$`Data Start`) || is.na(station_data$`Data End`)) {
+      if (missing(fallback)) 
+        return("Available data undefined and no fallback specified. Skipping this station.")
+      print(paste("Available data undefined. Using fallback from", fallback[1], 
+        "to", fallback[length(fallback)]))
+      year <- fallback[1]:fallback[length(fallback)]
+    } else {
+      if (station_data$`Data End` == "2010+") {
+        print(paste("Not sure when data period ends. We will try until", 
+          (as.numeric(format(Sys.Date(), format = "%Y")) - 1)))
+        endYear <- as.numeric(format(Sys.Date(), format = "%Y")) - 1
+      } else {
+        endYear <- station_data$`Data End`
+      }
+      year <- station_data$`Data Start`:endYear
     }
-    if (missing(station)) {
-        station <- readline(prompt = "Enter station number(s) separated by commas: ")
-        station <- trimws(unlist(strsplit(station, split = ",")))
-    }
-    
-    ## Add a work-around to download multiple stations
-    if (length(station) > 1) {
-        lapply(station, senamhiR, tasks = tasks, year = year, month = month, fallback = fallback, 
-            write_mode = write_mode)
-        return("Bulk action completed.")
-    }
-    
-    ## Choose range of years
-    if (missing(year)) {
-        station_data <- catalogue[catalogue$StationID == station, ]
-        if (is.na(station_data$`Data Start`) || is.na(station_data$`Data End`)) {
-            if (missing(fallback)) 
-                return("Available data undefined and no fallback specified. Skipping this station.")
-            print(paste("Available data undefined. Using fallback from", fallback[1], 
-                "to", fallback[length(fallback)]))
-            year <- fallback[1]:fallback[length(fallback)]
-        } else {
-            if (station_data$`Data End` == "2010+") {
-                print(paste("Not sure when data period ends. We will try until", 
-                  (as.numeric(format(Sys.Date(), format = "%Y")) - 1)))
-                endYear <- as.numeric(format(Sys.Date(), format = "%Y")) - 1
-            } else {
-                endYear <- station_data$`Data End`
-            }
-            year <- station_data$`Data Start`:endYear
-        }
-    }
-    
-    if (tasks == 1 || tasks == 3) {
-        download_data(station, year, month)
-    }
-    if (tasks == 2 || tasks == 3) {
-        export_data(station, year, month, write_mode)
-    }
+  }
+  
+  if (tasks == 1 || tasks == 3) {
+    download_data(station, year, month)
+  }
+  if (tasks == 2 || tasks == 3) {
+    export_data(station, year, month, write_mode)
+  }
 }
