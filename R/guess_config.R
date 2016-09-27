@@ -3,7 +3,7 @@
 ##' @description Attempt to guess station characteristics.
 ##'
 ##' @param station character; the station id number to process.
-##' @param writeMode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
+##' @param write_mode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
 ##'
 ##' @return vector
 ##'
@@ -14,9 +14,9 @@
 ##' @importFrom XML htmlTreeParse
 ##'
 ##' @examples
-##' \dontrun{guessConfig("000401")}
+##' \dontrun{.guess_config("000401")}
 
-.guessConfig <- function(station, writeMode = "z") {
+.guess_config <- function(station, write_mode = "z") {
 
   ## Ask user to input variables
   if (missing(station))
@@ -29,25 +29,25 @@
   ##Download the data
   print(paste0("Checking station characteristics for ", station, "."))
   filename <- tempfile()
-  .downloadAction(url, filename, writeMode)
-  stationData <- htmlTreeParse(filename)
-  stationData <- unlist(stationData[3])
-  stationData <- stationData[grep("_dat_esta_tipo02.php", stationData)]
+  .download_action(url, filename, write_mode)
+  station_data <- htmlTreeParse(filename)
+  station_data <- unlist(station_data[3])
+  station_data <- station_data[grep("_dat_esta_tipo02.php", station_data)]
 
   ##Check config
-  test <- grep("t_e=M1", stationData)
+  test <- grep("t_e=M1", station_data)
   if (length(test) > 0) {
     config <- "M1"
   } else {
-    test <- grep("t_e=M2", stationData)
+    test <- grep("t_e=M2", station_data)
     if (length(test) > 0) {
       config <- "M2"
     } else {
-      test <- grep("t_e=M", stationData)
+      test <- grep("t_e=M", station_data)
       if (length(test) > 0) {
         config <- "M"
       } else {
-        test <- grep("t_e=H", stationData)
+        test <- grep("t_e=H", station_data)
         if (length(test) > 0) {
           config <- "H"
         } else {
@@ -58,19 +58,19 @@
   }
 
   ##Check station type
-  test <- grep("tipo=CON", stationData)
+  test <- grep("tipo=CON", station_data)
   if (length(test) > 0) {
     type <- "CON"
   } else {
-    test <- grep("tipo=DAV", stationData)
+    test <- grep("tipo=DAV", station_data)
     if (length(test) > 0) {
       type <- "DAV"
     } else {
-      test <- grep("tipo=SUT", stationData)
+      test <- grep("tipo=SUT", station_data)
       if (length(test) > 0) {
         type <- "SUT"
       } else {
-        test <- grep("tipo=SIA", stationData)
+        test <- grep("tipo=SIA", station_data)
         if (length(test) > 0) {
           type <- "SIA"
         } else {

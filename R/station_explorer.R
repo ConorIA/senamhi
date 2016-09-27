@@ -8,7 +8,7 @@
 ##'
 ##' @export
 
-stationExplorerGUI <- function() {
+station_explorer <- function() {
   if ("shiny" %in% rownames(utils::installed.packages()) == FALSE | "DT" %in% rownames(utils::installed.packages()) == FALSE) {
     cat("This optional function requires the shiny and DT packages. \n")
     res <- readline(prompt = "Do you want to install them now? (y/N) ")

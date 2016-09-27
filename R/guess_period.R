@@ -4,7 +4,7 @@
 ##'
 ##' @param station character; the station id number to process.
 ##' @param automatic logical; if set to true (default), the script will attempt to guess the startYear and endYear values.
-##' @param writeMode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
+##' @param write_mode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
 ##'
 ##' @return data.frame
 ##'
@@ -15,9 +15,9 @@
 ##' @importFrom XML readHTMLTable
 ##'  
 ##' @examples
-##' \dontrun{guessPeriod("000401")}
+##' \dontrun{.guess_period("000401")}
 
-.guessPeriod <- function(station, automatic = TRUE, writeMode = "z") {
+.guess_period <- function(station, automatic = TRUE, write_mode = "z") {
 
   ##genURL
   url <- paste0("http://www.senamhi.gob.pe/include_mapas/_dat_esta_periodo.php?estaciones=",
@@ -26,7 +26,7 @@
  ##Download the data
   print(paste0("Checking data at ", station, "."))
   filename <- tempfile()
-  .downloadAction(url, filename, writeMode)
+  .download_action(url, filename, write_mode)
   
   table <- readHTMLTable(filename, as.data.frame = TRUE)
   table <- as.data.frame(table[3])

@@ -10,7 +10,7 @@
 ##'
 ##' @importFrom XML htmlTreeParse
 
-.generateCatalogue <- function () {
+.generate_catalogue <- function () {
   
   vector <- seq(1, 25, by = 1)
   vector <- vector[-7]
@@ -22,7 +22,7 @@
   dir <- tempdir()
   
   for (i in 1:length(vector)) {
-    .downloadAction(url = urlList[i], filename = paste0(dir, "/", vector[i], ".html"))
+    .download_action(url = urlList[i], filename = paste0(dir, "/", vector[i], ".html"))
     data <- htmlTreeParse(paste0(dir, "/", vector[i], ".html"))
     data <- unlist(data[3])
     data <- data[21]
@@ -35,7 +35,7 @@
       if (length(name) == 3) name <- c(paste(name[1:2], collapse=" - "), name[3])
       name <- gsub("'", '', name)
       station <- as.character(name[2])
-      period <- try(.guessPeriod(station))
+      period <- try(.guess_period(station))
       if (!inherits(period, "try-error")) {
         start <- period[1]
         end <- period[2]
@@ -43,7 +43,7 @@
         start <- NA
         end <- NA
       }
-      config <- try(.guessConfig(station))
+      config <- try(.guess_config(station))
       if (!inherits(config, "try-error")) {
         type <- config[1]
         config <- config[2]

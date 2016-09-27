@@ -4,7 +4,7 @@
 ##'
 ##' @param url character; address to be downloaded.
 ##' @param filename character; name to save the downloaded file under.
-##' @param writeMode character; if set to 'overwrite' the script will overwrite file if it exists.
+##' @param write_mode character; if set to 'overwrite' the script will overwrite file if it exists.
 ##'
 ##' @return None
 ##' 
@@ -14,8 +14,8 @@
 ##'
 ##' @importFrom curl curl_download
 
-.downloadAction <- function(url, filename, writeMode = "z") {
-  if (!file.exists(filename) | writeMode == "overwrite" | file.info(filename)$size == 0) {
+.download_action <- function(url, filename, write_mode = "z") {
+  if (!file.exists(filename) | write_mode == "overwrite" | file.info(filename)$size == 0) {
     download <- try(curl_download(url, filename))
     if (inherits(download, "try-error")) {
       warning("Caught an error. Retrying file.", immediate. = TRUE)

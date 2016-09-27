@@ -5,7 +5,7 @@
 ##' @param station character; the station id number to process.
 ##' @param year numerical; a vector of years to process.
 ##' @param month numerical; a vector of months to process. Defaults to 1:12.
-##' @param writeMode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
+##' @param write_mode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
 ##'
 ##' @return None
 ##'
@@ -18,9 +18,9 @@
 ##' @export
 ##' 
 ##' @examples
-##' \dontrun{downloadData("000401", 1971:2000)}
+##' \dontrun{download_data("000401", 1971:2000)}
 
-downloadData <- function(station, year, month = 1:12, writeMode = "z") {
+download_data <- function(station, year, month = 1:12, write_mode = "z") {
 
   stationData <- catalogue[catalogue$StationID==station,]
   stationName <- stationData$Station
@@ -50,7 +50,7 @@ downloadData <- function(station, year, month = 1:12, writeMode = "z") {
   on.exit(close(prog))
   for (i in 1:length(urlList)) {
     filename <- paste0(foldername, "/", dates[i], ".html")
-    .downloadAction(url = urlList[i], filename, writeMode)
+    .download_action(url = urlList[i], filename, write_mode)
     setTxtProgressBar(prog, value = i)
   }
 }

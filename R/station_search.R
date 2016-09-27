@@ -22,16 +22,16 @@
 ##'
 ##' @examples
 ##' # Find all stations containing "Tarapoto" in their name.
-##' stationSearch("Tarapoto")
+##' station_search("Tarapoto")
 ##' 
 ##' # Find stations with data available from 1971 to 2000.
-##' stationSearch(baseline = c(1971, 2000))
+##' station_search(baseline = c(1971, 2000))
 ##' 
 ##' # Find all stations between 0 and 100 km from Station "000401"
-##' stationSearch(target = "000401", mindist = 0, maxdist = 100)
+##' station_search(target = "000401", mindist = 0, maxdist = 100)
 ##' 
 
-stationSearch <- function(name = NULL, region = NULL, baseline = NULL, ignore.case = TRUE, target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
+station_search <- function(name = NULL, region = NULL, baseline = NULL, ignore.case = TRUE, target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
   
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
