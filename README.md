@@ -5,7 +5,11 @@ The package attempts to provide a mostly automated solution for the bulk downloa
 It is important to note that the info on the Senamhi website has not undergone quality control.
 
 #### Build Status
-[![Build Status](https://travis-ci.org/ConorIA/senamhiR.svg?branch=master)](https://travis-ci.org/ConorIA/senamhiR) [![Build status](https://ci.appveyor.com/api/projects/status/8731y41f53b8me78?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir)
+
+- Travis: [![Build Status](https://travis-ci.org/ConorIA/senamhiR.svg?branch=master)](https://travis-ci.org/ConorIA/senamhiR)
+- Appveyor: [![Build status](https://ci.appveyor.com/api/projects/status/8731y41f53b8me78?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir)
+- Gitlab: [![build status](https://gitlab.com/ConorIA/senamhi/badges/master/build.svg)](https://gitlab.com/ConorIA/senamhi/commits/master)
+
 
 To use
 ------
