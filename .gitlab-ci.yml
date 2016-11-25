@@ -1,7 +1,7 @@
 image: conoria/alpine-r
 test:
   script:
-    - R -q -e "install.packages(c('shiny', 'curl', 'geosphere', 'XML', 'DT'), repos='http://cran.rstudio.com/')"
+    - R -q -e "install.packages(c('shiny', 'curl', 'geosphere', 'XML', 'DT', 'readr', 'tibble'), repos='http://cran.rstudio.com/')"
     - R CMD build . --no-build-vignettes --no-manual
     - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
     - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual --as-cran
