@@ -11,7 +11,8 @@ To use
 ------
 ``` {r, eval = FALSE}
 install.packages("devtools")
-devtools::install_github("ConorIA/senamhiR")
+devtools::install_github("ConorIA/senamhiR", ref = "stable") # to install the stable version
+devtools::install_github("ConorIA/senamhiR", ref = "unstable") # to install the unstable version
 ```
 
 Included functions
