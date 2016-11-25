@@ -54,18 +54,18 @@ read_data <- function(station, year, export = TRUE, write_mode = "z", trim = TRU
   if (config == "H") {
     if (type == "CON") 
       colnames <- c("Fecha", "Nivel06 (m)", "Nivel10 (m)", "Nivel14 (m)", "Nivel18 (m)", 
-        "Caudal (m³/s)")
+        "Caudal (m^3/s)")
     if (type == "SUT") 
-      colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humidity (%)", 
+      colnames <- c("Fecha", "Tmean (C)", "Tmax (C)", "Tmin (C)", "Humidity (%)", 
         "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", 
         "Nivel Medio (m)")
   } else {
     if (type == "CON") 
-      colnames <- c("Fecha", "Tmax (°C)", "Tmin (°C)", "TBS07 (°C)", "TBS13 (°C)", 
-        "TBS19 (°C)", "TBH07 (°C)", "TBH13 (°C)", "TBH19 (°C)", "Prec07 (mm)", 
+      colnames <- c("Fecha", "Tmax (C)", "Tmin (C)", "TBS07 (C)", "TBS13 (C)", 
+        "TBS19 (C)", "TBH07 (C)", "TBH13 (C)", "TBH19 (C)", "Prec07 (mm)", 
         "Prec19 (mm)", "Direccion del Viento", "Velocidad del Viento (m/s)")
     if (type == "SUT" | type == "SIA" | type == "DAV") 
-      colnames <- c("Fecha", "Tmean (°C)", "Tmax (°C)", "Tmin (°C)", "Humedad (%)", 
+      colnames <- c("Fecha", "Tmean (C)", "Tmax (C)", "Tmin (C)", "Humedad (%)", 
         "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento")
   }
   
@@ -142,11 +142,11 @@ read_data <- function(station, year, export = TRUE, write_mode = "z", trim = TRU
       dat$`Nivel10 (m)` <- as.numeric(dat$`Nivel10 (m)`)
       dat$`Nivel14 (m)` <- as.numeric(dat$`Nivel14 (m)`)
       dat$`Nivel18 (m)` <- as.numeric(dat$`Nivel18 (m)`)
-      dat$`Caudal (m³/s)` <- as.numeric(dat$`Caudal (m³/s)`)
+      dat$`Caudal (m^3/s)` <- as.numeric(dat$`Caudal (m^3/s)`)
     } else {
-      dat$`Tmean (°C)` <- as.numeric(dat$`Tmean (°C)`)
-      dat$`Tmax (°C)` <- as.numeric(dat$`Tmax (°C)`)
-      dat$`Tmin (°C)` <- as.numeric(dat$`Tmin (°C)`)
+      dat$`Tmean (C)` <- as.numeric(dat$`Tmean (C)`)
+      dat$`Tmax (C)` <- as.numeric(dat$`Tmax (C)`)
+      dat$`Tmin (C)` <- as.numeric(dat$`Tmin (C)`)
       dat$`Humidity (%)` <- as.numeric(dat$`Humidity (%)`)
       dat$`Lluvia (mm)` <- as.numeric(dat$`Lluvia (mm)`)
       dat$`Presion (mb)` <- as.numeric(dat$`Presion (mb)`)
@@ -155,23 +155,23 @@ read_data <- function(station, year, export = TRUE, write_mode = "z", trim = TRU
     }
   } else {
     if (type == "CON") {
-      dat$`Tmax (°C)` <- as.numeric(dat$`Tmax (°C)`)
-      dat$`Tmin (°C)` <- as.numeric(dat$`Tmin (°C)`) 
-      dat$`TBS07 (°C)` <- as.numeric(dat$`TBS07 (°C)`)
-      dat$`TBS13 (°C)` <- as.numeric(dat$`TBS13 (°C)`)
-      dat$`TBS19 (°C)` <- as.numeric(dat$`TBS19 (°C)`)
-      dat$`TBH07 (°C)` <- as.numeric(dat$`TBH07 (°C)`)
-      dat$`TBH13 (°C)` <- as.numeric(dat$`TBH13 (°C)`)
-      dat$`TBH19 (°C)` <- as.numeric(dat$`TBH19 (°C)`)
+      dat$`Tmax (C)` <- as.numeric(dat$`Tmax (C)`)
+      dat$`Tmin (C)` <- as.numeric(dat$`Tmin (C)`) 
+      dat$`TBS07 (C)` <- as.numeric(dat$`TBS07 (C)`)
+      dat$`TBS13 (C)` <- as.numeric(dat$`TBS13 (C)`)
+      dat$`TBS19 (C)` <- as.numeric(dat$`TBS19 (C)`)
+      dat$`TBH07 (C)` <- as.numeric(dat$`TBH07 (C)`)
+      dat$`TBH13 (C)` <- as.numeric(dat$`TBH13 (C)`)
+      dat$`TBH19 (C)` <- as.numeric(dat$`TBH19 (C)`)
       dat$`Prec07 (mm)` <- as.numeric(dat$`Prec07 (mm)`)
       dat$`Prec19 (mm)` <- as.numeric(dat$`Prec19 (mm)`)
       dat$`Direccion del Viento` <- as.character(dat$`Direccion del Viento`)
-      dat <- add_column(dat, `Tmean (°C)` = round(((dat$`Tmax (°C)` + dat$`Tmin (°C)`)/2), digits = 1), .after = 1)
+      dat <- add_column(dat, `Tmean (C)` = round(((dat$`Tmax (C)` + dat$`Tmin (C)`)/2), digits = 1), .after = 1)
     }
     if (type == "SUT" | type == "SIA" | type == "DAV") {
-      dat$`Tmean (°C)` <- as.numeric(dat$`Tmean (°C)`)
-      dat$`Tmax (°C)` <- as.numeric(dat$`Tmax (°C)`)
-      dat$`Tmin (°C)` <- as.numeric(dat$`Tmin (°C)`)
+      dat$`Tmean (C)` <- as.numeric(dat$`Tmean (C)`)
+      dat$`Tmax (C)` <- as.numeric(dat$`Tmax (C)`)
+      dat$`Tmin (C)` <- as.numeric(dat$`Tmin (C)`)
       dat$`Humedad (%)` <- as.numeric(dat$`Humedad (%)`)
       dat$`Lluvia (mm)` <- as.numeric(dat$`Lluvia (mm)`)
       dat$`Presion (mb)` <- as.numeric(dat$`Presion (mb)`)

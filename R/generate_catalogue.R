@@ -58,12 +58,12 @@
       row <- c(name, type, config, start, end, row[13], row[6:10])
       
       ## Commands to clean up the data
-      row <- gsub("Ñ", "N", row)
-      row <- gsub("\xd1", "N", row)
-      row <- gsub("'", "", row)
-      row <- gsub("\\\\", "", row)
-      row <- gsub("));", "", row)
-      row <- gsub("}\r\n}", "", row)
+      row <- gsub("\303\221", 'N', row)
+      row <- gsub("\321", 'N', row)
+      row <- gsub("'", '', row)
+      row <- gsub("\\\\", '', row)
+      row <- gsub("));", '', row)
+      row <- gsub("}\r\n}", '', row)
       row <- gsub("^\\s+|\\s+$", "", row)
       # Set station status
       if (row[7] == "C" | row[7] == "P") 
