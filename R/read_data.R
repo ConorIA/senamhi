@@ -101,7 +101,10 @@ read_data <- function(station, year, export = TRUE, write_mode = "z", trim = TRU
   ## Loop through files and input data to table
   for (i in 1:length(files)) {
     date <- as.Date(datelist[i], format = "%Y-%m-%d")
-    table <- readHTMLTable(files[i], stringsAsFactors = FALSE)
+    table <- try(readHTMLTable(files[i], stringsAsFactors = FALSE))
+    if (inherits(table, "try-error")) {
+      stop("Could not read the requested file. Are you sure you downloaded it?")
+    }
     table <- as_tibble(table[[1]])
     if (nrow(table) > 1) {
       ## Sometimes the HTML files only have a few days, instead of the whole month
