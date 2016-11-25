@@ -14,11 +14,13 @@ Depends:
     R (>= 3.1.0)
 Imports:
     curl,
-    XML,
-    utils,
-    shiny,
     DT,
-    geosphere
+    geosphere,
+    readr,
+    shiny,
+    tibble,
+    utils,
+    XML
 License: GPL (>= 3)
 URL: https://github.com/ConorIA/senamhiR/
 BugReports: https://github.com/ConorIA/senamhiR/issues

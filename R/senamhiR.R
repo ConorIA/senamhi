@@ -40,10 +40,11 @@ senamhiR <- function(tasks, station, year, month = 1:12, fallback, write_mode = 
   if (missing(year)) {
     station_data <- catalogue[catalogue$StationID == station, ]
     if (is.na(station_data$`Data Start`) || is.na(station_data$`Data End`)) {
-      if (missing(fallback)) 
-        return("Available data undefined and no fallback specified. Skipping this station.")
-      print(paste("Available data undefined. Using fallback from", fallback[1], 
-        "to", fallback[length(fallback)]))
+      if (missing(fallback)) {
+        print("Available data undefined and no fallback specified. Skipping this station.")
+        return("No period defined.")
+      }
+      print(paste("Available data undefined. Using fallback from", fallback[1], "to", fallback[length(fallback)]))
       year <- fallback[1]:fallback[length(fallback)]
     } else {
       if (station_data$`Data End` == "2010+") {
@@ -56,11 +57,11 @@ senamhiR <- function(tasks, station, year, month = 1:12, fallback, write_mode = 
       year <- station_data$`Data Start`:endYear
     }
   }
-  
+  print(paste0("Processing station ", station, "."))
   if (tasks == 1 || tasks == 3) {
-    download_data(station, year, month)
+    download_data(station = station, year = year, month = month)
   }
   if (tasks == 2 || tasks == 3) {
-    export_data(station, year, month, write_mode)
+    read_data(station = station, year = year, write_mode = write_mode)
   }
 }

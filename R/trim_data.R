@@ -27,16 +27,16 @@
   }
   
   if (firstYear == 9999 & lastYear == 0) {
-    print(paste0("No data at all at ", station, "."))
+    print(paste0("No good data to export."))
     stop("No data to export.")
   }
   
-  firstYear <- dat$Anho[firstYear]
-  lastYear <- dat$Anho[lastYear]
-  print(paste0("Data from ", firstYear, " to ", lastYear, " at ", station, "."))
+  firstYear <- format(dat$Fecha[firstYear], format = "%Y")
+  lastYear <- format(dat$Fecha[lastYear], format = "%Y")
+  print(paste0("Data from ", firstYear, " to ", lastYear, "."))
   
-  firstYear <- min(grep(firstYear, dat$Anho))
-  lastYear <- max(grep(lastYear, dat$Anho))
+  firstYear <- min(grep(firstYear, format(dat$Fecha, format = "%Y")))
+  lastYear <- max(grep(lastYear, format(dat$Fecha, format = "%Y")))
   
   if (firstYear > 1 | lastYear < nrow(dat)) {
     print("Trimming data.")

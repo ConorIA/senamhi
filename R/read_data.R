@@ -4,23 +4,26 @@
 ##'
 ##' @param station character; the station id number to process.
 ##' @param year numerical; a vector of years to process.
-##' @param month numerical; a vector of months to process. Defaults to 1:12.
+##' @param export logical; weather to export the data to a `.csv` file. Defaults to `TRUE`.
 ##' @param write_mode character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.
 ##' @param trim logical; if set to TRUE, the script will trim missing data from the start and end of the data set. Note only completely missing years will be trimmed.
+##' @param clean logical; if set to TRUE, the script will delete all of the downloaded HTML files.
 ##'
 ##' @return None
 ##'
 ##' @author Conor I. Anderson
 ##'
 ##' @importFrom XML readHTMLTable
-##' @importFrom utils write.table
+##' @importFrom tibble as_tibble has_name
+##' @importFrom utils setTxtProgressBar txtProgressBar
+##' @importFrom readr write_csv
 ##'
 ##' @export
 ##'
 ##' @examples
-##' \dontrun{export_data('000401', 2000:2005, 1:12, trim = TRUE)}
+##' \dontrun{read_data('000401', 2000:2005, trim = TRUE)}
 
-export_data <- function(station, year, month = 1:12, write_mode = "z", trim = TRUE) {
+read_data <- function(station, year, export = TRUE, write_mode = "z", trim = TRUE, clean = FALSE) {
   
   station_data <- catalogue[catalogue$StationID == station, ]
   type = station_data$Type
@@ -30,7 +33,7 @@ export_data <- function(station, year, month = 1:12, write_mode = "z", trim = TR
   region <- station_data$Region
   filename <- paste0(region, "/", as.character(station), " - ", station_name, ".csv")
   
-  if (file.exists(filename) && write_mode != "overwrite" && write_mode != "append") {
+  if (export && file.exists(filename) && write_mode != "overwrite" && write_mode != "append") {
     return(warning(paste("File", filename, "exists. Not overwriting."), call. = FALSE, 
       immediate. = TRUE))
   }
@@ -67,7 +70,7 @@ export_data <- function(station, year, month = 1:12, write_mode = "z", trim = TR
   }
   
   # GenFileList
-  month <- sprintf("%02d", month)
+  month <- sprintf("%02d", 1:12)
   files <- apply(expand.grid(month, year), 1, function(x) paste0(x[2], x[1]))
   files <- paste0(region, "/HTML/", as.character(station), " - ", station_name, 
     "/", files, ".html")
@@ -83,20 +86,23 @@ export_data <- function(station, year, month = 1:12, write_mode = "z", trim = TR
   endDate <- paste(year[length(year)], month[length(month)], number_of_days(endDate), 
     sep = "-")
   
-  number_of_dates <- as.Date(endDate) - as.Date(startDate)
-  number_of_dates <- as.numeric(number_of_dates) + 1
+  number_of_dates <- as.numeric(as.Date(endDate) - as.Date(startDate)) + 1
   datecolumn <- seq(as.Date(startDate), by = "day", length.out = number_of_dates)
-  dat <- matrix(nrow = length(datecolumn), ncol = length(colnames))
-  dat <- as.data.frame(dat)
+  
+  dat <- as_tibble(matrix(nrow = length(datecolumn), ncol = length(colnames)))
   names(dat) <- colnames
   dat$Fecha <- datecolumn
   row <- 1
+  
+  print("Compiling data.")
+  prog <- txtProgressBar(min = 0, max = length(files), style = 3)
+  on.exit(close(prog))
   
   ## Loop through files and input data to table
   for (i in 1:length(files)) {
     date <- as.Date(datelist[i], format = "%Y-%m-%d")
     table <- readHTMLTable(files[i], stringsAsFactors = FALSE)
-    table <- as.data.frame(table[1])
+    table <- as_tibble(table[[1]])
     if (nrow(table) > 1) {
       ## Sometimes the HTML files only have a few days, instead of the whole month
       if (nrow(table) - 1 != number_of_days(date)) {
@@ -109,32 +115,86 @@ export_data <- function(station, year, month = 1:12, write_mode = "z", trim = TR
           dat[thisrow, 2:length(dat)] <- table[j, 2:ncol(table)]
         }
       } else {
-        ## This case hasn't been encountered by the new script. TO DO!
+        # Sometimes the HTML files only have a subset of the columns
         if (ncol(table) != length(colnames)) {
           ## Assuming that this only happens with precipitation for now.
           table <- table[-1, ]
-          dat$`Prec07 (mm)`[row:(row + nrow(table) - 1)] <- table[, 2]
-          dat$`Prec19 (mm)`[row:(row + nrow(table) - 1)] <- table[, 3]
+          dat$`Prec07 (mm)`[row:(row + nrow(table) - 1)] <- table[[2]]
+          dat$`Prec19 (mm)`[row:(row + nrow(table) - 1)] <- table[[3]]
         } else {
-          dat[row:(row + number_of_days(date) - 1), 2:length(dat)] <- subset(table[2:length(table[, 
-          1]), 2:length(table)])
+          dat[row:(row + number_of_days(date) - 1), 2:ncol(dat)] <- table[2:nrow(table),2:ncol(table)]
         }
       }
     }
     row <- row + number_of_days(date)
+    setTxtProgressBar(prog, value = i)
   }
   
-  ## Add more useful date information
-  Anho <- format(dat$Fecha, format = "%Y")
-  Mes <- format(dat$Fecha, format = "%m")
-  Dia <- format(dat$Fecha, format = "%d")
-  dat <- cbind(dat[1], Anho, Mes, Dia, dat[2:ncol(dat)], stringsAsFactors = FALSE)
+  # Replace missing value codes
+  dat[dat == -999] <- NA
+  dat[dat == -888] <- NA
+  
+  # Make sure that the columns are the right type
+  dat$Fecha <- as.Date(dat$Fecha, format = "%Y-%m-%d")
+  if (config == "H") {
+    if (type == "CON") {
+      dat$`Nivel06 (m)` <- as.numeric(dat$`Nivel06 (m)`)
+      dat$`Nivel10 (m)` <- as.numeric(dat$`Nivel10 (m)`)
+      dat$`Nivel14 (m)` <- as.numeric(dat$`Nivel14 (m)`)
+      dat$`Nivel18 (m)` <- as.numeric(dat$`Nivel18 (m)`)
+      dat$`Caudal (m³/s)` <- as.numeric(dat$`Caudal (m³/s)`)
+    } else {
+      dat$`Tmean (°C)` <- as.numeric(dat$`Tmean (°C)`)
+      dat$`Tmax (°C)` <- as.numeric(dat$`Tmax (°C)`)
+      dat$`Tmin (°C)` <- as.numeric(dat$`Tmin (°C)`)
+      dat$`Humidity (%)` <- as.numeric(dat$`Humidity (%)`)
+      dat$`Lluvia (mm)` <- as.numeric(dat$`Lluvia (mm)`)
+      dat$`Presion (mb)` <- as.numeric(dat$`Presion (mb)`)
+      dat$`Direccion del Viento` <- as.character(dat$`Direccion del Viento`)
+      dat$`Nivel Medio (m)` <- as.numeric(dat$`Nivel Medio (m)`)
+    }
+  } else {
+    if (type == "CON") {
+      dat$`Tmax (°C)` <- as.numeric(dat$`Tmax (°C)`)
+      dat$`Tmin (°C)` <- as.numeric(dat$`Tmin (°C)`) 
+      dat$`TBS07 (°C)` <- as.numeric(dat$`TBS07 (°C)`)
+      dat$`TBS13 (°C)` <- as.numeric(dat$`TBS13 (°C)`)
+      dat$`TBS19 (°C)` <- as.numeric(dat$`TBS19 (°C)`)
+      dat$`TBH07 (°C)` <- as.numeric(dat$`TBH07 (°C)`)
+      dat$`TBH13 (°C)` <- as.numeric(dat$`TBH13 (°C)`)
+      dat$`TBH19 (°C)` <- as.numeric(dat$`TBH19 (°C)`)
+      dat$`Prec07 (mm)` <- as.numeric(dat$`Prec07 (mm)`)
+      dat$`Prec19 (mm)` <- as.numeric(dat$`Prec19 (mm)`)
+      dat$`Direccion del Viento` <- as.character(dat$`Direccion del Viento`)
+      dat <- add_column(dat, `Tmean (°C)` = round(((dat$`Tmax (°C)` + dat$`Tmin (°C)`)/2), digits = 1), .after = 1)
+    }
+    if (type == "SUT" | type == "SIA" | type == "DAV") {
+      dat$`Tmean (°C)` <- as.numeric(dat$`Tmean (°C)`)
+      dat$`Tmax (°C)` <- as.numeric(dat$`Tmax (°C)`)
+      dat$`Tmin (°C)` <- as.numeric(dat$`Tmin (°C)`)
+      dat$`Humedad (%)` <- as.numeric(dat$`Humedad (%)`)
+      dat$`Lluvia (mm)` <- as.numeric(dat$`Lluvia (mm)`)
+      dat$`Presion (mb)` <- as.numeric(dat$`Presion (mb)`)
+      dat$`Direccion del Viento` <- as.character(dat$`Direccion del Viento`)
+    }
+  }
+  if (has_name(dat, "Velocidad del Viento (m/s)")) {
+    if (length(grep(".", dat$`Velocidad del Viento (m/s)`, fixed = TRUE)) > 0) {
+      dat$`Velocidad del Viento (m/s)` <- as.double(dat$`Velocidad del Viento (m/s)`)
+    } else {
+      dat$`Velocidad del Viento (m/s)` <- as.integer(dat$`Velocidad del Viento (m/s)`)
+    }
+  }
   
   if (trim) dat <- .trim_data(dat)
+  if (clean) unlink(files)
   
-  if (write_mode == "append") {
-    write.table(dat, filename, append = TRUE, sep = ",", col.names = FALSE, row.names = FALSE)
-  } else {
-    write.table(dat, filename, sep = ",", row.names = FALSE)
-  }
+  if (export) {
+    if (write_mode == "append") {
+      write_csv(dat, filename, append = TRUE)
+    } else {
+      write_csv(dat, filename)
+    }  
+  } else return(dat)
+  
 }

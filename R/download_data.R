@@ -12,8 +12,7 @@
 ##' @author Conor I. Anderson
 ##' 
 ##' @importFrom curl curl_download
-##' @importFrom utils setTxtProgressBar 
-##' @importFrom utils txtProgressBar
+##' @importFrom utils setTxtProgressBar txtProgressBar
 ##'
 ##' @export
 ##' 
