@@ -189,7 +189,12 @@ read_data <- function(station, year, export = TRUE, write_mode = "z", trim = TRU
     }
   }
   
-  if (trim) dat <- .trim_data(dat)
+  if (trim) {
+    dat <- try(.trim_data(dat))
+    if (inherits(dat, "try-error")) {
+      return("There is no good data in this file.")
+    }
+  }
   if (clean) unlink(files)
   
   if (export) {
