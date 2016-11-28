@@ -42,35 +42,14 @@ generate_local_catalogue <- function(station, localcatalogue){
   }
   
   print(paste0("Checking station ", station, "...")  )
-  row <- grep(station, localcatalogue$StationID)
-  region <- localcatalogue$Region[row]
-  stationName <- localcatalogue$Station[row]
-  filename <- paste0(region, "/", station, " - ", stationName, ".csv")
-
-  ## Generate the column types
-  if (localcatalogue$Configuration[row] == "H") {
-    if (localcatalogue$Type[row] == "CON") 
-      types <- "Dddddd"
-    if (localcatalogue$Type[row] == "SUT") 
-      types <- "Dddddddccd"
-  } else {
-    if (localcatalogue$Type[row] == "CON") 
-      types <- "Ddddddddddddcc"
-    if (localcatalogue$Type[row] == "SUT" | localcatalogue$Type[row] == "SIA" | localcatalogue$Type[row] == "DAV") 
-      types <- "Dddddddcc"
+  row <- grep(station, catalogue$StationID)
+  if (length(row) != 1) {
+    stop("I could not identify the station. Please check the station number and try again.")
   }
   
-  dat  <- try(read_csv(filename, col_types = types))
+  dat <- try(read_data(station), silent = TRUE)
   if (inherits(dat, "try-error")) {
-    return("I could not read the file. Check station number.")
-  }
-  
-  if (has_name(dat, "Velocidad del Viento (m/s)")) {
-    if (length(grep(".", dat$`Velocidad del Viento (m/s)`, fixed = TRUE)) > 0) {
-      dat$`Velocidad del Viento (m/s)` <- as.double(dat$`Velocidad del Viento (m/s)`)
-    } else {
-      dat$`Velocidad del Viento (m/s)` <- as.integer(dat$`Velocidad del Viento (m/s)`)
-    }
+    return(warning("There was an error checking that station. The file might not exist.", call. = FALSE, immediate. = TRUE))
   }
   
   if (is.na(localcatalogue$`Data Start`[row]) | localcatalogue$`Data Start`[row] != format(dat$Fecha[1], format = "%Y")) localcatalogue$`Data Start`[row] <- format(dat$Fecha[1], format = "%Y")

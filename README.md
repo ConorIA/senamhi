@@ -22,7 +22,8 @@ Included functions
 ------------------
 * `senamhiR()` ... A wrapper for the two following functions
     * `download_data()` ... Downloads data in HTML tables for a specific station and range of dates
-    * `read_data()` ... Reads the downloaded data for use in R; by default, it generates a `.csv` file 
+    * `write_data()` ... Compiles a `.csv` file from the HTML files. 
+    * `read_data()` ... Reads the data contained in the `.csv` file for use in R 
 * `station_search()` ... A function to search the stations in catalogue.rda by various criteria
 * `station_explorer()` ... a Shiny app to explore the catalogue of stations
 

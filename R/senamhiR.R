@@ -62,6 +62,6 @@ senamhiR <- function(tasks, station, year, month = 1:12, fallback, write_mode = 
     download_data(station = station, year = year, month = month)
   }
   if (tasks == 2 || tasks == 3) {
-    read_data(station = station, year = year, write_mode = write_mode)
+    write_data(station = station, year = year, write_mode = write_mode)
   }
 }
