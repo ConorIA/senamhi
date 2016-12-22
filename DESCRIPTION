@@ -16,6 +16,7 @@ Imports:
     curl,
     DT,
     geosphere,
+    leaflet,
     readr,
     shiny,
     tibble,
