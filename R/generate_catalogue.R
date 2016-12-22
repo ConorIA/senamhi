@@ -90,7 +90,7 @@
   catalogue <- as.data.frame(catalogue, stringsAsFactors = FALSE)
   catalogue$Latitude <- as.numeric(catalogue$Latitude)
   catalogue$Longitude <- as.numeric(catalogue$Longitude)
-  comment(catalogue) <- "Note: The Senamhi database detailing available historical information has not been updated since 2010, as such, any station with data available until 2010 is assumed to be current, and has been marked as having data until 2015. Actual data availability may vary for these stations. Especially for closed stations."
+  comment(catalogue) <- "Note: The Senamhi database detailing available historical information has not been updated since 2010, as such, any station with data available until 2010 is assumed to be current, and has been marked as having data until \"2010+\". Actual data availability may vary for these stations. Especially for closed stations."
   save(catalogue, file = "catalogue.rda")
   return("Catalogue saved as catalogue.rda")
 }

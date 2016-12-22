@@ -4,13 +4,19 @@
 \alias{station_explorer}
 \title{A Shiny interface to Senamhi weather and river stations}
 \usage{
-station_explorer()
+station_explorer(local = FALSE)
+}
+\arguments{
+\item{local}{logical; if set to `TRUE`, we will show only the data that is available locally.}
 }
 \value{
 none
 }
 \description{
 A function to launch a shiny web app to explore Senamhi stations.
+}
+\examples{
+\dontrun{station_explorer()}
 }
 \author{
 Conor I. Anderson

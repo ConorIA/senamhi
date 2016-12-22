@@ -2,32 +2,21 @@
 % Please edit documentation in R/read_data.R
 \name{read_data}
 \alias{read_data}
-\title{Compile data from the Peruvian National Hydrological and Meterological Service}
+\title{Read data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-read_data(station, year, export = TRUE, write_mode = "z", trim = TRUE,
-  clean = FALSE)
+read_data(station)
 }
 \arguments{
 \item{station}{character; the station id number to process.}
-
-\item{year}{numerical; a vector of years to process.}
-
-\item{export}{logical; weather to export the data to a `.csv` file. Defaults to `TRUE`.}
-
-\item{write_mode}{character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.}
-
-\item{trim}{logical; if set to TRUE, the script will trim missing data from the start and end of the data set. Note only completely missing years will be trimmed.}
-
-\item{clean}{logical; if set to TRUE, the script will delete all of the downloaded HTML files.}
 }
 \value{
-None
+A tibble (tbl_df) of the relative information.
 }
 \description{
-Compile a CSV file of Peruvian historical climate data from the Senamhi web portal.
+Read a CSV file of Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
-\dontrun{read_data('000401', 2000:2005, trim = TRUE)}
+\dontrun{read_data('000401')}
 }
 \author{
 Conor I. Anderson
