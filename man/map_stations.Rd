@@ -16,9 +16,11 @@ Show the stations of interest on an interactive map using Leaflet. Zoom levels a
 }
 \examples{
 # Make a map of all the stations.
-\dontrun{map_stations(catalogue$StationID), zoom = 4}
+\dontrun{map_stations(catalogue$StationID, zoom = 4)}
 # Make a map of all stations in Cusco.
 \dontrun{map_stations(catalogue$StationID[catalogue$Region == "CUSCO"])}
+##' # Make a map from station search results.
+\dontrun{map_stations(station_search(region = "SAN MARTIN", baseline = 1981:2010))}
 }
 \author{
 Conor I. Anderson
