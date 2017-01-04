@@ -5,7 +5,7 @@
 ##' @param station character; one or more station id numbers to show on the map.
 ##' @param zoom numeric; the level to zoom the map to.
 ##' 
-##' @importFrom leaflet leaflet addTiles setView addMarkers 
+##' @importFrom leaflet "%>%" leaflet addTiles setView addMarkers 
 ##' 
 ##' @export
 ##'
