@@ -6,6 +6,7 @@
 ##' @param region character; optional character string to filter results by region.
 ##' @param ignore.case logical; by default the search for station names is not case-sensitive.
 ##' @param baseline vector; optional vector with a start and end year for a desired baseline.
+##' @param config character; the configuration of the station ((m)eteorological or (h)ydrological)
 ##' @param target numeric; optional station ID of a target station, or a vector of length 2 containing latitude and longitude (in that order).
 ##' @param mindist numeric; minimum distance from the target in km. Only used if a target is specified. (defaults to 0)
 ##' @param maxdist numeric; maximum distance from the target in km. Only used if a target is specified. (defaults to 100)
@@ -32,7 +33,7 @@
 ##' 
 
 station_search <- function(name = NULL, region = NULL, baseline = NULL, ignore.case = TRUE, 
-  target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
+  config = NULL, target = NULL, mindist = 0, maxdist = 100, sort = TRUE, ...) {
   
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
@@ -44,6 +45,12 @@ station_search <- function(name = NULL, region = NULL, baseline = NULL, ignore.c
   # If `region` is not NULL, filter by name
   if (!is.null(region)) {
     index <- index[grep(region, catalogue$Region[index], ignore.case = ignore.case, 
+      ...)]
+  }
+  
+  # If `config` is not NULL, filter by name
+  if (!is.null(config)) {
+    index <- index[grep(config, catalogue$Configuration[index], ignore.case = ignore.case, 
       ...)]
   }
   
