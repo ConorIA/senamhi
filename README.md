@@ -6,7 +6,6 @@ It is important to note that the info on the Senamhi website has not undergone q
 
 #### Build Status
 
-- Travis: [![Build Status](https://travis-ci.org/ConorIA/senamhiR.svg?branch=master)](https://travis-ci.org/ConorIA/senamhiR)
 - Appveyor: [![Build status](https://ci.appveyor.com/api/projects/status/8731y41f53b8me78?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir)
 - Gitlab: [![build status](https://gitlab.com/ConorIA/senamhi/badges/master/build.svg)](https://gitlab.com/ConorIA/senamhi/commits/master)
 
@@ -15,17 +14,18 @@ To use
 ------
 ``` {r, eval = FALSE}
 install.packages("devtools")
-devtools::install_github("ConorIA/senamhiR")
+devtools::install_git("https://gitlab.com/ConorIA/senamhiR.git")
 ```
 
 Included functions
 ------------------
 * `senamhiR()` ... A wrapper for the two following functions
     * `download_data()` ... Downloads data in HTML tables for a specific station and range of dates
-    * `write_data()` ... Compiles a `.csv` file from the HTML files. 
+    * `write_data()` ... Compiles a `.csv` file from the HTML files
     * `read_data()` ... Reads the data contained in the `.csv` file for use in R 
 * `station_search()` ... A function to search the stations in catalogue.rda by various criteria
 * `station_explorer()` ... a Shiny app to explore the catalogue of stations
+* `map_stations()` ... produce a map of a given list of stations
 
 Example for downloading an entire region
 ------
