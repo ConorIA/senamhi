@@ -7,7 +7,7 @@ It is important to note that the info on the Senamhi website has not undergone q
 #### Build Status
 
 - Appveyor: [![Build status](https://ci.appveyor.com/api/projects/status/60kbu1b7wkf7akqn?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir-bxb45)
-- Gitlab: [![build status](https://gitlab.com/ConorIA/senamhi/badges/master/build.svg)](https://gitlab.com/ConorIA/senamhi/commits/master)
+- GitLab: [![build status](https://gitlab.com/ConorIA/senamhiR/badges/master/build.svg)](https://gitlab.com/ConorIA/senamhiR/commits/master)
 
 
 To use
