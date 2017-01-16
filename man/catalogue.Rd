@@ -4,7 +4,7 @@
 \name{catalogue}
 \alias{catalogue}
 \title{Catalogue of Senamhi stations}
-\format{An object of class \code{data.frame} with 1789 rows and 12 columns.}
+\format{An object of class \code{tbl_df} (inherits from \code{tbl}, \code{data.frame}) with 1802 rows and 12 columns.}
 \source{
 \url{http://www.senamhi.gob.pe/}
 }

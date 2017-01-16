@@ -56,6 +56,6 @@ generate_local_catalogue <- function(station, localcatalogue){
   if (is.na(localcatalogue$`Data End`[row]) | localcatalogue$`Data End`[row] != format(dat$Fecha[nrow(dat)], format = "%Y")) localcatalogue$`Data End`[row] <- format(dat$Fecha[nrow(dat)], format = "%Y")
   localcatalogue$`Period (Yr)`[row] <- 1 + as.numeric(localcatalogue$`Data End`[row]) - as.numeric(localcatalogue$`Data Start`[row])
   if (is.na(localcatalogue$Downloaded[row]) | localcatalogue$Downloaded[row] != "Yes") localcatalogue$Downloaded[row] <- "Yes"
-  save(localcatalogue, file = "localCatalogue.rda")
+  save(localcatalogue, file = "localCatalogue.rda", compress = "xz", compression_level = 9)
   return("Values updated.")
 }

@@ -5,8 +5,8 @@
 \title{Find Senamhi stations matching various criteria}
 \usage{
 station_search(name = NULL, region = NULL, baseline = NULL,
-  ignore.case = TRUE, target = NULL, mindist = 0, maxdist = 100,
-  sort = TRUE, ...)
+  ignore.case = TRUE, config = NULL, target = NULL, mindist = 0,
+  maxdist = 100, sort = TRUE, ...)
 }
 \arguments{
 \item{name}{character; optional character string to filter results by station name.}
@@ -16,6 +16,8 @@ station_search(name = NULL, region = NULL, baseline = NULL,
 \item{baseline}{vector; optional vector with a start and end year for a desired baseline.}
 
 \item{ignore.case}{logical; by default the search for station names is not case-sensitive.}
+
+\item{config}{character; the configuration of the station ((m)eteorological or (h)ydrological)}
 
 \item{target}{numeric; optional station ID of a target station, or a vector of length 2 containing latitude and longitude (in that order).}
 

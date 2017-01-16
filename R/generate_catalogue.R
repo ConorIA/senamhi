@@ -7,7 +7,8 @@
 ##' @keywords internal
 ##' 
 ##' @author Conor I. Anderson
-##'
+##' 
+##' @importFrom tibble as_tibble
 ##' @importFrom XML htmlTreeParse
 
 .generate_catalogue <- function() {
@@ -22,7 +23,7 @@
   catalogue = NULL
   dir <- tempdir()
   
-  for (i in 1:length(vector)) {
+  for (i in seq_along(vector)) {
     .download_action(url = urlList[i], filename = paste0(dir, "/", vector[i], 
       ".html"))
     data <- htmlTreeParse(paste0(dir, "/", vector[i], ".html"))
@@ -81,17 +82,24 @@
       catalogue <- rbind(catalogue, row)
       j <- j + 1
     }
-    i <- i + 1
     colnames(catalogue) <- c("Station", "StationID", "Type", "Configuration", 
       "Data Start", "Data End", "Station Status", "Latitude", "Longitude", 
       "Region", "Province", "District")
   }
   rownames(catalogue) <- NULL
-  catalogue <- as.data.frame(catalogue, stringsAsFactors = FALSE)
+  catalogue <- as_tibble(catalogue)
+  catalogue$Type <- as.factor(catalogue$Type)
+  catalogue$Configuration <- as.factor(catalogue$Configuration)
+  catalogue$`Data Start` <- as.integer(catalogue$`Data Start`)
+  catalogue$`Data End` <- as.integer(catalogue$`Data End`)
+  catalogue$`Station Status` <- as.factor(catalogue$`Station Status`)
   catalogue$Latitude <- as.numeric(catalogue$Latitude)
   catalogue$Longitude <- as.numeric(catalogue$Longitude)
+  #catalogue$Region <- as.factor(catalogue$Region)
+  #catalogue$Province <- as.factor(catalogue$Province)
+  #catalogue$District <- as.factor(catalogue$District)
   comment(catalogue) <- "Note: The Senamhi database detailing available historical information has not been updated since 2010, as such, any station with data available until 2010 is assumed to be current, and has been marked as having data until \"2010+\". Actual data availability may vary for these stations. Especially for closed stations."
-  save(catalogue, file = "catalogue.rda")
+  save(catalogue, file = "catalogue.rda", compress = "xz", compression_level = 9)
   return("Catalogue saved as catalogue.rda")
 }
 
