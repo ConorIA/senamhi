@@ -22,8 +22,8 @@
 generate_local_catalogue <- function(station, localcatalogue){
   
   if (missing(localcatalogue)) {
-    if (file.exists("localCatalogue.rda")) {
-      load("localCatalogue.rda")
+    if (file.exists("local_catalogue.rda")) {
+      load("local_catalogue.rda")
     } else {
       localcatalogue <- as_tibble(catalogue)
       localcatalogue <- add_column(localcatalogue, `Period (Yr)` = rep(NA, nrow(localcatalogue)), .after = 6)
@@ -56,6 +56,6 @@ generate_local_catalogue <- function(station, localcatalogue){
   if (is.na(localcatalogue$`Data End`[row]) | localcatalogue$`Data End`[row] != format(dat$Fecha[nrow(dat)], format = "%Y")) localcatalogue$`Data End`[row] <- format(dat$Fecha[nrow(dat)], format = "%Y")
   localcatalogue$`Period (Yr)`[row] <- 1 + as.numeric(localcatalogue$`Data End`[row]) - as.numeric(localcatalogue$`Data Start`[row])
   if (is.na(localcatalogue$Downloaded[row]) | localcatalogue$Downloaded[row] != "Yes") localcatalogue$Downloaded[row] <- "Yes"
-  save(localcatalogue, file = "localCatalogue.rda", compress = "xz", compression_level = 9)
+  save(localcatalogue, file = "local_catalogue.rda", compress = "xz", compression_level = 9)
   return("Values updated.")
 }

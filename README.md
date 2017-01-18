@@ -32,9 +32,8 @@ Example for downloading an entire region
 ``` {r, eval = FALSE}
 ## Identify all stations in the Tacna Region
 search <- station_search(region = "Tacna")
-stations <- search$StationID
 ## Download and compile data from all station (using a period of 2000-2015 if automatic detection fails)
-senamhiR(3, stations, fallback = c(2000,2015))
+senamhiR(3, search$StationID, fallback = 2000:2015)
 ```
 
 #### Senamhi terms of use

@@ -3,8 +3,8 @@
 ##' @description Attempt to guess station characteristics.
 ##'
 ##' @param station character; the station id number to process.
-##' @param write_mode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
-##'
+##' @param ... Additional arguments passed to \code{\link{.download_action}}.
+##' 
 ##' @return vector
 ##'
 ##' @keywords internal
@@ -16,7 +16,7 @@
 ##' @examples
 ##' \dontrun{.guess_config('000401')}
 
-.guess_config <- function(station, write_mode = "z") {
+.guess_config <- function(station, ...) {
   
   ## Ask user to input variables
   if (missing(station)) 
@@ -29,7 +29,7 @@
   ## Download the data
   print(paste0("Checking station characteristics for ", station, "."))
   filename <- tempfile()
-  .download_action(url, filename, write_mode)
+  .download_action(url, filename, ...)
   station_data <- htmlTreeParse(filename)
   station_data <- unlist(station_data[3])
   station_data <- station_data[grep("_dat_esta_tipo02.php", station_data)]

@@ -15,7 +15,7 @@
 ##' 
 ##' @examples
 ##' \dontrun{senamhiR(3, '000401', 1998:2015)}
-##' \dontrun{senamhiR(3, c('000401', '000152', '000219'), fallback = c(1961,1990))}
+##' \dontrun{senamhiR(3, c('000401', '000152', '000219'), fallback = 1961:1990)}
 
 senamhiR <- function(tasks, station, year, month = 1:12, fallback, write_mode = "z") {
   if (missing(tasks)) 
@@ -44,8 +44,8 @@ senamhiR <- function(tasks, station, year, month = 1:12, fallback, write_mode = 
         print("Available data undefined and no fallback specified. Skipping this station.")
         return("No period defined.")
       }
-      print(paste("Available data undefined. Using fallback from", fallback[1], "to", fallback[length(fallback)]))
-      year <- fallback[1]:fallback[length(fallback)]
+      print(paste("Available data undefined. Using fallback from", min(fallback), "to", max(fallback)))
+      year <- min(fallback):max(fallback)
     } else {
       if (station_data$`Data End` == "2010+") {
         print(paste("Not sure when data period ends. We will try until", 
