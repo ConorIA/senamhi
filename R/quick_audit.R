@@ -31,9 +31,13 @@ quick_audit <- function(station, variables, reverse = FALSE) {
     variables <- as.numeric(variables)
   }
   
-  if (reverse) ctl = 1
-  else ctl = 0
-  
+  if (reverse) {
+    ctl = 1
+  }
+  else {
+    ctl = 0
+  }
+
   years <- min(format(dat$Fecha, format = "%Y")):max(format(dat$Fecha, format = "%Y"))
   
   out <- tibble(Year = years)
