@@ -1,7 +1,10 @@
 image: conoria/alpine-r
+
+variables:
+  BUILD_FLAGS: "--no-build-vignettes --no-manual"
+
 test:
   script:
-    - R -q -e "install.packages(c('shiny', 'curl', 'geosphere', 'XML', 'DT', 'readr', 'tibble', 'leaflet'), repos='http://cran.rstudio.com/')"
-    - R CMD build . --no-build-vignettes --no-manual
-    - PKG_FILE_NAME=$(ls -1t *.tar.gz | head -n 1)
-    - R CMD check "${PKG_FILE_NAME}" --no-build-vignettes --no-manual --as-cran
+    - R CMD build . ${BUILD_FLAGS}
+    - Rscript -e 'devtools::install_deps(dependencies = TRUE)'
+    - R CMD check $(ls -1t *.tar.gz | head -n 1) ${BUILD_FLAGS} --as-cran
