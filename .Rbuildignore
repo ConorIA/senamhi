@@ -7,3 +7,4 @@ appveyor.yml
 .gitignore
 README.md
 LICENSE.md
+install_senamhiR.R

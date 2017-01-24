@@ -12,13 +12,15 @@ quick_audit(station, variables, reverse = FALSE)
 \item{variables}{numeric or character; By default, all variables will be included. Pass a numeric vector to specify columns to include, or pass a character vector to try to match column names.}
 
 \item{reverse}{Boolean; if true, will show proportion present instead of proportion missing.}
+
+\item{by}{character; whether values should be reported annually (\code{by = year}), or monthly (\code{by = month}).}
 }
 \description{
 Returns a tibble with the proportion of missing values at a station for a given year and variables.
 }
 \examples{
 \dontrun{quick_audit("000401", "Tmax", reverse = TRUE)}
-\dontrun{quick_audit("000401", 2:10)}
+\dontrun{quick_audit("000401", 2:10, by = "month")}
 }
 \author{
 Conor I. Anderson
