@@ -21,7 +21,8 @@ Imports:
     shiny,
     tibble,
     utils,
-    XML
+    XML,
+    zoo
 License: GPL (>= 3)
 URL: https://gitlab.com/ConorIA/senamhiR/
 BugReports: https://gitlab.com/ConorIA/senamhiR/issues

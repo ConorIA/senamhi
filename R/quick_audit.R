@@ -8,6 +8,7 @@
 ##' @param reverse Boolean; if true, will show proportion present instead of proportion missing.
 ##' 
 ##' @importFrom tibble tibble add_column
+##' @importFrom zoo as.yearmon
 ##' 
 ##' @export
 ##'
@@ -17,7 +18,7 @@
 ##' \dontrun{quick_audit("000401", "Tmax", reverse = TRUE)}
 ##' \dontrun{quick_audit("000401", 2:10, by = "month")}
 
-quick_audit <- function(station, variables, reverse = FALSE) {
+quick_audit <- function(station, variables, by = "year", reverse = FALSE) {
   
   dat <- read_data(station)
   

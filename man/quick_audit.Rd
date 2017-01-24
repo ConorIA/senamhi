@@ -4,16 +4,16 @@
 \alias{quick_audit}
 \title{Perform a quick audit for missing values for a given Senamhi station}
 \usage{
-quick_audit(station, variables, reverse = FALSE)
+quick_audit(station, variables, by = "year", reverse = FALSE)
 }
 \arguments{
 \item{station}{character; a station id number to process.}
 
 \item{variables}{numeric or character; By default, all variables will be included. Pass a numeric vector to specify columns to include, or pass a character vector to try to match column names.}
 
-\item{reverse}{Boolean; if true, will show proportion present instead of proportion missing.}
-
 \item{by}{character; whether values should be reported annually (\code{by = year}), or monthly (\code{by = month}).}
+
+\item{reverse}{Boolean; if true, will show proportion present instead of proportion missing.}
 }
 \description{
 Returns a tibble with the proportion of missing values at a station for a given year and variables.
