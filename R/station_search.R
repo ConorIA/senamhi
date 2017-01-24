@@ -16,6 +16,7 @@
 ##' @return A data frame containing the details of matching stations.
 ##' 
 ##' @importFrom geosphere distGeo 
+##' @importFrom utils glob2rx
 ##' 
 ##' @export
 ##'
