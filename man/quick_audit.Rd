@@ -2,25 +2,30 @@
 % Please edit documentation in R/quick_audit.R
 \name{quick_audit}
 \alias{quick_audit}
-\title{Perform a quick audit for missing values for a given Senamhi station}
+\title{Perform a quick audit for missing values at a given Senamhi station}
 \usage{
-quick_audit(station, variables, by = "year", reverse = FALSE)
+quick_audit(station, variables, by = "year", report = "pct",
+  reverse = FALSE)
 }
 \arguments{
-\item{station}{character; a station id number to process.}
+\item{station}{character; a station id number to process or a \code{tbl_df} containing the data to process}
 
-\item{variables}{numeric or character; By default, all variables will be included. Pass a numeric vector to specify columns to include, or pass a character vector to try to match column names.}
+\item{variables}{numeric or character; by default, all variables will be included. Pass a numeric vector to specify columns to include, or pass a character vector to try to match column names}
 
-\item{by}{character; whether values should be reported annually (\code{by = year}), or monthly (\code{by = month}).}
+\item{by}{character; whether values should be reported annually (\code{by = "year"}), or monthly (\code{by = "month"})}
 
-\item{reverse}{Boolean; if true, will show proportion present instead of proportion missing.}
+\item{report}{character; whether values should be reported as percentage missing (\code{report = "pct"}) or as number of missing values (\code{report = "n"})}
+
+\item{reverse}{Boolean; if \code{TRUE}, will show percentage present instead of percentage missing (only applies if \code{report = "pct"})}
 }
 \description{
-Returns a tibble with the proportion of missing values at a station for a given year and variables.
+Returns a tibble with the percentage or number of missing values at a station for a given year or year-month and variables.
 }
 \examples{
+
 \dontrun{quick_audit("000401", "Tmax", reverse = TRUE)}
-\dontrun{quick_audit("000401", 2:10, by = "month")}
+\dontrun{quick_audit("000401", 2:10, by = "month", report = "n")}
+
 }
 \author{
 Conor I. Anderson
