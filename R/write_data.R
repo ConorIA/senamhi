@@ -133,8 +133,10 @@ write_data <- function(station, year, write_mode = "z", trim = TRUE, clean = FAL
   }
   
   # Replace missing value codes
-  dat[dat == -999] <- NA
-  dat[dat == -888] <- NA
+  for (col in 2:ncol(dat)) {
+    badrows <- which(dat[[col]] %in% list("", -999, -888))
+    dat[badrows,col] <- NA
+  }
   
   # Make sure that the columns are the right type
   dat$Fecha <- as.Date(dat$Fecha, format = "%Y-%m-%d")
