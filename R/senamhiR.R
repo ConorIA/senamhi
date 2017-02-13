@@ -44,8 +44,18 @@ senamhiR <- function(tasks, station, year, month = 1:12, fallback, write_mode = 
         print("Available data undefined and no fallback specified. Skipping this station.")
         return("No period defined.")
       }
-      print(paste("Available data undefined. Using fallback from", min(fallback), "to", max(fallback)))
-      year <- min(fallback):max(fallback)
+      if (is.na(station_data$`Data Start`) && !is.na(station_data$`Data End`)) {
+        print(paste("Data start undefined. Using fallback from", min(fallback), "to", station_data$`Data End`))
+        year <- min(fallback):station_data$`Data End`
+      }
+      if (!is.na(station_data$`Data Start`) && is.na(station_data$`Data End`)) {
+        print(paste("Data end undefined. Using fallback from", station_data$`Data Start`, "to", max(fallback)))
+        year <- station_data$`Data Start`:max(fallback)
+      }
+      if (is.na(station_data$`Data Start`) && is.na(station_data$`Data End`)) {
+        print(paste("Available data undefined. Using fallback from", min(fallback), "to", max(fallback)))
+        year <- min(fallback):max(fallback)
+      }
     } else {
       if (station_data$`Data End` == "2010+") {
         print(paste("Not sure when data period ends. We will try until", 
