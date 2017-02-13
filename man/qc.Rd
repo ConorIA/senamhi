@@ -18,7 +18,5 @@ For now, this script only performs action on the three main temperature variable
 }
 \author{
 Conor I. Anderson
-
-FIXME: Clean this code up!
 }
 

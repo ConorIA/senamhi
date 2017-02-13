@@ -7,8 +7,9 @@
 ##'
 ##' @return an R object of type data.frame.
 ##' 
+##' @importFrom dplyr select filter
 ##' @importFrom tibble add_column
-##' @importFrom utils sd
+##' @importFrom stats sd
 ##' 
 ##' @export
 ##'
