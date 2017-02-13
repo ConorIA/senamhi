@@ -6,11 +6,10 @@ It is important to note that the info on the Senamhi website has not undergone q
 
 **Build Status:** [![build status](https://gitlab.com/ConorIA/senamhiR/badges/master/build.svg)](https://gitlab.com/ConorIA/senamhiR/commits/master) [![Build status](https://ci.appveyor.com/api/projects/status/60kbu1b7wkf7akqn?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir-bxb45)
 
-To use
+Installation
 ------
 ``` {r, eval = FALSE}
-source("https://raw.githubusercontent.com/r-pkgs/remotes/master/install-github.R")$value("r-pkgs/remotes")
-remotes::install_git("https://gitlab.com/ConorIA/senamhiR.git")
+source("https://gitlab.com/ConorIA/senamhiR/raw/master/install_senamhiR.R")
 ```
 
 Included functions
