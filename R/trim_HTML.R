@@ -3,18 +3,28 @@
 ##' @description A helper function to trim HTML files for years with missing data.
 ##'
 ##' @param station character; the StationID of the station to process.
+##' @param localcatalogue character; optional character string to specify catalogue object to update.
+##' @param interactive boolean; whether user should be prompted about deletions and catalogue updates.
 ##' 
 ##' @keywords internal
 ##'
 ##' @author Conor I. Anderson
 
-.trim_HTML <- function(station, interactive = TRUE) {
+.trim_HTML <- function(station, localcatalogue, interactive = TRUE) {
 
   oldwd <- getwd()
   
-  cat_index <- which(catalogue$StationID == station)
+  if (missing(localcatalogue)) {
+    if (file.exists("local_catalogue.rda")) {
+      load("local_catalogue.rda")
+    } else {
+      localcatalogue <- as_tibble(catalogue)
+    }
+  }
+  
+  cat_index <- which(localcatalogue$StationID == station)
 
-  station_data <- catalogue[cat_index, ]
+  station_data <- localcatalogue[cat_index, ]
   stationName <- station_data$Station
   region <- station_data$Region
 
@@ -30,11 +40,11 @@
     if (interactive == TRUE) {
       go <- readline(prompt = "Should we blow the station away? (y/N)")
       if (go == "y" | go == "Y") unlink(files)
-      go <- readline(prompt = "Should we update the catalogue? (y/N)")
-      if (go == "y" | go == "Y") catalogue$`Data Start`[cat_index] <- "NONE"; catalogue$`Data End`[cat_index] <- "NONE" 
+      go <- readline(prompt = "Should we update the local catalogue? (y/N)")
+      if (go == "y" | go == "Y") localcatalogue$`Data Start`[cat_index] <- "NONE"; localcatalogue$`Data End`[cat_index] <- "NONE" 
     } else {
       if (go == "y" | go == "Y") unlink(files)
-      catalogue$`Data Start`[cat_index] <- "NONE"; catalogue$`Data End`[cat_index] <- "NONE" 
+      localcatalogue$`Data Start`[cat_index] <- "NONE"; localcatalogue$`Data End`[cat_index] <- "NONE" 
     }
   }
   first_year <- substring(files[first_index], 1, 4)
@@ -67,11 +77,11 @@
   if (interactive == TRUE) {
     go <- readline(prompt = "Should we go ahead? (y/N)")
     if (go == "y" | go == "Y") unlink(files[files_year < first_year | files_year > last_year])
-    go <- readline(prompt = "Should we update the catalogue? (y/N)")
-    if (go == "y" | go == "Y") catalogue$`Data Start`[cat_index] <- first_year; catalogue$`Data End`[cat_index] <- last_year 
+    go <- readline(prompt = "Should we update the local catalogue? (y/N)")
+    if (go == "y" | go == "Y") localcatalogue$`Data Start`[cat_index] <- first_year; localcatalogue$`Data End`[cat_index] <- last_year 
   } else {
     unlink(files[files_year < first_year | files_year > last_year])
-    catalogue$`Data Start`[cat_index] <- first_year; catalogue$`Data End`[cat_index] <- last_year 
+    localcatalogue$`Data Start`[cat_index] <- first_year; localcatalogue$`Data End`[cat_index] <- last_year 
   }
   setwd(oldwd)
 }
