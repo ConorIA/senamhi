@@ -98,6 +98,8 @@
   #catalogue$Region <- as.factor(catalogue$Region)
   #catalogue$Province <- as.factor(catalogue$Province)
   #catalogue$District <- as.factor(catalogue$District)
+  catalogue$`Data Start`[875] <- 1963 # Temporary fix for bad dates
+  catalogue$`Data Start`[1330] <- 1900 # Temporary fix (and not a very good one!) for bad dates
   comment(catalogue) <- "Note: The Senamhi database detailing available historical information has not been updated since 2010, as such, any station with data available until 2010 is assumed to be current, and has been marked as having data until \"2010+\". Actual data availability may vary for these stations. Especially for closed stations."
   save(catalogue, file = "catalogue.rda", compress = "xz", compression_level = 9)
   return("Catalogue saved as catalogue.rda")
