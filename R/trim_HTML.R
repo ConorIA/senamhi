@@ -67,12 +67,12 @@
     senamhiR(1, station, year = (as.numeric(last_year) + 1))
     setwd(newwd)
     files <- dir()
-    files_year <- substring(files, 1, 4)
     last_index <- max(which(file.size(files) > 3037))
     last_year <- substring(files[last_index], 1, 4)
   }
   print(paste0("We have data from ", first_year, " to ", last_year, "."))
   print("We are doing to blow away the following files.")
+  files_year <- substring(files, 1, 4)
   data.frame(Files = files[files_year < first_year | files_year > last_year], Size = file.size(files[files_year < first_year | files_year > last_year]))
   if (interactive == TRUE) {
     go <- readline(prompt = "Should we go ahead? (y/N)")
