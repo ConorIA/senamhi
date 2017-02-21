@@ -71,17 +71,21 @@
     last_year <- substring(files[last_index], 1, 4)
   }
   print(paste0("We have data from ", first_year, " to ", last_year, "."))
-  print("We are doing to blow away the following files.")
-  files_year <- substring(files, 1, 4)
-  data.frame(Files = files[files_year < first_year | files_year > last_year], Size = file.size(files[files_year < first_year | files_year > last_year]))
-  if (interactive == TRUE) {
-    go <- readline(prompt = "Should we go ahead? (y/N)")
-    if (go == "y" | go == "Y") unlink(files[files_year < first_year | files_year > last_year])
-    go <- readline(prompt = "Should we update the local catalogue? (y/N)")
-    if (go == "y" | go == "Y") localcatalogue$`Data Start`[cat_index] <- first_year; localcatalogue$`Data End`[cat_index] <- last_year 
+  if (substring(files[1], 1, 4) == first_year && substring(files[length(files)], 1, 4) == last_year) {
+    print("There are no files to trim!")
   } else {
-    unlink(files[files_year < first_year | files_year > last_year])
-    localcatalogue$`Data Start`[cat_index] <- first_year; localcatalogue$`Data End`[cat_index] <- last_year 
+    print("We are doing to blow away the following files.")
+    files_year <- substring(files, 1, 4)
+    data.frame(Files = files[files_year < first_year | files_year > last_year], Size = file.size(files[files_year < first_year | files_year > last_year]))
+    if (interactive == TRUE) {
+      go <- readline(prompt = "Should we go ahead? (y/N)")
+      if (go == "y" | go == "Y") unlink(files[files_year < first_year | files_year > last_year])
+      go <- readline(prompt = "Should we update the local catalogue? (y/N)")
+      if (go == "y" | go == "Y") localcatalogue$`Data Start`[cat_index] <- first_year; localcatalogue$`Data End`[cat_index] <- last_year 
+    } else {
+      unlink(files[files_year < first_year | files_year > last_year])
+      localcatalogue$`Data Start`[cat_index] <- first_year; localcatalogue$`Data End`[cat_index] <- last_year 
+    }
   }
   setwd(oldwd)
 }
