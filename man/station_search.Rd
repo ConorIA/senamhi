@@ -52,4 +52,3 @@ station_search(target = '000401', dist = 0:100)
 \author{
 Conor I. Anderson
 }
-

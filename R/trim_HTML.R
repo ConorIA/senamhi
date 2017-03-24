@@ -24,6 +24,12 @@
   
   cat_index <- which(localcatalogue$StationID == station)
   newwd <- file.path(oldwd, localcatalogue$Region[cat_index], "HTML", paste(station, "-", localcatalogue$Station[cat_index]))
+  
+  if (!dir.exists(newwd)) {
+    warning("Directory doesn't exist")
+    return()
+  }
+  
   setwd(newwd)
   
   files <- dir()

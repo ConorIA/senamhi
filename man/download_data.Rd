@@ -27,4 +27,3 @@ Download Peruvian historical climate data from the Senamhi web portal.
 \author{
 Conor I. Anderson
 }
-

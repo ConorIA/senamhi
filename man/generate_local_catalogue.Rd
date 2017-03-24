@@ -9,7 +9,7 @@ generate_local_catalogue(station, localcatalogue)
 \arguments{
 \item{station}{character; optional character string to specify one or more stations.}
 
-\item{localcatalogue}{character; optional character string to specify catalogue object to update. by region.}
+\item{localcatalogue}{character; optional character string to specify catalogue object to update.}
 }
 \value{
 A data frame containing the details of matching stations.
@@ -25,4 +25,3 @@ Generate or update a catalogue of locally downloaded stations.
 \author{
 Conor I. Anderson
 }
-

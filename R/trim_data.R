@@ -12,7 +12,7 @@
 
 .trim_data <- function(dat) {
   
-  tests <- as.data.frame(!is.na(dat[, 5:ncol(dat)]))
+  tests <- as.data.frame(!is.na(dat[, 2:ncol(dat)]))
   
   firstYear <- 9999
   lastYear <- 0
