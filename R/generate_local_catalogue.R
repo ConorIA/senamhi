@@ -3,7 +3,7 @@
 ##' @description Generate or update a catalogue of locally downloaded stations.
 ##'
 ##' @param station character; optional character string to specify one or more stations.
-##' @param localcatalogue character; optional character string to specify catalogue object to update. by region.
+##' @param localcatalogue character; optional character string to specify catalogue object to update.
 ##'
 ##' @return A data frame containing the details of matching stations.
 ##' 

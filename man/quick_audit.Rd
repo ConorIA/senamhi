@@ -30,4 +30,3 @@ Returns a tibble with the percentage or number of missing values at a station fo
 \author{
 Conor I. Anderson
 }
-

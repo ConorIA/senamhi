@@ -1,8 +1,8 @@
 Package: senamhiR
 Type: Package
 Title: A Collection of Functions to Obtain Peruvian Climate Data
-Version: 0.3
-Date: 2016-09-26
+Version: 0.3.1
+Date: 2017-03-24
 Authors@R: c(person(given = c("Conor", "I."), family = "Anderson", 
            role = c("aut","cre"), email = "conor.anderson@mail.utoronto.ca"),
            person(given = c("William", "A."), family = "Gough", role = "ths",
@@ -27,4 +27,4 @@ License: GPL (>= 3)
 URL: https://gitlab.com/ConorIA/senamhiR/
 BugReports: https://gitlab.com/ConorIA/senamhiR/issues
 LazyData: TRUE
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

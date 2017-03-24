@@ -25,4 +25,3 @@ Show the stations of interest on an interactive map using Leaflet. Zoom levels a
 \author{
 Conor I. Anderson
 }
-

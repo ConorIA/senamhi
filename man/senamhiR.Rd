@@ -29,4 +29,3 @@ Download and/or compile Peruvian historical climate data from the Senamhi web po
 \author{
 Conor I. Anderson
 }
-

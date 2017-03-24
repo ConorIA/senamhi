@@ -114,7 +114,7 @@ write_data <- function(station, year, write_mode = "z", trim = TRUE, clean = FAL
           datadate <- strsplit(datadate, split = "-")[[1]]
           datadate <- as.numeric(datadate[1])
           thisrow <- row + datadate - 1
-          dat[thisrow, 2:length(dat)] <- table[j, 2:ncol(table)]
+          if (!is.na(thisrow)) dat[thisrow, 2:length(dat)] <- table[j, 2:ncol(table)]
         }
       } else {
         # Sometimes the HTML files only have a subset of the columns

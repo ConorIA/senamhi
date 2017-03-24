@@ -3,6 +3,7 @@
 ##' @description Read a CSV file of Peruvian historical climate data from the Senamhi web portal.
 ##'
 ##' @param station character; the station id number to process.
+##' @param path character; the path to the file. By default, the script expects the csv files to be sorted by region. 
 ##'
 ##' @return A tibble (tbl_df) of the relative information.
 ##'
@@ -16,7 +17,7 @@
 ##' @examples
 ##' \dontrun{read_data('000401')}
 
-read_data <- function(station) {
+read_data <- function(station, path = "default") {
   
   ## Fail if we try to read multiple stations
   if (length(station) > 1) {
@@ -28,7 +29,13 @@ read_data <- function(station) {
     stop("I could not identify the station. Please check the station number and try again.")
   }
   
-  filename <- paste0(catalogue$Region[row], "/", station, " - ", catalogue$Station[row], ".csv")
+  if (path == "default") {
+    folder <- paste0(catalogue$Region[row], "/")
+  } else {
+    folder <- if (path == "") "." else path
+  }
+  
+  filename <- paste0(folder, "/", station, " - ", catalogue$Station[row], ".csv")
   if (!file.exists(filename)) {
     stop("I can't find a csv file for that station. Please use the `export_data()` function to create it.")
   }
