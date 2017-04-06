@@ -49,45 +49,20 @@ write_data <- function(station, year, write_mode = "z", trim = TRUE, clean = FAL
   }
   ##--------------------------------------------------------------------------------------
   
-  ## Generate the column names
-  if (config == "H") {
-    if (type == "CON") 
-      colnames <- c("Fecha", "Nivel06 (m)", "Nivel10 (m)", "Nivel14 (m)", "Nivel18 (m)", 
-        "Caudal (m^3/s)")
-    if (type == "SUT") 
-      colnames <- c("Fecha", "Tmean (C)", "Tmax (C)", "Tmin (C)", "Humidity (%)", 
-        "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", 
-        "Nivel Medio (m)")
-  } else {
-    if (type == "CON") 
-      colnames <- c("Fecha", "Tmax (C)", "Tmin (C)", "TBS07 (C)", "TBS13 (C)", 
-        "TBS19 (C)", "TBH07 (C)", "TBH13 (C)", "TBH19 (C)", "Prec07 (mm)", 
-        "Prec19 (mm)", "Direccion del Viento", "Velocidad del Viento (m/s)")
-    if (type == "SUT" | type == "SIA" | type == "DAV") 
-      colnames <- c("Fecha", "Tmean (C)", "Tmax (C)", "Tmin (C)", "Humedad (%)", 
-        "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento")
-  }
-  
   # GenFileList
   month <- sprintf("%02d", 1:12)
   files <- apply(expand.grid(month, year), 1, function(x) paste0(x[2], x[1]))
-  files <- paste0(region, "/HTML/", as.character(station), " - ", station_name, 
-    "/", files, ".html")
+  files <- paste0(region, "/HTML/", as.character(station), " - ", station_name, "/", files, ".html")
   
   # GenDates
-  datelist <- apply(expand.grid(month, year), 1, function(x) paste(x[2], x[1], 
-    sep = "-"))
+  datelist <- apply(expand.grid(month, year), 1, function(x) paste(x[2], x[1], sep = "-"))
   datelist <- paste(datelist, "01", sep = "-")
   
-  startDate <- paste(year[1], month[1], 1, sep = "-")
-  endDate <- as.Date(paste0(year[length(year)], "-", month[length(month)], "-01"), 
-    format = "%Y-%m-%d")
-  endDate <- paste(year[length(year)], month[length(month)], number_of_days(endDate), 
-    sep = "-")
+  startDate <- as.Date(paste0(min(year), "-01-01"), format = "%Y-%m-%d")
+  endDate <- as.Date(paste0(max(year), "-12-31"), format = "%Y-%m-%d")
+  datecolumn <- seq(as.Date(startDate), by = "day", length.out = (as.numeric(as.Date(endDate) - as.Date(startDate)) + 1))
   
-  number_of_dates <- as.numeric(as.Date(endDate) - as.Date(startDate)) + 1
-  datecolumn <- seq(as.Date(startDate), by = "day", length.out = number_of_dates)
-  
+  colnames <- .clean_table(config = config, type = type, clean_names = TRUE)
   dat <- as_tibble(matrix(nrow = length(datecolumn), ncol = length(colnames)))
   names(dat) <- colnames
   dat$Fecha <- datecolumn
@@ -132,63 +107,8 @@ write_data <- function(station, year, write_mode = "z", trim = TRUE, clean = FAL
     setTxtProgressBar(prog, value = i)
   }
   
-  # Replace missing value codes
-  for (col in 2:ncol(dat)) {
-    badrows <- which(dat[[col]] %in% list("", -999, -888))
-    dat[badrows,col] <- NA
-  }
-  
-  # Make sure that the columns are the right type
-  dat$Fecha <- as.Date(dat$Fecha, format = "%Y-%m-%d")
-  if (config == "H") {
-    if (type == "CON") {
-      dat$`Nivel06 (m)` <- as.numeric(dat$`Nivel06 (m)`)
-      dat$`Nivel10 (m)` <- as.numeric(dat$`Nivel10 (m)`)
-      dat$`Nivel14 (m)` <- as.numeric(dat$`Nivel14 (m)`)
-      dat$`Nivel18 (m)` <- as.numeric(dat$`Nivel18 (m)`)
-      dat$`Caudal (m^3/s)` <- as.numeric(dat$`Caudal (m^3/s)`)
-    } else {
-      dat$`Tmean (C)` <- as.numeric(dat$`Tmean (C)`)
-      dat$`Tmax (C)` <- as.numeric(dat$`Tmax (C)`)
-      dat$`Tmin (C)` <- as.numeric(dat$`Tmin (C)`)
-      dat$`Humidity (%)` <- as.numeric(dat$`Humidity (%)`)
-      dat$`Lluvia (mm)` <- as.numeric(dat$`Lluvia (mm)`)
-      dat$`Presion (mb)` <- as.numeric(dat$`Presion (mb)`)
-      dat$`Direccion del Viento` <- as.character(dat$`Direccion del Viento`)
-      dat$`Nivel Medio (m)` <- as.numeric(dat$`Nivel Medio (m)`)
-    }
-  } else {
-    if (type == "CON") {
-      dat$`Tmax (C)` <- as.numeric(dat$`Tmax (C)`)
-      dat$`Tmin (C)` <- as.numeric(dat$`Tmin (C)`) 
-      dat$`TBS07 (C)` <- as.numeric(dat$`TBS07 (C)`)
-      dat$`TBS13 (C)` <- as.numeric(dat$`TBS13 (C)`)
-      dat$`TBS19 (C)` <- as.numeric(dat$`TBS19 (C)`)
-      dat$`TBH07 (C)` <- as.numeric(dat$`TBH07 (C)`)
-      dat$`TBH13 (C)` <- as.numeric(dat$`TBH13 (C)`)
-      dat$`TBH19 (C)` <- as.numeric(dat$`TBH19 (C)`)
-      dat$`Prec07 (mm)` <- as.numeric(dat$`Prec07 (mm)`)
-      dat$`Prec19 (mm)` <- as.numeric(dat$`Prec19 (mm)`)
-      dat$`Direccion del Viento` <- as.character(dat$`Direccion del Viento`)
-      dat <- add_column(dat, `Tmean (C)` = round(((dat$`Tmax (C)` + dat$`Tmin (C)`)/2), digits = 1), .after = 1)
-    }
-    if (type == "SUT" | type == "SIA" | type == "DAV") {
-      dat$`Tmean (C)` <- as.numeric(dat$`Tmean (C)`)
-      dat$`Tmax (C)` <- as.numeric(dat$`Tmax (C)`)
-      dat$`Tmin (C)` <- as.numeric(dat$`Tmin (C)`)
-      dat$`Humedad (%)` <- as.numeric(dat$`Humedad (%)`)
-      dat$`Lluvia (mm)` <- as.numeric(dat$`Lluvia (mm)`)
-      dat$`Presion (mb)` <- as.numeric(dat$`Presion (mb)`)
-      dat$`Direccion del Viento` <- as.character(dat$`Direccion del Viento`)
-    }
-  }
-  if (has_name(dat, "Velocidad del Viento (m/s)")) {
-    if (length(grep(".", dat$`Velocidad del Viento (m/s)`, fixed = TRUE)) > 0) {
-      dat$`Velocidad del Viento (m/s)` <- as.double(dat$`Velocidad del Viento (m/s)`)
-    } else {
-      dat$`Velocidad del Viento (m/s)` <- as.integer(dat$`Velocidad del Viento (m/s)`)
-    }
-  }
+  # Remove missing value codes and clean up column types
+  dat <- .clean_table(dat, config, type, remove_missing = TRUE, fix_types = TRUE)
   
   if (trim) {
     dat <- try(.trim_data(dat))
