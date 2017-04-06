@@ -49,8 +49,7 @@ station_search <- function(name = NULL, ignore.case = TRUE, glob = FALSE, region
   
   # If `region` is not NULL, filter by name
   if (!is.null(region)) {
-    index <- index[grep(region, catalogue$Region[index], ignore.case = ignore.case, 
-      ...)]
+    index <- index[which(catalogue$Region == toupper(region))]
   }
   
   # If `config` is not NULL, filter by name

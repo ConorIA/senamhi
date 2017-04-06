@@ -1,77 +1,57 @@
-##' @title Download and/or compile data from the Peruvian National Hydrological and Meterological Service
+##' @title Download compiled data from the Peruvian National Hydrological and Meterological Service
 ##'
-##' @description Download and/or compile Peruvian historical climate data from the Senamhi web portal.
+##' @description Download compiled Peruvian historical climate data from the Senamhi web portal.
 ##'
-##' @param tasks numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.
-##' @param station character; the station id number to process. Can also be a vector of station ids.
+##' @param station character; the station id number to process. Can also be a vector of station ids, which will be returned as a list.
 ##' @param year numerical; a vector of years to process. Defaults to the full known range.
-##' @param month numerical; a vector of months to process. Defaults to 1:12.
-##' @param fallback vector; if no year is specified, and the period of available data is unknown, this vector will provide a fallback start and end year to download. If not specified, such stations will be skipped.
-##' @param write_mode character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.
+##' @param tasks [DEPRECATED] numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.
+##' @param fallback [DEPRECATED] vector; if no year is specified, and the period of available data is unknown, this vector will provide a fallback start and end year to download. If not specified, such stations will be skipped.
+##' @param write_mode [DEPRECATED] character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.
 ##'
 ##' @author Conor I. Anderson
+##' 
+##' @importFrom tibble tibble
 ##' 
 ##' @export
 ##' 
 ##' @examples
-##' \dontrun{senamhiR(3, '000401', 1998:2015)}
-##' \dontrun{senamhiR(3, c('000401', '000152', '000219'), fallback = 1961:1990)}
+##' \dontrun{senamhiR('000401', 1998:2015)}
+##' \dontrun{senamhiR(c('000401', '000152', '000219'))}
 
-senamhiR <- function(tasks, station, year, month = 1:12, fallback, write_mode = "z") {
-  if (missing(tasks)) 
-    tasks <- readline(prompt = "1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both: ")
-  while (tasks != 1 && tasks != 2 && tasks != 3) {
-    print("Please choose the series of command you wish to run.")
-    tasks <- readline(prompt = "1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both: ")
-  }
+senamhiR <- function(station, year, tasks, fallback, write_mode = "z") {
   if (missing(station)) {
     station <- readline(prompt = "Enter station number(s) separated by commas: ")
     station <- trimws(unlist(strsplit(station, split = ",")))
   }
   
-  ## Add a work-around to download multiple stations
-  if (length(station) > 1) {
-    lapply(station, senamhiR, tasks = tasks, year = year, month = month, fallback = fallback, 
-      write_mode = write_mode)
-    return("Bulk action completed.")
-  }
-  
-  ## Choose range of years
-  if (missing(year)) {
-    station_data <- catalogue[catalogue$StationID == station, ]
-    if (is.na(station_data$`Data Start`) || is.na(station_data$`Data End`)) {
-      if (missing(fallback)) {
-        print("Available data undefined and no fallback specified. Skipping this station.")
-        return("No period defined.")
-      }
-      if (is.na(station_data$`Data Start`) && !is.na(station_data$`Data End`)) {
-        print(paste("Data start undefined. Using fallback from", min(fallback), "to", station_data$`Data End`))
-        year <- min(fallback):station_data$`Data End`
-      }
-      if (!is.na(station_data$`Data Start`) && is.na(station_data$`Data End`)) {
-        print(paste("Data end undefined. Using fallback from", station_data$`Data Start`, "to", max(fallback)))
-        year <- station_data$`Data Start`:max(fallback)
-      }
-      if (is.na(station_data$`Data Start`) && is.na(station_data$`Data End`)) {
-        print(paste("Available data undefined. Using fallback from", min(fallback), "to", max(fallback)))
-        year <- min(fallback):max(fallback)
-      }
-    } else {
-      if (station_data$`Data End` == "2010+") {
-        print(paste("Not sure when data period ends. We will try until", 
-          (as.numeric(format(Sys.Date(), format = "%Y")) - 1)))
-        endYear <- as.numeric(format(Sys.Date(), format = "%Y")) - 1
-      } else {
-        endYear <- station_data$`Data End`
-      }
-      year <- station_data$`Data Start`:endYear
+  # If tasks is not specified (good), use MySQL
+  if (missing(tasks)) {
+    dataout <- list()
+    for (stn in station) {
+      if (missing(year)) year <- 1900:2100
+      temp <- download_data_sql(stn, year)
+      dataout <- c(dataout, list(temp))
     }
-  }
-  print(paste0("Processing station ", station, "."))
-  if (tasks == 1 || tasks == 3) {
-    download_data(station = station, year = year, month = month)
-  }
-  if (tasks == 2 || tasks == 3) {
-    write_data(station = station, year = year, write_mode = write_mode)
+    if (length(station) == 1) {
+      return(dataout[[1]])
+    } else {
+      return(dataout)
+    }
+    
+  } else {
+    # Use deprecated methods
+    if (length(station) > 1) {
+      lapply(station, senamhiR, year = year, tasks = tasks, fallback = fallback, 
+             write_mode = write_mode)
+      return("Bulk action completed.")
+    }
+    if (missing(year)) .guess_year(stn, fallback)
+    print(paste0("Processing station ", station, "."))
+    if (tasks == 1 || tasks == 3) {
+      download_data(station = station, year = year)
+    }
+    if (tasks == 2 || tasks == 3) {
+      write_data(station = station, year = year, write_mode = write_mode)
+    }
   }
 }

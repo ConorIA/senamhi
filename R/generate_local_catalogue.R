@@ -1,4 +1,4 @@
-##' @title Generate Local Catalogue
+##' @title [DEPRECATED] Generate Local Catalogue
 ##'
 ##' @description Generate or update a catalogue of locally downloaded stations.
 ##'

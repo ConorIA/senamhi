@@ -2,7 +2,7 @@
 % Please edit documentation in R/write_data.R
 \name{write_data}
 \alias{write_data}
-\title{Compile data from the Peruvian National Hydrological and Meterological Service}
+\title{[DEPRECATED] Compile data from the Peruvian National Hydrological and Meterological Service}
 \usage{
 write_data(station, year, write_mode = "z", trim = TRUE, clean = FALSE)
 }

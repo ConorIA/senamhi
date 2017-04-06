@@ -9,7 +9,9 @@
 ##'
 ##' @author Conor I. Anderson
 ##' 
-##' @importFrom RMySQL dbConnect
+##' @importFrom DBI dbConnect dbDisconnect dbGetQuery dbListTables dbReadTable
+##' @importFrom RMySQL MySQL
+##' @importFrom tibble as_tibble
 ##'
 ##' @export
 ##' 
@@ -22,7 +24,8 @@ download_data_sql <- function(station, year) {
   type = station_data$Type
   config = station_data$Configuration
 
-  conn <- dbConnect(MySQL(), user = "anonymous", host = Sys.getenv("SQL_HOST"), dbname = "pcd")
+  conn <- dbConnect(MySQL(), user = "anonymous", host = "pcd.conr.ca", dbname = "pcd")
+  
   sql_table <- paste0("ID_", station)
   if (sum(dbListTables(conn) %in% sql_table) != 1) stop("There was an error getting that table.")
 
@@ -35,5 +38,6 @@ download_data_sql <- function(station, year) {
   }
   dat <- .clean_table(dat, config, type, clean_names = TRUE, fix_types = TRUE)
 
+  dbDisconnect(conn)
   dat
 }

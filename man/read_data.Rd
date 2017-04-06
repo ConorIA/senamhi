@@ -2,7 +2,7 @@
 % Please edit documentation in R/read_data.R
 \name{read_data}
 \alias{read_data}
-\title{Read data from the Peruvian National Hydrological and Meterological Service}
+\title{[DEPRECATED] Read data from the Peruvian National Hydrological and Meterological Service}
 \usage{
 read_data(station, path = "default")
 }

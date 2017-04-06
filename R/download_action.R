@@ -1,4 +1,4 @@
-##' @title Curl helper
+##' @title [DEPRECATED] Curl helper
 ##' 
 ##' @description A helper function to execute download actions using curl.
 ##'

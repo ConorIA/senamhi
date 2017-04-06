@@ -1,16 +1,18 @@
-#' Title
+#' Clean up table names and types
 #'
-#' @param datain 
-#' @param config 
-#' @param type 
-#' @param clean_names 
-#' @param remove_missing 
-#' @param fix_types 
+#' @param datain the data.frame to process
+#' @param config the station configuration
+#' @param type the station type
+#' @param clean_names Boolean; whether to clean up table names
+#' @param remove_missing Boolean; whether to remove missing value codes, e.g. -888, -999
+#' @param fix_types Boolean; whether to fix column types
 #'
-#' @return
-#' @export
+#' @return tbl_df
+#' 
+#' @keywords internal
 #'
-#' @examples
+#' @author Conor I. Anderson
+
 .clean_table <- function(datain, config, type, clean_names = FALSE, remove_missing = FALSE, fix_types = FALSE) {
   
   if (clean_names) {

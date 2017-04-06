@@ -1,10 +1,9 @@
-##' @title Download from the Peruvian National Hydrological and Meterological Service
+##' @title [DEPRECATED] Download from the Peruvian National Hydrological and Meterological Service
 ##'
 ##' @description Download Peruvian historical climate data from the Senamhi web portal.
 ##'
 ##' @param station character; the station id number to process.
 ##' @param year numerical; a vector of years to process.
-##' @param month numerical; a vector of months to process. Defaults to 1:12.
 ##' @param write_mode character; if set to 'overwrite', the script will overwrite downloaded files if they exist.
 ##'
 ##' @return None
@@ -19,7 +18,7 @@
 ##' @examples
 ##' \dontrun{download_data('000401', 1971:2000)}
 
-download_data <- function(station, year, month = 1:12, write_mode = "z") {
+download_data <- function(station, year, write_mode = "z") {
   
   stationData <- catalogue[catalogue$StationID == station, ]
   stationName <- stationData$Station
@@ -27,7 +26,7 @@ download_data <- function(station, year, month = 1:12, write_mode = "z") {
   type = stationData$Type
   config = stationData$Configuration
   
-  month <- sprintf("%02d", month)
+  month <- sprintf("%02d", 1:12)
   dates <- apply(expand.grid(month, year), 1, function(x) paste0(x[2], x[1]))
   
   ## genURLs

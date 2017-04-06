@@ -2,16 +2,14 @@
 % Please edit documentation in R/download_data.R
 \name{download_data}
 \alias{download_data}
-\title{Download from the Peruvian National Hydrological and Meterological Service}
+\title{[DEPRECATED] Download from the Peruvian National Hydrological and Meterological Service}
 \usage{
-download_data(station, year, month = 1:12, write_mode = "z")
+download_data(station, year, write_mode = "z")
 }
 \arguments{
 \item{station}{character; the station id number to process.}
 
 \item{year}{numerical; a vector of years to process.}
-
-\item{month}{numerical; a vector of months to process. Defaults to 1:12.}
 
 \item{write_mode}{character; if set to 'overwrite', the script will overwrite downloaded files if they exist.}
 }

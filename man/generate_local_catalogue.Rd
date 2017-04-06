@@ -2,7 +2,7 @@
 % Please edit documentation in R/generate_local_catalogue.R
 \name{generate_local_catalogue}
 \alias{generate_local_catalogue}
-\title{Generate Local Catalogue}
+\title{[DEPRECATED] Generate Local Catalogue}
 \usage{
 generate_local_catalogue(station, localcatalogue)
 }
