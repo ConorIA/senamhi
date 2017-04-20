@@ -54,10 +54,13 @@ read_data <- function(station, path = "default") {
   }
   
   # Read the .csv file 
-  dat  <- try(read_csv(filename, col_types = types))
-  if (inherits(dat, "try-error")) {
+  dat <- tryCatch({
+    read_csv(filename, col_types = types)
+  }, warning = function(w) {
+    read_csv(filename, col_types = paste0(types, "c"))
+  }, error = function(e) {
     return("I could not read the file. Please ensure that it exists and that you have the right permissions.")
-  }
+    })
   
   # Fix the "Volocidad del Viento" column, which is sometimes numeric and sometimes integer (avoid false precision)
   if (has_name(dat, "Velocidad del Viento (m/s)")) {
