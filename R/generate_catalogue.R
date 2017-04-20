@@ -1,4 +1,4 @@
-##' @title A function to determine the full catalogue of available Peruvian National Hydrological and Meterological Service stations
+##' @title [DEPRECATED] A function to determine the full catalogue of available Peruvian National Hydrological and Meterological Service stations
 ##'
 ##' @description Generate a .rda file containing a list of all of the stations operated by Senamhi. You should not need to execute this function, as the data is already included in the package.
 ##'

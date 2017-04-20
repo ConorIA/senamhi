@@ -1,4 +1,4 @@
-##' @title Data trimmer
+##' @title [DEPRECATED] Data trimmer
 ##' 
 ##' @description A helper function to trim CSV files with multiple years of missing data.
 ##'

@@ -1,4 +1,4 @@
-##' @title HTML file trimmer
+##' @title [DEPRECATED] HTML file trimmer
 ##' 
 ##' @description A helper function to trim HTML files for years with missing data.
 ##'

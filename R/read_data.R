@@ -1,4 +1,4 @@
-##' @title Read data from the Peruvian National Hydrological and Meterological Service
+##' @title [DEPRECATED] Read data from the Peruvian National Hydrological and Meterological Service
 ##'
 ##' @description Read a CSV file of Peruvian historical climate data from the Senamhi web portal.
 ##'

@@ -1,4 +1,4 @@
-##' @title Query available data from the Peruvian National Hydrological and Meterological Service
+##' @title [DEPRECATED] Query available data from the Peruvian National Hydrological and Meterological Service
 ##'
 ##' @description Query the available data for a given station from the Senamhi web portal.
 ##'

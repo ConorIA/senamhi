@@ -1,4 +1,4 @@
-##' @title Guess station characteristics
+##' @title [DEPRECATED] Guess station characteristics
 ##'
 ##' @description Attempt to guess station characteristics.
 ##'
