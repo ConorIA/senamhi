@@ -195,7 +195,7 @@ station_search(target = c(-13.163333, -72.545556), dist = 0:50)
 
 Once you have found your station of interest, you can download the daily data using the eponymous `senamhiR()` function. The function takes two arguments, station and year. If year is left blank, the function will return all available archived data. 
 
-If I wanted to download data for Requna (station no. 000280) from 1981 to 2010, I could use: 
+If I wanted to download data for Requena (station no. 000280) from 1981 to 2010, I could use: 
 
 
 ```r
@@ -280,7 +280,7 @@ quick_audit(requ, c("Tmean", "Tmax", "Tmin"))
 ## # ... with 20 more rows
 ```
 
-Use `report = "n"` to show the _number_ of missing values. Use `by = "month"` to show missing data by month instead of year. For instance, the number of days for which Mean Temperature was missing at Tocahe in 1980:
+Use `report = "n"` to show the _number_ of missing values. Use `by = "month"` to show missing data by month instead of year. For instance, the number of days for which Mean Temperature was missing at Tocache in 1980:
 
 
 ```r
@@ -340,30 +340,30 @@ For now, the data has been tested for decimal place-errors with the following lo
  
 Any number above 100 °C or below -100 °C is tested: 
 
-If the number appears to have missed a decimal place (e.g. 324 -> 32.4; 251 -> 25.1), we try to divide that number by 10. If the result is within 1.5 standard devations of all values 30 days before and after the day in question, we keep the result, otherwise, we discard it.
+If the number appears to have missed a decimal place (e.g. 324 -> 32.4; 251 -> 25.1), we try to divide that number by 10. If the result is within 1.5 standard deviations of all values 30 days before and after the day in question, we keep the result, otherwise, we discard it.
 
 If the number seems to be the result of some other typographical error (e.g. 221.2), we discard the data point. 
 
-##### Case 2: $T_{max}$ < $T_{min}$
+##### Case 2: _T~max~_ < _T~min~_
 
-In case 2, we perform the same tests for both $T_{max}$ and $T_{min}$. If the number is within 1.5 standard deviations of all values 30 days before and after the day in question, we leave the number alone. (Note: this is often the case for $T_{min}$ but seldom the case for $T_{max}$). If the number does not fall within 1.5 standard deviations, we perform an additional level of testing to check if the number is the result of a premature decimal point (e.g. 3.4 -> 34.0; 3 -> 30.0). In this case, we try to multiply the number by 10. If this new result is within 1.5 standard devations of all values 30 days before and after the day in question, we keep the result, otherwise, we discard it.
+In case 2, we perform the same tests for both _T~max~_ and _T~min~_. If the number is within 1.5 standard deviations of all values 30 days before and after the day in question, we leave the number alone. (Note: this is often the case for _T~min~_ but seldom the case for _T~max~_). If the number does not fall within 1.5 standard deviations, we perform an additional level of testing to check if the number is the result of a premature decimal point (e.g. 3.4 -> 34.0; 3 -> 30.0). In this case, we try to multiply the number by 10. If this new result is within 1.5 standard deviations of all values 30 days before and after the day in question, we keep the result, otherwise, we discard it.
 
 _I have less confidence in this solution than I do for Case 1._
 
 #### Cases that are currently missed:
 
- - Cases where $T_{min}$ is small because of a typo.
- - Cases where $T_{max}$ is small because of a typo, but not smaller than $T_{min}$.
+ - Cases where _T~min~_ is small because of a typo.
+ - Cases where _T~max~_ is small because of a typo, but not smaller than _T~min~_.
  
 #### Cases where this function is plain wrong: 
 
- - When there are a number of similar errors within the 60-day period, bad data is sometimes considered ok. This is especially apparent at, for instance, Station 47287402.
+ - When there are a number of similar errors within the 60-day period, bad data is sometimes considered okay. This is especially apparent at, for instance, Station 47287402.
 
 #### Variables controlled for: 
 
- - $T_{max}$
- - $T_{min}$
- - $T_{mean}$
+ - _T~max~_
+ - _T~min~_
+ - _T~mean~_
 
 __No other variables are currently tested; hydrological data is not tested. This data should not be considered "high quality", use of the data is your responsibility.__ Note that all values that are modified form their original values will be recorded in a new "Observations" column in the resultant tibble.
 
