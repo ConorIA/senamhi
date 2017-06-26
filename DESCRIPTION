@@ -19,6 +19,7 @@ Imports:
     dplyr,
     geosphere,
     leaflet,
+    magrittr,
     readr,
     RMySQL,
     shiny,

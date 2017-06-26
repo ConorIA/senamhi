@@ -5,7 +5,8 @@
 ##' @param station character; one or more station id numbers to show on the map.
 ##' @param zoom numeric; the level to zoom the map to.
 ##' 
-##' @importFrom leaflet "%>%" leaflet addTiles setView addMarkers 
+##' @importFrom leaflet addAwesomeMarkers addTiles awesomeIcons leaflet setView 
+##' @importFrom magrittr %>%
 ##' 
 ##' @export
 ##'
@@ -53,8 +54,33 @@ map_stations <- function(station, zoom) {
     } else zoom = 10
   }
   
-  leaflet() %>% addTiles() %>% 
+  defIcons <-function(dat) {
+    sapply(dat$Configuration, function(Configuration) {
+      if(Configuration %in% c("M", "M1", "M2")) {
+        "thermometer"
+      } else {
+        "waterdrop"
+      } })
+  }
+  
+  defColours <-function(dat) {
+    sapply(dat$Configuration, function(Configuration) {
+    if(Configuration %in% c("M", "M1", "M2")) {
+      "orange"
+    } else {
+      "blue"
+    } })
+  }
+  
+  icons <- awesomeIcons(
+    icon = defIcons(poi),
+    iconColor = 'black', 
+    library = 'ion',
+    markerColor = defColours(poi)
+  )
+  
+  leaflet(poi) %>% addTiles() %>% 
     setView(lng = lons, lat = lats, zoom = zoom)  %>% 
-    addMarkers(poi$Station, lng = poi$Longitude, lat = poi$Latitude, 
-               popup = paste0(poi$StationID, " - ", poi$Station, " (", poi$Configuration, ")")) 
+    addAwesomeMarkers(~Longitude, ~Latitude, icon = icons,  
+      label = paste0(poi$StationID, " - ", poi$Station, " (", poi$Configuration, ")")) 
 }
