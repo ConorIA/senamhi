@@ -8,6 +8,7 @@
   context <- unlist(context$var)
   # We should now have *fairly* clean context
   bad_data <- unlist(bad_table$var[bad_row])
+
   if (type == "dps") {
     if (!grepl("\\.", as.character(bad_data))) {
       # If this looks like a decimal error, let's salvage the data
@@ -29,22 +30,35 @@
       fix <- NA
     }
   }
+
   if (type == "mme") {
-    tdiff <- abs(mean(context, na.rm = TRUE) - (bad_data/10))
+    # First, make sure the value is actually bad.
+    tdiff <- abs(mean(context, na.rm = TRUE) - bad_data)
     if (length(tdiff) == 0) tdiff <- NA
     sdiff <- sd(context, na.rm = TRUE)
     prop <- if (!is.na(sdiff) & !is.na(tdiff)) (tdiff / sdiff) else NA
+    
+    # If our value is more than 1.5 standard deviations off, try a dps fix
     if (!is.na(prop) && prop > 1.5) {
-      # Let's see if it is a decimal place error (fairly conservative)
-      tdiff <- abs(mean(context, na.rm = TRUE)-(bad_data*10))
+      tdiff <- abs(mean(context, na.rm = TRUE) - (bad_data/10))
       if (length(tdiff) == 0) tdiff <- NA
+      sdiff <- sd(context, na.rm = TRUE)
       prop <- if (!is.na(sdiff) & !is.na(tdiff)) (tdiff / sdiff) else NA
-      if (!is.na(prop) && prop < 1.5) {
-        observation <- paste0(label, " dps: ", bad_data, " -> ", 10 * bad_data, " (", round(prop, 2), ")")
-        fix <- (10 * bad_data)
+      # If the value is still off, try the other direction
+      if (!is.na(prop) && prop > 1.5) {
+        tdiff <- abs(mean(context, na.rm = TRUE)-(bad_data*10))
+        if (length(tdiff) == 0) tdiff <- NA
+        prop <- if (!is.na(sdiff) & !is.na(tdiff)) (tdiff / sdiff) else NA
+        if (!is.na(prop) && prop < 1.5) {
+          observation <- paste0(label, " dps: ", bad_data, " -> ", 10 * bad_data, " (", round(prop, 2), ")")
+          fix <- (10 * bad_data)
+        } else {
+          observation <- paste0(label, " err: ", bad_data, " -> NA (", round(prop, 2), ")")
+          fix <- NA
+        }
       } else {
-        observation <- paste0(label, " err: ", bad_data, " -> NA (", round(prop, 2), ")")
-        fix <- NA
+        observation <- paste0(label, " dps: ", bad_data, " -> ", bad_data/10, " (", round(prop, 2), ")")
+        fix <- (bad_data/10)
       }
     } else {
       fix <- bad_data

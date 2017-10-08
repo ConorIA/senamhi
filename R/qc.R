@@ -41,17 +41,19 @@ qc <- function(dat) {
       bad_table <- select(dat, Fecha, var = `Tmax (C)`)
       fixes <- .fix_bad_data(bad_table, maxshifts[i], "Tmax", "dps")
       dat$`Tmax (C)`[maxshifts[i]] <- unlist(fixes[1])
-      existingobs <- if (!is.na(observations[maxshifts[i]]) && observations[maxshifts[i]] != '') paste(observations[maxshifts[i]], "/ ") else ""
+      existingobs <- if (!is.na(observations[maxshifts[i]]) && observations[maxshifts[i]] != '') paste(observations[maxshifts[i]], ifelse((unlist(fixes[2]) != ''), "/ ", "")) else ""
       observations[maxshifts[i]] <- paste0(existingobs, unlist(fixes[2]))
     }
   }
   
   if (length(minshifts) > 0) {
-    bad_table <- select(dat, Fecha, var = `Tmin (C)`)
-    fixes <- .fix_bad_data(bad_table, minshifts[i], "Tmin", "dps")
-    dat$`Tmin (C)`[minshifts[i]] <- unlist(fixes[1])
-    existingobs <- if (!is.na(observations[minshifts[i]]) && observations[minshifts[i]] != '') paste(observations[minshifts[i]], "/ ") else ""
-    observations[minshifts[i]] <- paste0(existingobs, unlist(fixes[2]))
+    for (i in 1:length(maxshifts)) {
+      bad_table <- select(dat, Fecha, var = `Tmin (C)`)
+      fixes <- .fix_bad_data(bad_table, minshifts[i], "Tmin", "dps")
+      dat$`Tmin (C)`[minshifts[i]] <- unlist(fixes[1])
+      existingobs <- if (!is.na(observations[minshifts[i]]) && observations[minshifts[i]] != '') paste(observations[minshifts[i]], ifelse((unlist(fixes[2]) != ''), "/ ", "")) else ""
+      observations[minshifts[i]] <- paste0(existingobs, unlist(fixes[2]))
+    }
   }
   
   # Try to detect Tmin < Tmax (for now, we'll throw away these days)
@@ -63,20 +65,21 @@ qc <- function(dat) {
       bad_table <- select(dat, Fecha, var = `Tmax (C)`)
       fixes <- .fix_bad_data(bad_table, minmaxerr[i], "Tmax", "mme")
       dat$`Tmax (C)`[minmaxerr[i]] <- unlist(fixes[1])
-      existingobs <- if (!is.na(observations[minmaxerr[i]]) && observations[minmaxerr[i]] != '') paste(observations[minmaxerr[i]], "/ ") else ""
+      existingobs <- if (!is.na(observations[minmaxerr[i]]) && observations[minmaxerr[i]] != '') paste(observations[minmaxerr[i]], ifelse((unlist(fixes[2]) != ''), "/ ", "")) else ""
       observations[minmaxerr[i]] <- paste0(existingobs, unlist(fixes[2]))
       
       # Repeat the same for Tmin
       bad_table <- select(dat, Fecha, var = `Tmin (C)`)
       fixes <- .fix_bad_data(bad_table, minmaxerr[i], "Tmin", "mme")
       dat$`Tmin (C)`[minmaxerr[i]] <- unlist(fixes[1])
-      existingobs <- if (!is.na(observations[minmaxerr[i]]) && observations[minmaxerr[i]] != '') paste(observations[minmaxerr[i]], "/ ") else ""
+      existingobs <- if (!is.na(observations[minmaxerr[i]]) && observations[minmaxerr[i]] != '') paste(observations[minmaxerr[i]], ifelse((unlist(fixes[2]) != ''), "/ ", "")) else ""
       observations[minmaxerr[i]] <- paste0(existingobs, unlist(fixes[2]))
     }
   }
   
   # Recalculate Tmean and add observations
   dat$`Tmean (C)` <- round((dat$`Tmax (C)` + dat$`Tmin (C)`)/2,1)
+  observations[is.na(observations)] <- ''
   dat <- add_column(dat, Observations = observations)
   
   dat
