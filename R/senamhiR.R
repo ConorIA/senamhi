@@ -24,6 +24,10 @@ senamhiR <- function(station, year, tasks, fallback, write_mode = "z") {
     station <- trimws(unlist(strsplit(station, split = ",")))
   }
   
+  if (!station %in% catalogue$StationID) {
+    stop("The station requested is not a valid station.")
+  }
+  
   # If tasks is not specified (good), use MySQL
   if (missing(tasks)) {
     dataout <- list()

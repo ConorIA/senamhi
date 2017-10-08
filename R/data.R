@@ -20,6 +20,6 @@
 #' }
 #'   
 #' @examples
-#' catalogue
+#' \dontrun{catalogue}
 "catalogue"
 

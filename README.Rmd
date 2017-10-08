@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(senamhiR)
 ```
 
-[![build status](https://gitlab.com/ConorIA/senamhiR/badges/master/build.svg)](https://gitlab.com/ConorIA/senamhiR/commits/master) [![Build status](https://ci.appveyor.com/api/projects/status/60kbu1b7wkf7akqn?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir-bxb45)
+[![build status](https://gitlab.com/ConorIA/senamhiR/badges/master/build.svg)](https://gitlab.com/ConorIA/senamhiR/commits/master) [![Build status](https://ci.appveyor.com/api/projects/status/60kbu1b7wkf7akqn?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir-bxb45) [![codecov](https://codecov.io/gl/ConorIA/senamhiR/branch/master/graph/badge.svg)](https://codecov.io/gl/ConorIA/senamhiR)
 
 The package provides an automated solution for the acquisition of archived Peruvian climate and hydrology data directly within R. The data was compiled from the Senamhi website, and contains all of the data that was available as of March 2017. This data was originally converted from HTML, and is stored in a MySQL database in tibble format.
 

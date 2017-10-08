@@ -50,12 +50,18 @@ station_search <- function(name = NULL, ignore.case = TRUE, glob = FALSE, region
   # If `region` is not NULL, filter by name
   if (!is.null(region)) {
     index <- index[which(catalogue$Region == toupper(region))]
+    if (length(index) == 0) {
+      stop("No data found for that region. Did you spell it correctly?")
+    }
   }
   
   # If `config` is not NULL, filter by name
   if (!is.null(config)) {
     index <- index[grep(config, catalogue$Configuration[index], ignore.case = ignore.case, 
       ...)]
+    if (length(index) == 0) {
+      stop("No data found for that config. Did you pass \"m\" or \"h\"?")
+    }
   }
   
   # Make a table with the info we want

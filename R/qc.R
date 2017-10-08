@@ -26,6 +26,10 @@ qc <- function(dat) {
     }
   }
   
+  if (length(unique(format(dat$Fecha, format = "%Y"))) == 1) {
+    stop("You've passed a one-year table. We need (many) additional years of data for context.")
+  }
+  
   if (grepl("Observations", colnames(dat)[15])) {
     observations <- select(dat, 15) %>% unlist
   } else {
