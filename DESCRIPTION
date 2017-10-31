@@ -13,19 +13,16 @@ Description: A collection of functions to obtain archived Peruvian climatologica
 Depends:
     R (>= 3.1.0)
 Imports:
-    curl,
     DBI,
     DT,
     dplyr,
     geosphere,
     leaflet,
     magrittr,
-    readr,
     RMySQL,
     shiny,
     tibble,
     utils,
-    XML,
     zoo
 Suggests: 
     testthat,
