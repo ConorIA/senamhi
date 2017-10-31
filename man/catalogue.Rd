@@ -27,7 +27,4 @@ catalogue
 \description{
 A \code{data.frame} containing the identifiers, names, and other characteristics of climate and hydro stations in Peru.
 }
-\examples{
-\dontrun{catalogue}
-}
 \keyword{datasets}

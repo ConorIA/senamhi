@@ -18,8 +18,5 @@
 #'   \item{Province}{the province where the station is located}
 #'   \item{District}{the district where the station is located} 
 #' }
-#'   
-#' @examples
-#' \dontrun{catalogue}
+#'
 "catalogue"
-
