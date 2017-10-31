@@ -9,6 +9,7 @@
 #'
 #' @return tbl_df
 #' 
+#' @importFrom tibble has_name
 #' @keywords internal
 #'
 #' @author Conor I. Anderson
