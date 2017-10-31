@@ -23,5 +23,5 @@ test_that("senamhiR can filter by year", {
 
 ## should fail when no correct station is given
 test_that("senamhiR() fails when an incorrect station is requested", {
-  expect_error(senamhiR("foo"), "The station requested is not a valid station.", fixed=TRUE)
+  expect_error(senamhiR("foo"), "One or more requested stations invalid.", fixed=TRUE)
 })

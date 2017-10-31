@@ -4,18 +4,12 @@
 \alias{senamhiR}
 \title{Download compiled data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-senamhiR(station, year, tasks, fallback, write_mode = "z")
+senamhiR(station, year)
 }
 \arguments{
 \item{station}{character; the station id number to process. Can also be a vector of station ids, which will be returned as a list.}
 
 \item{year}{numerical; a vector of years to process. Defaults to the full known range.}
-
-\item{tasks}{[DEPRECATED] numerical; define which tasks to perform: 1) Download Data, 2) Compile CSV of Downloaded Data, 3) Both.}
-
-\item{fallback}{[DEPRECATED] vector; if no year is specified, and the period of available data is unknown, this vector will provide a fallback start and end year to download. If not specified, such stations will be skipped.}
-
-\item{write_mode}{[DEPRECATED] character; if set to 'append', the script will append the data to an exisiting file; if set to 'overwrite', it will overwrite an existing file. If not set, it will not overwrite.}
 }
 \description{
 Download compiled Peruvian historical climate data from the Senamhi web portal.
