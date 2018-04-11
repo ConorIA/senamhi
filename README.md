@@ -1,11 +1,4 @@
----
-title: "senamhiR: A collection of functions to obtain Peruvian climate data in R"
-output: 
-  html_document: 
-    keep_md: yes
----
-
-
+# senamhiR: A collection of functions to obtain Peruvian climate data in R
 
 [![build status](https://gitlab.com/ConorIA/senamhiR/badges/master/build.svg)](https://gitlab.com/ConorIA/senamhiR/commits/master) [![Build status](https://ci.appveyor.com/api/projects/status/60kbu1b7wkf7akqn?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir-bxb45) [![codecov](https://codecov.io/gl/ConorIA/senamhiR/branch/master/graph/badge.svg)](https://codecov.io/gl/ConorIA/senamhiR)
 
