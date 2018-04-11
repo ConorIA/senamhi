@@ -1,26 +1,24 @@
 Package: senamhiR
 Type: Package
 Title: A Collection of Functions to Obtain Peruvian Climate Data
-Version: 0.4.2
+Version: 0.5.0
 Date: 2017-10-08
 Authors@R: c(person(given = c("Conor", "I."), family = "Anderson", 
-           role = c("aut","cre"), email = "conor.anderson@mail.utoronto.ca"),
+           role = c("aut","cre"), email = "conor.anderson@utoronto.ca"),
            person(given = c("William", "A."), family = "Gough", role = "ths",
            email = "gough@utsc.utoronto.ca"))
-Maintainer: Conor I. Anderson <conor@conr.ca>
+Maintainer: Conor I. Anderson <conor.anderson@utoronto.ca>
 Description: A collection of functions to obtain archived Peruvian climatological or
     hydrological data form the Peruvian National Meterology and Hydrology Service.
 Depends:
     R (>= 3.1.0)
 Imports:
     DBI,
-    DT,
     dplyr,
     geosphere,
     leaflet,
     magrittr,
     RMySQL,
-    shiny,
     tibble,
     utils,
     zoo

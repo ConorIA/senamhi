@@ -6,19 +6,26 @@ context("Test `senamhiR()`")
 ## test senamhiR download
 test_that("senamhiR can download data", {
   out <- senamhiR("000401")
-  expect_identical(names(out)[12], "Prec19 (mm)")
+  expect_identical(names(out)[11], "Prec19 (mm)")
   expect_that(out, is_a("tbl_df"))
-  expect_output(str(out), "6940 obs")
-  expect_output(str(out), "14 variables")
+  expect_output(str(out), "13 variables")
 })
 
 ## test senamhiR download by year
 test_that("senamhiR can filter by year", {
   out <- senamhiR("000401", 1998:2000)
-  expect_identical(names(out)[12], "Prec19 (mm)")
+  expect_identical(names(out)[11], "Prec19 (mm)")
   expect_that(out, is_a("tbl_df"))
   expect_output(str(out), "1096 obs")
-  expect_output(str(out), "14 variables")
+  expect_output(str(out), "13 variables")
+})
+
+## test senamhiR can pad with zeroes
+test_that("senamhiR can pad with zeroes", {
+  out <- senamhiR(401)
+  expect_identical(names(out)[11], "Prec19 (mm)")
+  expect_that(out, is_a("tbl_df"))
+  expect_output(str(out), "13 variables")
 })
 
 ## should fail when no correct station is given

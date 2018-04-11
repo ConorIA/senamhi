@@ -20,6 +20,13 @@
 
 download_data_sql <- function(station, year) {
   
+  if (nchar(station) < 6) {
+    station <- suppressWarnings(try(sprintf("%06d", as.numeric(station)), silent = TRUE))
+    if (inherits(station, "try-error") | !station %in% catalogue$StationID) {
+      stop("Station ID appears invalid.")
+    }
+  }
+  
   station_data <- catalogue[catalogue$StationID == station, ]
   type = station_data$Type
   config = station_data$Configuration
@@ -27,7 +34,10 @@ download_data_sql <- function(station, year) {
   conn <- dbConnect(MySQL(), user = "anonymous", host = "pcd.conr.ca", dbname = "pcd")
   
   sql_table <- paste0("ID_", station)
-  if (sum(dbListTables(conn) %in% sql_table) != 1) stop("There was an error getting that table.")
+  if (sum(dbListTables(conn) %in% sql_table) != 1) {
+    dbDisconnect(conn)
+    stop("There was an error getting that table.")
+  }
 
   if (missing(year)) {
     dat <- as_tibble(dbReadTable(conn, sql_table, row.names = NULL))

@@ -27,7 +27,7 @@ quick_audit <- function(station, variables, by = "year", report = "pct", reverse
     dat <- station
   } else {
     if (inherits(station, "character")) {
-      dat <- read_data(station)
+      dat <- download_data_sql(station)
     } else {
       stop("I can't figure out what data you've given me.")
     }

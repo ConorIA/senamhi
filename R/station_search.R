@@ -39,6 +39,13 @@
 station_search <- function(name = NULL, ignore.case = TRUE, glob = FALSE, region = NULL, 
   baseline = NULL, config = NULL, target = NULL, dist = 0:100, sort = TRUE, ...) {
   
+  if (!is.null(target) && length(target) == 1L && nchar(target) < 6) {
+    target <- suppressWarnings(try(sprintf("%06d", as.numeric(target)), silent = TRUE))
+    if (inherits(target, "try-error") || !target %in% catalogue$StationID) {
+      stop("Target station appears invalid.")
+    }
+  }
+  
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
     if (glob) name <- glob2rx(name)

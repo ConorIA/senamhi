@@ -2,10 +2,9 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^\.gitlab-ci\.yml$
-appveyor.yml
-.gitattributes
-.gitignore
-README.md
-README.Rmd
-LICENSE.md
-install_senamhiR.R
+^appveyor\.yml$
+^\.gitattributes$
+^\.gitignore$
+^README\..*$
+^LICENSE\.md$
+^install_senamhiR\.R$

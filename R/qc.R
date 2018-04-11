@@ -3,9 +3,9 @@
 ##' @description A helper function to perform minimal quality control on the data. 
 ##' For now, this script only performs action on the three main temperature variables.
 ##' 
-##' @param dat an R object of type data.frame passed form the export_data script
+##' @param dat a \code{tbl_df} generated form the \code{senamhiR} package
 ##'
-##' @return an R object of type data.frame.
+##' @return a \code{tbl_df}
 ##' 
 ##' @importFrom dplyr select filter
 ##' @importFrom tibble add_column

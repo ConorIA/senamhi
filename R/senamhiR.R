@@ -21,7 +21,13 @@ senamhiR <- function(station, year) {
     station <- trimws(unlist(strsplit(station, split = ",")))
   }
   
-  if (!station %in% catalogue$StationID) {
+  if (any(nchar(station) < 6)) {
+    station[nchar(station) < 6] <- suppressWarnings(
+      try(sprintf("%06d", as.numeric(station[nchar(station) < 6])),
+          silent = TRUE))
+  }
+  
+  if (inherits(station, "try-error") || !station %in% catalogue$StationID) {
     stop("One or more requested stations invalid.")
   }
   

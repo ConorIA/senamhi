@@ -25,6 +25,16 @@ map_stations <- function(station, zoom) {
   if (inherits(station, "data.frame")) {
     station <- station$StationID
   }
+  
+  if (any(nchar(station) < 6)) {
+    station[nchar(station) < 6] <- suppressWarnings(
+      try(sprintf("%06d", as.numeric(station[nchar(station) < 6])),
+          silent = TRUE))
+  }
+  
+  if (inherits(station, "try-error") || !station %in% catalogue$StationID) {
+    stop("One or more requested stations invalid.")
+  }
 
   poi <- NULL
   

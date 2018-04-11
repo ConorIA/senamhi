@@ -7,10 +7,10 @@
 qc(dat)
 }
 \arguments{
-\item{dat}{an R object of type data.frame passed form the export_data script}
+\item{dat}{a \code{tbl_df} generated form the \code{senamhiR} package}
 }
 \value{
-an R object of type data.frame.
+a \code{tbl_df}
 }
 \description{
 A helper function to perform minimal quality control on the data. 
