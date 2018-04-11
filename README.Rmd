@@ -172,7 +172,7 @@ If that seems like a lot of work, just think about how much work it would have b
 
 ## Senamhi terms of use
 
-Senamhi's terms of use are _technically_ supposed to be [here](http://senamhi.gob.pe/?p=terminos_condiciones), but that link is currently redirecting to the Senamhi home page. I authored this package when the terms were still available online. At the time of development, the terms allowed for the free and public access to information on their website, in both for-profit and non-profit applications. However, Senamhi stipulated that any use of the data must be accompanied by a disclaimer that Senamhi is the proprietor of the information. The following text was recommended (official text in Spanish):
+Senamhi's terms of use are [here](http://senamhi.gob.pe/?p=terminos_condiciones), but as of writing that link was redirecting to the Senamhi home page. An archived version is availale [here](https://web.archive.org/web/20170822092538/http://senamhi.gob.pe/?p=terminos_condiciones). The terms allow for the free and public access to information on the Senamhi website, in both for-profit and non-profit applications. However, Senamhi stipulates that any use of the data must be accompanied by a disclaimer that Senamhi is the proprietor of the information. The following text is recommended (official text in Spanish):
 
 - **Official Spanish:** _Información recopilada y trabajada por el Servicio Nacional de Meteorología e Hidrología del Perú. El uso que se le da a esta información es de mi (nuestra) entera responsabilidad._
 - **English translation:** This information was compiled and maintained by Peru's National Meteorology and Hydrology Service (Senamhi). The use of this data is of my (our) sole responsibility.
