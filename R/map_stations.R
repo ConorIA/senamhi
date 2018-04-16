@@ -5,7 +5,8 @@
 ##' @param station character; one or more station id numbers to show on the map.
 ##' @param zoom numeric; the level to zoom the map to.
 ##' 
-##' @importFrom leaflet addAwesomeMarkers addTiles awesomeIcons leaflet setView 
+##' @importFrom dplyr filter
+##' @importFrom leaflet addAwesomeMarkers addCircleMarkers addTiles awesomeIcons leaflet setView 
 ##' @importFrom magrittr %>%
 ##' 
 ##' @export
@@ -22,31 +23,24 @@
 
 map_stations <- function(station, zoom) {
   
-  if (inherits(station, "data.frame")) {
-    station <- station$StationID
+  if (!inherits(station, "data.frame")) {
+    if (any(nchar(station) < 6)) {
+      station[nchar(station) < 6] <- suppressWarnings(
+        try(sprintf("%06d", as.numeric(station[nchar(station) < 6])),
+            silent = TRUE))
+    }
+    
+    if (inherits(station, "try-error") || !station %in% catalogue$StationID) {
+      stop("One or more requested stations invalid.")
+    }
+    
+    station <- filter(catalogue, StationID %in% station)
   }
   
-  if (any(nchar(station) < 6)) {
-    station[nchar(station) < 6] <- suppressWarnings(
-      try(sprintf("%06d", as.numeric(station[nchar(station) < 6])),
-          silent = TRUE))
-  }
-  
-  if (inherits(station, "try-error") || !station %in% catalogue$StationID) {
-    stop("One or more requested stations invalid.")
-  }
-
-  poi <- NULL
-  
-  for (i in station) {
-    poi <- c(poi, which(catalogue$StationID == i))
-  }
-  poi <- catalogue[poi,]
-
-  hilat <- ceiling(max(poi$Latitude))
-  lolat <- floor(min(poi$Latitude))
-  hilon <- ceiling(max(poi$Longitude))
-  lolon <- floor(min(poi$Longitude))
+  hilat <- ceiling(max(station$Latitude))
+  lolat <- floor(min(station$Latitude))
+  hilon <- ceiling(max(station$Longitude))
+  lolon <- floor(min(station$Longitude))
   lats <- (hilat + lolat)/2
   lons <- (hilon + lolon)/2
   if (missing(zoom)) {
@@ -83,14 +77,22 @@ map_stations <- function(station, zoom) {
   }
   
   icons <- awesomeIcons(
-    icon = defIcons(poi),
+    icon = defIcons(station),
     iconColor = 'black', 
     library = 'ion',
-    markerColor = defColours(poi)
+    markerColor = defColours(station)
   )
   
-  leaflet(poi) %>% addTiles() %>% 
+  map <- leaflet(station) %>% addTiles() %>% 
     setView(lng = lons, lat = lats, zoom = zoom)  %>% 
     addAwesomeMarkers(~Longitude, ~Latitude, icon = icons,  
-      label = paste0(poi$StationID, " - ", poi$Station, " (", poi$Configuration, ")")) 
+      label = paste0(station$StationID, " - ", station$Station, " (", station$Configuration, ")"))
+  
+  # Add a target if it exists
+  target <- c(attr(station, "target_lon"), attr(station, "target_lat"))
+  if (!is.null(target)) {
+    map <- map %>% addCircleMarkers(lng = target[1], lat = target[2], color = "red", label = "target")
+  }
+  
+  map
 }

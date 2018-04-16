@@ -5,7 +5,7 @@
 \title{Find Senamhi stations matching various criteria}
 \usage{
 station_search(name = NULL, ignore.case = TRUE, glob = FALSE,
-  region = NULL, baseline = NULL, config = NULL, target = NULL,
+  region = NULL, period = NULL, config = NULL, target = NULL,
   dist = 0:100, sort = TRUE, ...)
 }
 \arguments{
@@ -17,7 +17,7 @@ station_search(name = NULL, ignore.case = TRUE, glob = FALSE,
 
 \item{region}{character; optional character string to filter results by region.}
 
-\item{baseline}{vector; optional vector with a start and end year for a desired baseline.}
+\item{period}{numeric; optional, either a range of years or the total number of years of data that must be available.}
 
 \item{config}{character; the configuration of the station ((m)eteorological or (h)ydrological)}
 
@@ -43,7 +43,7 @@ station_search('Tarapoto')
 station_search(name = "San*", glob = TRUE)
 
 # Find stations with data available from 1971 to 2000.
-station_search(baseline = 1971:2000)
+station_search(period = 1971:2000)
 
 # Find all stations between 0 and 100 km from Station '000401'
 station_search(target = '000401', dist = 0:100)

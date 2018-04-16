@@ -8,15 +8,23 @@ test_that("station_search() can locate a station by name regex", {
   df <- station_search("Tara*", glob = TRUE)
   expect_that(df, is_a("tbl_df"))
   expect_output(str(df), "4 obs")
-  expect_output(str(df), "14 variables")
+  expect_output(str(df), "13 variables")
 })
 
-## test finding a station by baseline
-test_that("station_search() can locate a station by baseline", {
-  df <- station_search(baseline = 1965:2015)
+## test finding a station by period
+test_that("station_search() can locate a station by period", {
+  df <- station_search(period = 1965:2015)
   expect_that(df, is_a("tbl_df"))
   expect_output(str(df), "363 obs")
-  expect_output(str(df), "14 variables")
+  expect_output(str(df), "13 variables")
+})
+
+## test finding a station by period (years)
+test_that("station_search() can locate a station by period (years)", {
+  df <- station_search(period = 55)
+  expect_that(df, is_a("tbl_df"))
+  expect_output(str(df), "94 obs")
+  expect_output(str(df), "13 variables")
 })
 
 ## test finding a station by region
@@ -24,7 +32,7 @@ test_that("station_search() can locate a station by region", {
   df <- station_search(region = "TACNA")
   expect_that(df, is_a("tbl_df"))
   expect_output(str(df), "56 obs")
-  expect_output(str(df), "14 variables")
+  expect_output(str(df), "13 variables")
 })
 
 ## test finding a station by distance from target
@@ -32,7 +40,7 @@ test_that("station_search() can locate a station by distance from target", {
   df <- station_search(target = 410, dist = 0:10)
   expect_that(df, is_a("tbl_df"))
   expect_output(str(df), "2 obs")
-  expect_output(str(df), "15 variables")
+  expect_output(str(df), "14 variables")
 })
 
 ## test finding a station by distance from coordinates
@@ -40,7 +48,7 @@ test_that("station_search() can locate a station by distance for coordinates", {
   df <- station_search(target = c(-6.50, -76.47), dist = 0:10)
   expect_that(df, is_a("tbl_df"))
   expect_output(str(df), "2 obs")
-  expect_output(str(df), "15 variables")
+  expect_output(str(df), "14 variables")
 })
 
 ## station_search should fail if we spell the region incorrectly

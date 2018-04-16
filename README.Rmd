@@ -50,15 +50,15 @@ Note that you can also use wildcards as supported by the `glob2rx()` from the `u
 station_search("San*", glob = TRUE)
 ```
 
-You can filter your search results by region, by station type, by a given baseline period, and by proximity to another station or a vector of coordinates. You can use any combination of these four filters in your search. The function is fully documented, so take a look at `?station_search`. Let's see some examples.
+You can filter your search results by region, by station type, by a given period, and by proximity to another station or a vector of coordinates. You can use any combination of these four filters in your search. The function is fully documented, so take a look at `?station_search`. Let's see some examples.
 
 #### Find all stations in the San Martín Region
 ```{r}
 station_search(region = "SAN MARTIN")
 ```
-#### Find stations named "Santa", with data available between  1971 to 2000
+#### Find stations named "Santa", with data available between 1971 to 2000
 ```{r}
-station_search("Santa", baseline = 1971:2000)
+station_search("Santa", period = 1971:2000)
 ```
 #### Find all stations between 0 and 100 km from Station No. 000401
 ```{r}

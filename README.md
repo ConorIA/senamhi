@@ -35,22 +35,22 @@ station_search("Santa")
 ```
 
 ```
-## # A tibble: 42 x 14
+## # A tibble: 42 x 13
 ##    Station           StationID Type  Configuration `Data Start` `Data End`
-##    <chr>             <chr>     <fct> <fct>         <chr>        <chr>     
-##  1 SANTA MARIA DE N… 000256    CON   M             1951         2017      
-##  2 SANTA             000433    CON   M             1964         1986      
-##  3 SANTA RITA        000829    CON   M             1977         1992      
-##  4 SANTA ELENA       000834    CON   M             1963         1973      
-##  5 SANTA ISABEL DE … 158201    CON   M             1964         1982      
-##  6 SANTA CRUZ DE HO… 113248    SUT   M             2015         2016      
-##  7 SANTA CRUZ        000351    CON   M             1963         2018      
-##  8 SANTA CATALINA D… 153200    CON   M             1963         1983      
-##  9 HACIENDA SANTA I… 000766    CON   M             1954         1955      
-## 10 SANTAROSA LLIHUA  151505    CON   M             1980         1998      
-## # ... with 32 more rows, and 8 more variables: `Period (Yr)` <dbl>,
+##    <chr>             <chr>     <fct> <fct>                <int>      <int>
+##  1 SANTA MARIA DE N… 000256    CON   M                     1951       2017
+##  2 SANTA             000433    CON   M                     1964       1986
+##  3 SANTA RITA        000829    CON   M                     1977       1992
+##  4 SANTA ELENA       000834    CON   M                     1963       1973
+##  5 SANTA ISABEL DE … 158201    CON   M                     1964       1982
+##  6 SANTA CRUZ DE HO… 113248    SUT   M                     2015       2016
+##  7 SANTA CRUZ        000351    CON   M                     1963       2018
+##  8 SANTA CATALINA D… 153200    CON   M                     1963       1983
+##  9 HACIENDA SANTA I… 000766    CON   M                     1954       1955
+## 10 SANTAROSA LLIHUA  151505    CON   M                     1980       1998
+## # ... with 32 more rows, and 7 more variables: `Period (Yr)` <int>,
 ## #   `Station Status` <fct>, Latitude <dbl>, Longitude <dbl>, Region <chr>,
-## #   Province <chr>, District <chr>, Downloaded <chr>
+## #   Province <chr>, District <chr>
 ```
 
 Note that the `tibble` object (a special sort of `data.frame`) won't print more than the first 10 rows by default. To see all of the results, you can wrap the command in `View()` so that it becomes `View(find_station("Santa"))`.
@@ -63,25 +63,25 @@ station_search("San*", glob = TRUE)
 ```
 
 ```
-## # A tibble: 135 x 14
+## # A tibble: 135 x 13
 ##    Station           StationID Type  Configuration `Data Start` `Data End`
-##    <chr>             <chr>     <fct> <fct>         <chr>        <chr>     
-##  1 SANTA MARIA DE N… 000256    CON   M             1951         2017      
-##  2 SAN RAFAEL        152222    CON   M             1965         1966      
-##  3 SAN LORENZO # 5   000430    CON   M             1966         1972      
-##  4 SAN JACINTO DE N… 000424    CON   M             1956         1968      
-##  5 SAN JACINTO       201901    CON   H             1947         1990      
-##  6 SAN DIEGO         000420    CON   M             1960         1960      
-##  7 SANTIAGO ANTUNEZ… 000426    CON   M             1998         2018      
-##  8 SANTA             000433    CON   M             1964         1986      
-##  9 SAN PEDRO         211404    CON   H             2009         2018      
-## 10 SANTA RITA        000829    CON   M             1977         1992      
-## # ... with 125 more rows, and 8 more variables: `Period (Yr)` <dbl>,
+##    <chr>             <chr>     <fct> <fct>                <int>      <int>
+##  1 SANTA MARIA DE N… 000256    CON   M                     1951       2017
+##  2 SAN RAFAEL        152222    CON   M                     1965       1966
+##  3 SAN LORENZO # 5   000430    CON   M                     1966       1972
+##  4 SAN JACINTO DE N… 000424    CON   M                     1956       1968
+##  5 SAN JACINTO       201901    CON   H                     1947       1990
+##  6 SAN DIEGO         000420    CON   M                     1960       1960
+##  7 SANTIAGO ANTUNEZ… 000426    CON   M                     1998       2018
+##  8 SANTA             000433    CON   M                     1964       1986
+##  9 SAN PEDRO         211404    CON   H                     2009       2018
+## 10 SANTA RITA        000829    CON   M                     1977       1992
+## # ... with 125 more rows, and 7 more variables: `Period (Yr)` <int>,
 ## #   `Station Status` <fct>, Latitude <dbl>, Longitude <dbl>, Region <chr>,
-## #   Province <chr>, District <chr>, Downloaded <chr>
+## #   Province <chr>, District <chr>
 ```
 
-You can filter your search results by region, by station type, by a given baseline period, and by proximity to another station or a vector of coordinates. You can use any combination of these four filters in your search. The function is fully documented, so take a look at `?station_search`. Let's see some examples.
+You can filter your search results by region, by station type, by a given period, and by proximity to another station or a vector of coordinates. You can use any combination of these four filters in your search. The function is fully documented, so take a look at `?station_search`. Let's see some examples.
 
 #### Find all stations in the San Martín Region
 
@@ -90,46 +90,46 @@ station_search(region = "SAN MARTIN")
 ```
 
 ```
-## # A tibble: 72 x 14
+## # A tibble: 72 x 13
 ##    Station         StationID Type  Configuration `Data Start` `Data End`
-##    <chr>           <chr>     <fct> <fct>         <chr>        <chr>     
-##  1 MOYOBAMBA       000378    CON   M             1946         2017      
-##  2 NARANJILLO      000219    CON   M             1975         2017      
-##  3 NAVARRO         000386    CON   M             1964         2017      
-##  4 NARANJILLO      4724851A  SUT   M1            2000         2018      
-##  5 EL PORVENIR     4723013A  SUT   M1            2001         2018      
-##  6 NUEVO LIMA      153312    CON   M             1963         2017      
-##  7 SHEPTE          153301    CON   M             1963         1985      
-##  8 TINGO DE PONAZA 153318    CON   M             1963         2005      
-##  9 TINGO DE PONAZA 000297    CON   M             1998         2017      
-## 10 PUEBLO LIBRE    152228    CON   M             1996         1998      
-## # ... with 62 more rows, and 8 more variables: `Period (Yr)` <dbl>,
+##    <chr>           <chr>     <fct> <fct>                <int>      <int>
+##  1 MOYOBAMBA       000378    CON   M                     1946       2017
+##  2 NARANJILLO      000219    CON   M                     1975       2017
+##  3 NAVARRO         000386    CON   M                     1964       2017
+##  4 NARANJILLO      4724851A  SUT   M1                    2000       2018
+##  5 EL PORVENIR     4723013A  SUT   M1                    2001       2018
+##  6 NUEVO LIMA      153312    CON   M                     1963       2017
+##  7 SHEPTE          153301    CON   M                     1963       1985
+##  8 TINGO DE PONAZA 153318    CON   M                     1963       2005
+##  9 TINGO DE PONAZA 000297    CON   M                     1998       2017
+## 10 PUEBLO LIBRE    152228    CON   M                     1996       1998
+## # ... with 62 more rows, and 7 more variables: `Period (Yr)` <int>,
 ## #   `Station Status` <fct>, Latitude <dbl>, Longitude <dbl>, Region <chr>,
-## #   Province <chr>, District <chr>, Downloaded <chr>
+## #   Province <chr>, District <chr>
 ```
-#### Find stations named "Santa", with data available between  1971 to 2000
+#### Find stations named "Santa", with data available between 1971 to 2000
 
 ```r
-station_search("Santa", baseline = 1971:2000)
+station_search("Santa", period = 1971:2000)
 ```
 
 ```
-## # A tibble: 10 x 14
+## # A tibble: 10 x 13
 ##    Station           StationID Type  Configuration `Data Start` `Data End`
-##    <chr>             <chr>     <fct> <fct>         <chr>        <chr>     
-##  1 SANTA MARIA DE N… 000256    CON   M             1951         2017      
-##  2 SANTA CRUZ        000351    CON   M             1963         2018      
-##  3 SANTA EULALIA     155213    CON   M             1963         2018      
-##  4 SANTA CRUZ        155202    CON   M             1963         2018      
-##  5 SANTA ROSA        000536    CON   M             1967         2006      
-##  6 SANTA MARIA DE N… 152409    CON   M             1963         2018      
-##  7 SANTA RITA DE CA… 152401    CON   M             1963         2018      
-##  8 SANTA CLOTILDE    000177    CON   M             1963         2014      
-##  9 SANTA CRUZ        152303    CON   M             1963         2008      
-## 10 SANTA ROSA        000823    CON   M             1966         2017      
-## # ... with 8 more variables: `Period (Yr)` <dbl>, `Station Status` <fct>,
+##    <chr>             <chr>     <fct> <fct>                <int>      <int>
+##  1 SANTA MARIA DE N… 000256    CON   M                     1951       2017
+##  2 SANTA CRUZ        000351    CON   M                     1963       2018
+##  3 SANTA EULALIA     155213    CON   M                     1963       2018
+##  4 SANTA CRUZ        155202    CON   M                     1963       2018
+##  5 SANTA ROSA        000536    CON   M                     1967       2006
+##  6 SANTA MARIA DE N… 152409    CON   M                     1963       2018
+##  7 SANTA RITA DE CA… 152401    CON   M                     1963       2018
+##  8 SANTA CLOTILDE    000177    CON   M                     1963       2014
+##  9 SANTA CRUZ        152303    CON   M                     1963       2008
+## 10 SANTA ROSA        000823    CON   M                     1966       2017
+## # ... with 7 more variables: `Period (Yr)` <int>, `Station Status` <fct>,
 ## #   Latitude <dbl>, Longitude <dbl>, Region <chr>, Province <chr>,
-## #   District <chr>, Downloaded <chr>
+## #   District <chr>
 ```
 #### Find all stations between 0 and 100 km from Station No. 000401
 
@@ -138,22 +138,22 @@ station_search(target = "000401", dist = 0:100)
 ```
 
 ```
-## # A tibble: 57 x 15
+## # A tibble: 57 x 14
 ##    Station     StationID Type  Configuration `Data Start` `Data End`
-##    <chr>       <chr>     <fct> <fct>         <chr>        <chr>     
-##  1 TARAPOTO    000401    CON   M             1998         2017      
-##  2 CUNUMBUQUE  153311    CON   M             1963         2017      
-##  3 CUMBAZA     221801    CON   H             1968         2017      
-##  4 LAMAS       000383    CON   M             1963         2017      
-##  5 SAN ANTONIO 153314    CON   M             1963         2017      
-##  6 SHANAO      221802    CON   H             1965         2017      
-##  7 SHANAO      153328    CON   M             2002         2017      
-##  8 SHANAO      210006    SUT   H             2016         2018      
-##  9 TABALOSOS   000322    CON   M             1963         2017      
-## 10 EL PORVENIR 000310    CON   M             1964         2017      
-## # ... with 47 more rows, and 9 more variables: `Period (Yr)` <dbl>,
+##    <chr>       <chr>     <fct> <fct>                <int>      <int>
+##  1 TARAPOTO    000401    CON   M                     1998       2017
+##  2 CUNUMBUQUE  153311    CON   M                     1963       2017
+##  3 CUMBAZA     221801    CON   H                     1968       2017
+##  4 LAMAS       000383    CON   M                     1963       2017
+##  5 SAN ANTONIO 153314    CON   M                     1963       2017
+##  6 SHANAO      221802    CON   H                     1965       2017
+##  7 SHANAO      153328    CON   M                     2002       2017
+##  8 SHANAO      210006    SUT   H                     2016       2018
+##  9 TABALOSOS   000322    CON   M                     1963       2017
+## 10 EL PORVENIR 000310    CON   M                     1964       2017
+## # ... with 47 more rows, and 8 more variables: `Period (Yr)` <int>,
 ## #   `Station Status` <fct>, Latitude <dbl>, Longitude <dbl>, Region <chr>,
-## #   Province <chr>, District <chr>, Downloaded <chr>, Dist <dbl>
+## #   Province <chr>, District <chr>, Dist <dbl>
 ```
 #### Find all stations that are within 50 km of Machu Picchu
 
@@ -162,31 +162,31 @@ station_search(target = c(-13.163333, -72.545556), dist = 0:50)
 ```
 
 ```
-## # A tibble: 19 x 15
+## # A tibble: 19 x 14
 ##    Station        StationID Type  Configuration `Data Start` `Data End`
-##    <chr>          <chr>     <fct> <fct>         <chr>        <chr>     
-##  1 MACHU PICCHU   000679    CON   M             1964         2017      
-##  2 HUYRO          000678    CON   M             1964         1981      
-##  3 CHILCA         472A9204  SUT   H             2015         2018      
-##  4 ECHARATE       000716    CON   M             1981         1982      
-##  5 MARANURA       000676    CON   M             1970         1978      
-##  6 OLLANTAYTAMBO  47295014  SUT   M             2011         2013      
-##  7 QUILLABAMBA    4729B3E6  SUT   M1            2001         2018      
-##  8 QUILLABAMBA    000606    CON   M             1964         2018      
-##  9 OCOBAMBA       000681    CON   M             1964         1983      
-## 10 MOLLEPATA      000680    CON   M             1963         1978      
-## 11 CUNYAC         156224    CON   M             2002         2018      
-## 12 ECHARATE       156300    CON   M             1963         1981      
-## 13 PUENTE CUNYAC  230503    CON   H             1995         2018      
-## 14 ZURITE         000682    CON   M             1964         1983      
-## 15 CURAHUASI      000677    CON   M             1963         2017      
-## 16 URUBAMBA       113131    DAV   M             2006         2008      
-## 17 URUBAMBA       000683    CON   M             1963         2017      
-## 18 ANTA ANCACHURO 000684    CON   M             1964         2017      
-## 19 HUACHIBAMBA    156303    CON   M             1963         1978      
-## # ... with 9 more variables: `Period (Yr)` <dbl>, `Station Status` <fct>,
+##    <chr>          <chr>     <fct> <fct>                <int>      <int>
+##  1 MACHU PICCHU   000679    CON   M                     1964       2017
+##  2 HUYRO          000678    CON   M                     1964       1981
+##  3 CHILCA         472A9204  SUT   H                     2015       2018
+##  4 ECHARATE       000716    CON   M                     1981       1982
+##  5 MARANURA       000676    CON   M                     1970       1978
+##  6 OLLANTAYTAMBO  47295014  SUT   M                     2011       2013
+##  7 QUILLABAMBA    4729B3E6  SUT   M1                    2001       2018
+##  8 QUILLABAMBA    000606    CON   M                     1964       2018
+##  9 OCOBAMBA       000681    CON   M                     1964       1983
+## 10 MOLLEPATA      000680    CON   M                     1963       1978
+## 11 CUNYAC         156224    CON   M                     2002       2018
+## 12 ECHARATE       156300    CON   M                     1963       1981
+## 13 PUENTE CUNYAC  230503    CON   H                     1995       2018
+## 14 ZURITE         000682    CON   M                     1964       1983
+## 15 CURAHUASI      000677    CON   M                     1963       2017
+## 16 URUBAMBA       113131    DAV   M                     2006       2008
+## 17 URUBAMBA       000683    CON   M                     1963       2017
+## 18 ANTA ANCACHURO 000684    CON   M                     1964       2017
+## 19 HUACHIBAMBA    156303    CON   M                     1963       1978
+## # ... with 8 more variables: `Period (Yr)` <int>, `Station Status` <fct>,
 ## #   Latitude <dbl>, Longitude <dbl>, Region <chr>, Province <chr>,
-## #   District <chr>, Downloaded <chr>, Dist <dbl>
+## #   District <chr>, Dist <dbl>
 ```
 
 ### Acquire data: `senamhiR()`

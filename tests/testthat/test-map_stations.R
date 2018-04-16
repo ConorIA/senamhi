@@ -9,7 +9,7 @@ test_that("map_stations() can map a single station", {
   map <- map_stations("000401")
   expect_that(attr(map$x, "leafletData"), is_a("tbl_df"))
   expect_output(str(attr(map$x, "leafletData")), "1 obs")
-  expect_output(str(attr(map$x, "leafletData")), "14 variables")
+  expect_output(str(attr(map$x, "leafletData")), "13 variables")
 })
 
 ## test a map of one station padded with zeros
@@ -17,7 +17,7 @@ test_that("map_stations() can pad a StationID", {
   map <- map_stations(401)
   expect_that(attr(map$x, "leafletData"), is_a("tbl_df"))
   expect_output(str(attr(map$x, "leafletData")), "1 obs")
-  expect_output(str(attr(map$x, "leafletData")), "14 variables")
+  expect_output(str(attr(map$x, "leafletData")), "13 variables")
 })
 
 ## test a map of one searched stations
