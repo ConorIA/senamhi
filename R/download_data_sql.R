@@ -39,7 +39,7 @@ download_data_sql <- function(station, year) {
     stop("There was an error getting that table.")
   }
 
-  if (missing(year)) {
+  if (missing(year) || is.null(year)) {
     dat <- as_tibble(dbReadTable(conn, sql_table, row.names = NULL))
   } else {
     start <- min(year)

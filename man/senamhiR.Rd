@@ -4,19 +4,21 @@
 \alias{senamhiR}
 \title{Download compiled data from the Peruvian National Hydrological and Meterological Service}
 \usage{
-senamhiR(station, year)
+senamhiR(station, year, collapse = FALSE)
 }
 \arguments{
 \item{station}{character; the station id number to process. Can also be a vector of station ids, which will be returned as a list.}
 
 \item{year}{numerical; a vector of years to process. Defaults to the full known range.}
+
+\item{collapse}{Boolean; whether multiple stations should be collapsed into a single tibble stations of the same type.}
 }
 \description{
 Download compiled Peruvian historical climate data from the Senamhi web portal.
 }
 \examples{
 \dontrun{senamhiR('000401', 1998:2015)}
-\dontrun{senamhiR(c('000401', '000152', '000219'))}
+\dontrun{senamhiR(c('000401', '000152', '000219'), collapse = TRUE)}
 }
 \author{
 Conor I. Anderson

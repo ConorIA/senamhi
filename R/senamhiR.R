@@ -4,6 +4,7 @@
 ##'
 ##' @param station character; the station id number to process. Can also be a vector of station ids, which will be returned as a list.
 ##' @param year numerical; a vector of years to process. Defaults to the full known range.
+##' @param collapse Boolean; whether multiple stations should be collapsed into a single tibble stations of the same type.
 ##'
 ##' @author Conor I. Anderson
 ##' 
@@ -13,9 +14,9 @@
 ##' 
 ##' @examples
 ##' \dontrun{senamhiR('000401', 1998:2015)}
-##' \dontrun{senamhiR(c('000401', '000152', '000219'))}
+##' \dontrun{senamhiR(c('000401', '000152', '000219'), collapse = TRUE)}
 
-senamhiR <- function(station, year) {
+senamhiR <- function(station, year, collapse = FALSE) {
   if (missing(station)) {
     station <- readline(prompt = "Enter station number(s) separated by commas: ")
     station <- trimws(unlist(strsplit(station, split = ",")))
@@ -31,15 +32,17 @@ senamhiR <- function(station, year) {
     stop("One or more requested stations invalid.")
   }
   
-  dataout <- list()
-  for (stn in station) {
-    if (missing(year)) year <- 1900:2100
-    temp <- download_data_sql(stn, year)
-    dataout <- c(dataout, list(temp))
+  pull_data <- function(stn, year) {
+    rtn <- download_data_sql(stn, year)
+    attributes(rtn) <- append(attributes(rtn), catalogue[catalogue$StationID == stn,])
+    rownames(rtn) <- NULL
+    rtn
   }
-  if (length(station) == 1) {
-    return(dataout[[1]])
-  } else {
-    return(dataout)
-  }
+  
+  if (missing(year)) year <- NULL
+  dataout <- lapply(station, pull_data, year)
+
+  if (length(station) == 1) return(dataout[[1]])
+  if (collapse) return(collapse_pcd(dataout))
+  dataout
 }

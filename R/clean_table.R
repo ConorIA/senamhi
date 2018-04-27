@@ -23,7 +23,7 @@
         colnames <- c("Fecha", "Nivel06 (m)", "Nivel10 (m)", "Nivel14 (m)", "Nivel18 (m)", 
                       "Caudal (m^3/s)")
       if (type == "SUT") 
-        colnames <- c("Fecha", "Tmean (C)", "Tmax (C)", "Tmin (C)", "Humidity (%)", 
+        colnames <- c("Fecha", "Tmean (C)", "Tmax (C)", "Tmin (C)", "Humedad (%)", 
                       "Lluvia (mm)", "Presion (mb)", "Velocidad del Viento (m/s)", "Direccion del Viento", 
                       "Nivel Medio (m)")
     } else {
@@ -62,7 +62,7 @@
         datain$`Tmean (C)` <- as.numeric(datain$`Tmean (C)`)
         datain$`Tmax (C)` <- as.numeric(datain$`Tmax (C)`)
         datain$`Tmin (C)` <- as.numeric(datain$`Tmin (C)`)
-        datain$`Humidity (%)` <- as.numeric(datain$`Humidity (%)`)
+        datain$`Humedad (%)` <- as.numeric(datain$`Humedad (%)`)
         datain$`Lluvia (mm)` <- as.numeric(datain$`Lluvia (mm)`)
         datain$`Presion (mb)` <- as.numeric(datain$`Presion (mb)`)
         datain$`Direccion del Viento` <- as.character(datain$`Direccion del Viento`)
