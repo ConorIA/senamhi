@@ -4,9 +4,10 @@
 ##'
 ##' @param station character; one or more station id numbers to show on the map.
 ##' @param zoom numeric; the level to zoom the map to.
+##' @param type character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\link{https://s2maps.eu}).
 ##' 
 ##' @importFrom dplyr filter
-##' @importFrom leaflet addAwesomeMarkers addCircleMarkers addTiles awesomeIcons leaflet setView 
+##' @importFrom leaflet addAwesomeMarkers addCircleMarkers addTiles addWMSTiles awesomeIcons leaflet leafletCRS leafletOptions setView WMSTileOptions
 ##' @importFrom magrittr %>%
 ##' 
 ##' @export
@@ -21,7 +22,7 @@
 ##' ##' # Make a map from station search results.
 ##' \dontrun{map_stations(station_search(region = "SAN MARTIN", baseline = 1981:2010))}
 
-map_stations <- function(station, zoom) {
+map_stations <- function(station, zoom, type = "osm") {
   
   if (!inherits(station, "data.frame")) {
     if (any(nchar(station) < 6)) {
@@ -83,15 +84,33 @@ map_stations <- function(station, zoom) {
     markerColor = defColours(station)
   )
   
-  map <- leaflet(station) %>% addTiles() %>% 
-    setView(lng = lons, lat = lats, zoom = zoom)  %>% 
-    addAwesomeMarkers(~Longitude, ~Latitude, icon = icons,  
-      label = paste0(station$StationID, " - ", station$Station, " (", station$Configuration, ")"))
+  map <- if (type == "sentinel") {
+    leaflet(station, options = leafletOptions(crs = leafletCRS("L.CRS.EPSG4326"))) %>%
+      setView(lng = lons, lat = lats, zoom = zoom) %>%
+      addWMSTiles(
+        "https://tiles.maps.eox.at/wms?service=wms",
+        layers = "s2cloudless",
+        options = WMSTileOptions(format = "image/jpeg"),
+        attribution = "Sentinel-2 cloudless - https://s2maps.eu by EOX IT Services GmbH (Contains modified Copernicus Sentinel data 2016 & 2017)"
+      )
+  } else {
+    if (type != "osm") warning("Unrecognized map type. Defaulting to osm.")
+    leaflet(station) %>%
+      addTiles() %>%
+      setView(lng = lons, lat = lats, zoom = zoom)
+  }
   
+  map <- map %>%
+    addAwesomeMarkers(~Longitude, ~Latitude, icon = icons,
+                      label = paste0(station$StationID, 
+                                     " - ", station$Station, 
+                                     " (", station$Configuration, ")"))
+
   # Add a target if it exists
   target <- c(attr(station, "target_lon"), attr(station, "target_lat"))
   if (!is.null(target)) {
-    map <- map %>% addCircleMarkers(lng = target[1], lat = target[2], color = "red", label = "target")
+    map <- map %>% addCircleMarkers(lng = target[1], lat = target[2],
+                                    color = "red", label = "target")
   }
   
   map

@@ -26,7 +26,20 @@ test_that("map_stations() can map a station search result", {
   expect_identical(attr(map$x, "leafletData"), df)
 })
 
+## test a map with satellite data
+test_that("map_stations() can map sentinel satellite data", {
+  map <- map_stations(df, type = "sentinel")
+  expect_identical(attr(map$x, "leafletData"), df)
+})
+
+
+## test a map with a wrong type
+test_that("map_stations() warns if map type is unrecognized", {
+  expect_warning(map_stations(df, type = "foo"), "Unrecognized map type. Defaulting to osm.", fixed = TRUE)
+})
+
+
 ## map_stations should fail if we ask for an invalid station
 test_that("map_stations() fails if passed an invalid target", {
-  expect_error(map_stations("foo"), "One or more requested stations invalid.", fixed=TRUE)
+  expect_error(map_stations("foo"), "One or more requested stations invalid.", fixed = TRUE)
 })

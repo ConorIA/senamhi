@@ -4,12 +4,14 @@
 \alias{map_stations}
 \title{Map Senamhi stations on an interactive map}
 \usage{
-map_stations(station, zoom)
+map_stations(station, zoom, type = "osm")
 }
 \arguments{
 \item{station}{character; one or more station id numbers to show on the map.}
 
 \item{zoom}{numeric; the level to zoom the map to.}
+
+\item{type}{character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\link{https://s2maps.eu}).}
 }
 \description{
 Show the stations of interest on an interactive map using Leaflet. Zoom levels are guessed based on an RStudio plot window.
