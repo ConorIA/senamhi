@@ -1,8 +1,8 @@
 Package: senamhiR
 Type: Package
 Title: A Collection of Functions to Obtain Peruvian Climate Data
-Version: 0.5.2
-Date: 2018-04-27
+Version: 0.5.3
+Date: 2018-05-27
 Authors@R: c(person(given = c("Conor", "I."), family = "Anderson", 
            role = c("aut","cre"), email = "conor.anderson@utoronto.ca"),
            person(given = c("William", "A."), family = "Gough", role = "ths",

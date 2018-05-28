@@ -86,7 +86,7 @@ station_search <- function(name = NULL, ignore.case = TRUE, glob = FALSE, region
   # If `target` is not NULL, filter by distance to target
   if (!is.null(target)) {
     if (length(target) == 1L) {
-      p1 <- filt %>% filter(StationID == target) %>% select(Longitude, Latitude) %>% unlist
+      p1 <- catalogue %>% filter(StationID == target) %>% select(Longitude, Latitude) %>% unlist
     } else if (length(target) == 2L) {
       p1 <- c(target[2], target[1])
     } else stop("error: check target format")
