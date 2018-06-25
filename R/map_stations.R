@@ -4,11 +4,10 @@
 ##'
 ##' @param station character; one or more station id numbers to show on the map.
 ##' @param zoom numeric; the level to zoom the map to.
-##' @param type character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\link{https://s2maps.eu}).
+##' @param type character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\url{https://s2maps.eu}).
 ##' 
-##' @importFrom dplyr filter
+##' @importFrom dplyr "%>%" filter
 ##' @importFrom leaflet addAwesomeMarkers addCircleMarkers addTiles addWMSTiles awesomeIcons leaflet leafletCRS leafletOptions setView WMSTileOptions
-##' @importFrom magrittr %>%
 ##' 
 ##' @export
 ##'
@@ -23,6 +22,8 @@
 ##' \dontrun{map_stations(station_search(region = "SAN MARTIN", baseline = 1981:2010))}
 
 map_stations <- function(station, zoom, type = "osm") {
+  
+  catalogue <- .get_catalogue()
   
   if (!inherits(station, "data.frame")) {
     if (any(nchar(station) < 6)) {

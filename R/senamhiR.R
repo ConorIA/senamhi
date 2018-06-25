@@ -17,6 +17,9 @@
 ##' \dontrun{senamhiR(c('000401', '000152', '000219'), collapse = TRUE)}
 
 senamhiR <- function(station, year, collapse = FALSE) {
+  
+  catalogue <- .get_catalogue()
+  
   if (missing(station)) {
     station <- readline(prompt = "Enter station number(s) separated by commas: ")
     station <- trimws(unlist(strsplit(station, split = ",")))
@@ -33,7 +36,7 @@ senamhiR <- function(station, year, collapse = FALSE) {
   }
   
   pull_data <- function(stn, year) {
-    rtn <- download_data_sql(stn, year)
+    rtn <- download_data(stn, year)
     attributes(rtn) <- append(attributes(rtn), catalogue[catalogue$StationID == stn,])
     rownames(rtn) <- NULL
     rtn

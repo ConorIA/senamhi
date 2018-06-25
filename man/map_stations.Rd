@@ -11,7 +11,7 @@ map_stations(station, zoom, type = "osm")
 
 \item{zoom}{numeric; the level to zoom the map to.}
 
-\item{type}{character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\link{https://s2maps.eu}).}
+\item{type}{character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\url{https://s2maps.eu}).}
 }
 \description{
 Show the stations of interest on an interactive map using Leaflet. Zoom levels are guessed based on an RStudio plot window.

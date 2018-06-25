@@ -16,9 +16,11 @@
 ##' @export
 ##' 
 ##' @examples
-##' \dontrun{download_data_sql('000401')}
+##' \dontrun{download_data('000401')}
 
-download_data_sql <- function(station, year) {
+download_data <- function(station, year) {
+  
+  catalogue <- .get_catalogue()
   
   if (nchar(station) < 6) {
     station <- suppressWarnings(try(sprintf("%06d", as.numeric(station)), silent = TRUE))
@@ -32,6 +34,7 @@ download_data_sql <- function(station, year) {
   config = station_data$Configuration
 
   conn <- dbConnect(MySQL(), user = "anonymous", host = "pcd.conr.ca", dbname = "pcd")
+  on.exit(dbDisconnect(conn))
   
   sql_table <- paste0("ID_", station)
   if (sum(dbListTables(conn) %in% sql_table) != 1) {
@@ -48,6 +51,5 @@ download_data_sql <- function(station, year) {
   }
   dat <- .clean_table(dat, config, type, clean_names = TRUE, fix_types = TRUE)
 
-  dbDisconnect(conn)
   dat
 }
