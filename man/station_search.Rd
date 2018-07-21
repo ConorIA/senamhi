@@ -9,7 +9,7 @@ station_search(name = NULL, ignore.case = TRUE, glob = FALSE,
   dist = 0:100, sort = TRUE, ...)
 }
 \arguments{
-\item{name}{character; optional character string to filter results by station name.}
+\item{name}{character; optional character vector to filter results by station name.}
 
 \item{ignore.case}{logical; by default the search for station names is not case-sensitive.}
 

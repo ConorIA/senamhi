@@ -4,12 +4,10 @@
 \alias{map_stations}
 \title{Map Senamhi stations on an interactive map}
 \usage{
-map_stations(station, zoom, type = "osm")
+map_stations(station, type = "osm")
 }
 \arguments{
 \item{station}{character; one or more station id numbers to show on the map.}
-
-\item{zoom}{numeric; the level to zoom the map to.}
 
 \item{type}{character; either "osm" for OpenStreetMap tiles, or "sentinel" for cloudless satellite by EOX IT Services GmbH (\url{https://s2maps.eu}).}
 }
@@ -17,12 +15,10 @@ map_stations(station, zoom, type = "osm")
 Show the stations of interest on an interactive map using Leaflet. Zoom levels are guessed based on an RStudio plot window.
 }
 \examples{
-# Make a map of all the stations.
-\dontrun{map_stations(catalogue$StationID, zoom = 4)}
-# Make a map of all stations in Cusco.
-\dontrun{map_stations(catalogue$StationID[catalogue$Region == "CUSCO"])}
-##' # Make a map from station search results.
-\dontrun{map_stations(station_search(region = "SAN MARTIN", baseline = 1981:2010))}
+# Map a single station
+map_stations(401)
+# Make a map from station search results.
+map_stations(station_search(region = "SAN MARTIN", baseline = 1981:2010))
 }
 \author{
 Conor I. Anderson

@@ -2,7 +2,7 @@
 ##'
 ##' @description Search for Senamhi stations by name, region, available data, and/or distance to a target.
 ##'
-##' @param name character; optional character string to filter results by station name.
+##' @param name character; optional character vector to filter results by station name.
 ##' @param ignore.case logical; by default the search for station names is not case-sensitive.
 ##' @param glob logical; whether to allow regular expressions in the \code{name}. See \code{\link{glob2rx}}.
 ##' @param region character; optional character string to filter results by region.
@@ -54,6 +54,7 @@ station_search <- function(name = NULL, ignore.case = TRUE, glob = FALSE, region
   # If `name` is not NULL, filter by name
   if (!is.null(name)) {
     if (glob) name <- glob2rx(name)
+    if (length(name) > 1) name <- paste(name, collapse = "|")
     filt <- filter(filt, grepl(name, Station, ignore.case = ignore.case, ...))
   } 
   
