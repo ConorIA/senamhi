@@ -17,7 +17,7 @@ test_that("download_data() can filter by year", {
   expect_identical(names(out)[7], "Presion (mb)")
   expect_that(out, is_a("tbl_df"))
   expect_output(str(out), "3652 obs")
-  expect_output(str(out), "10 variables")
+  expect_output(str(out), "9 variables")
 })
 
 ## test senamhiR download M, DAV

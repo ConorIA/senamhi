@@ -1,8 +1,7 @@
 ---
 title: "senamhiR: A collection of functions to obtain Peruvian climate data in R"
 output: 
-  html_document: 
-    keep_md: yes
+  github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -10,8 +9,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(senamhiR)
 library(dplyr)
 ```
-
-[![build status](https://gitlab.com/ConorIA/senamhiR/badges/master/build.svg)](https://gitlab.com/ConorIA/senamhiR/commits/master) [![Build status](https://ci.appveyor.com/api/projects/status/60kbu1b7wkf7akqn?svg=true)](https://ci.appveyor.com/project/ConorIA/senamhir-bxb45) [![codecov](https://codecov.io/gl/ConorIA/senamhiR/branch/master/graph/badge.svg)](https://codecov.io/gl/ConorIA/senamhiR)
 
 The package provides an automated solution for the acquisition of archived Peruvian climate and hydrology data directly within R. The data was compiled from the Senamhi website, and contains all of the data that was available as of April 10, 2018. This data was originally converted from HTML, and is stored in a MySQL database in tibble format.
 
@@ -103,13 +100,13 @@ There are two functions included to perform some basic quality control.
 
 ### `quick_audit()`
 
-The `quick_audit()` function will return a tibble listing the percentage or number of missing values for a station. For instance, the following command will return the percentage of missing values in our 30-year Requena dataset:
+The `quick_audit()` function will return a tibble listing the percentage or number of missing values for a station. For instance, the following command will return the percentage of missing values in our 30-year Requena data set:
 
 ```{r}
 quick_audit(requ, c("Tmax", "Tmin"))
 ```
 
-Use `report = "n"` to show the _number_ of missing values. Use `by = "month"` to show missing data by month instead of year. For instance, the number of days for which Mean Temperature was missing at Tocache in 1980:
+Use `report = "n"` to show the _number_ of missing values. Use `by = "month"` or `by = "year"` to show missing data by month or year. For instance, the number of days for which Mean Temperature was missing at Tocache in 1980:
 
 ```{r}
 toca <- senamhiR("000463", year = 1980)
@@ -172,7 +169,7 @@ If that seems like a lot of work, just think about how much work it would have b
 
 ## Senamhi terms of use
 
-Senamhi's terms of use are [here](http://senamhi.gob.pe/?p=terminos_condiciones), but as of writing that link was redirecting to the Senamhi home page. An archived version is availale [here](https://web.archive.org/web/20170822092538/http://senamhi.gob.pe/?p=terminos_condiciones). The terms allow for the free and public access to information on the Senamhi website, in both for-profit and non-profit applications. However, Senamhi stipulates that any use of the data must be accompanied by a disclaimer that Senamhi is the proprietor of the information. The following text is recommended (official text in Spanish):
+Senamhi's terms of use are [here](http://senamhi.gob.pe/?p=terminos_condiciones), but as of writing that link was redirecting to the Senamhi home page. An archived version is available [here](https://web.archive.org/web/20170822092538/http://senamhi.gob.pe/?p=terminos_condiciones). The terms allow for the free and public access to information on the Senamhi website, in both for-profit and non-profit applications. However, Senamhi stipulates that any use of the data must be accompanied by a disclaimer that Senamhi is the proprietor of the information. The following text is recommended (official text in Spanish):
 
 - **Official Spanish:** _Información recopilada y trabajada por el Servicio Nacional de Meteorología e Hidrología del Perú. El uso que se le da a esta información es de mi (nuestra) entera responsabilidad._
 - **English translation:** This information was compiled and maintained by Peru's National Meteorology and Hydrology Service (Senamhi). The use of this data is of my (our) sole responsibility.

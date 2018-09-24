@@ -15,7 +15,7 @@ test_that("station_search() can locate a station by name regex", {
 test_that("station_search() can locate a station by period", {
   df <- station_search(period = 1965:2015)
   expect_that(df, is_a("tbl_df"))
-  expect_output(str(df), "365 obs")
+  expect_output(str(df), "371 obs")
   expect_output(str(df), "14 variables")
 })
 
@@ -23,7 +23,7 @@ test_that("station_search() can locate a station by period", {
 test_that("station_search() can locate a station by period (years)", {
   df <- station_search(period = 55)
   expect_that(df, is_a("tbl_df"))
-  expect_output(str(df), "319 obs")
+  expect_output(str(df), "335 obs")
   expect_output(str(df), "14 variables")
 })
 

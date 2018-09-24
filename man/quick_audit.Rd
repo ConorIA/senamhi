@@ -4,7 +4,7 @@
 \alias{quick_audit}
 \title{Perform a quick audit for missing values at a given Senamhi station}
 \usage{
-quick_audit(station, variables, by = "year", report = "pct",
+quick_audit(station, variables, by = NULL, report = "pct",
   reverse = FALSE)
 }
 \arguments{
@@ -12,7 +12,7 @@ quick_audit(station, variables, by = "year", report = "pct",
 
 \item{variables}{numeric or character; by default, all variables will be included. Pass a numeric vector to specify columns to include, or pass a character vector to try to match column names}
 
-\item{by}{character; whether values should be reported annually (\code{by = "year"}), or monthly (\code{by = "month"})}
+\item{by}{character; whether values should be reported annually (\code{by = "year"}), monthly (\code{by = "month"}, or as an overall (default).}
 
 \item{report}{character; whether values should be reported as percentage missing (\code{report = "pct"}) or as number of missing values (\code{report = "n"})}
 

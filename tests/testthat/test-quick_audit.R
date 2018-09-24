@@ -24,7 +24,7 @@ test_that("quick_audit() can audit by month", {
 
 ## test quick_audit with missing variables and in reverse
 test_that("quick_audit() can audit with missing variables", {
-  df <- quick_audit(indat, reverse = TRUE)
+  df <- quick_audit(indat, by = "year", reverse = TRUE)
   expect_that(df, is_a("tbl_df"))
   expect_output(str(df), "3 obs")
   expect_output(str(df), "13 variables")
@@ -32,6 +32,6 @@ test_that("quick_audit() can audit with missing variables", {
 })
 
 ## test quick_audit warns if "year" or "month" not set correctly
-test_that("quick_audit() will fail if `by` is a typo", {
-  expect_warning(quick_audit(indat, by = "mnoth"), "By was neither \"month\" nor \"year\". Defaulting to year.", fixed=TRUE)
+test_that("quick_audit() will fail if `by` is neither \"month\" nor \"year\"", {
+  expect_warning(quick_audit(indat, by = "mnoth"), "By was neither \"month\" nor \"year\". Defaulting to overall total.", fixed=TRUE)
 })

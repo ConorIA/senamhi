@@ -18,6 +18,8 @@
 
 qc <- function(dat) {
   
+  attrs_to_append <- append(attributes(dat)[4:length(attributes(dat))], list(`QC Date` = Sys.Date()))
+  
   if (inherits(dat, "character") & !inherits(dat, "data.frame")) {
     if (length(dat) > 1L) {
       stop("Sorry, for now this script can only process one station at a time.")
@@ -51,7 +53,7 @@ qc <- function(dat) {
   }
   
   if (length(minshifts) > 0) {
-    for (i in 1:length(maxshifts)) {
+    for (i in 1:length(minshifts)) {
       bad_table <- select(dat, Fecha, var = `Tmin (C)`)
       fixes <- .fix_bad_data(bad_table, minshifts[i], "Tmin", "dps")
       dat$`Tmin (C)`[minshifts[i]] <- unlist(fixes[1])
@@ -85,6 +87,9 @@ qc <- function(dat) {
   dat$`Tmean (C)` <- round((dat$`Tmax (C)` + dat$`Tmin (C)`)/2,1)
   observations[is.na(observations)] <- ''
   dat <- add_column(dat, Observations = observations)
+  
+  attributes(dat) <- append(attributes(dat), attrs_to_append)
+  rownames(dat) <- NULL
   
   dat
 }

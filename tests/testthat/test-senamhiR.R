@@ -32,7 +32,7 @@ test_that("senamhiR can pad with zeroes", {
 test_that("senamhiR can collapse stations with similar names", {
   out <- senamhiR(c(401, 280, "472D23BE"), year = 2001, collapse = TRUE)
   expect_that(out, is_a("list"))
-  expect_equal(lengths(out), c(14,11))
+  expect_equal(lengths(out), c(14,10))
   expect_output(str(out), "List of 2")
 })
 
