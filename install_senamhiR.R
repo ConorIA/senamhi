@@ -8,8 +8,10 @@ senamhiR.\n\n")
 if (readline("Would you like to proceed? (y/N)") %in% c("Y", "y")) {
   url <- "https://gitlab.com/ConorIA/senamhiR/-/archive/master/senamhiR-master.tar.gz"
   f <- tempfile()
+  d <- tempdir()
   download.file(url, f)
-  devtools::install(untar(f), dependencies = TRUE)
+  untar(f, exdir = d)
+  devtools::install(file.path(d, "senamhiR-master"), dependencies = TRUE)
 } else {
   stop("Review the remote code and try again.")
 }
