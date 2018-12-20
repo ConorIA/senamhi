@@ -2,7 +2,6 @@ FROM trestletech/plumber
 MAINTAINER Conor Anderson <conor@conr.ca>
 
 COPY plumber.R /api/plumber.R
-COPY catalogue.rds /catalogue.rds
 
 RUN apt-get update &&\
   apt-get install -y --no-install-recommends curl libmariadb-dev &&\

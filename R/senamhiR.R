@@ -9,7 +9,6 @@
 ##' @author Conor I. Anderson
 ##' 
 ##' @importFrom tibble tibble
-##' @importFrom httr add_headers content POST stop_for_status
 ##' 
 ##' @export
 ##' 
@@ -34,14 +33,6 @@ senamhiR <- function(station, year, collapse = FALSE) {
   
   if (inherits(station, "try-error") || !station %in% catalogue$StationID) {
     stop("One or more requested stations invalid.")
-  }
-  
-  download_data <- function(stn, year) {
-    r <- POST("https://api.conr.ca/pcd/get", 
-              body = list(station = stn, year = year), encode = "json",
-              config = list(add_headers(accept = "application/octet-stream")))
-    stop_for_status(r)
-    unserialize(content(r))
   }
   
   pull_data <- function(stn, year) {

@@ -17,6 +17,7 @@
 ##' 
 ##' @importFrom dplyr arrange filter mutate rowwise
 ##' @importFrom geosphere distGeo 
+##' @importFrom rlang .data
 ##' @importFrom utils glob2rx
 ##' 
 ##' @export
@@ -55,12 +56,12 @@ station_search <- function(name = NULL, ignore.case = TRUE, glob = FALSE, region
   if (!is.null(name)) {
     if (glob) name <- glob2rx(name)
     if (length(name) > 1) name <- paste(name, collapse = "|")
-    filt <- filter(filt, grepl(name, Station, ignore.case = ignore.case, ...))
+    filt <- filter(filt, grepl(name, .data$Station, ignore.case = ignore.case, ...))
   } 
   
   # If `region` is not NULL, filter by name
   if (!is.null(region)) {
-    filt <- filter(filt, Region == toupper(region))
+    filt <- filter(filt, .data$Region == toupper(region))
     if (nrow(filt) == 0) {
       stop("No data found for that region. Did you spell it correctly?")
     }
@@ -68,7 +69,7 @@ station_search <- function(name = NULL, ignore.case = TRUE, glob = FALSE, region
   
   # If `config` is not NULL, filter by config
   if (!is.null(config)) {
-    filt <- filter(filt, grepl(config, Configuration, ignore.case = ignore.case, ...))
+    filt <- filter(filt, grepl(config, .data$Configuration, ignore.case = ignore.case, ...))
     if (nrow(filt) == 0) {
       stop("No data found for that config. Did you pass \"m\" or \"h\"?")
     }
@@ -77,9 +78,10 @@ station_search <- function(name = NULL, ignore.case = TRUE, glob = FALSE, region
   # If `period` is not NULL, filter by available data
   if (!is.null(period)) {
     if (length(period) == 1) {
-      filt <- filter(filt, `Period (Yr)` >= period)
+      filt <- filter(filt, .data$`Period (Yr)` >= period)
     } else {
-      filt <- filter(filt, `Data Start` <= min(period) & `Data End` >= max(period))  
+      filt <- filter(filt, .data$`Data Start` <= min(period) &
+                     .data$`Data End` >= max(period))  
     }
     if (nrow(filt) == 0) {
       stop("No station was found for the specified period.")
@@ -89,14 +91,15 @@ station_search <- function(name = NULL, ignore.case = TRUE, glob = FALSE, region
   # If `target` is not NULL, filter by distance to target
   if (!is.null(target)) {
     if (length(target) == 1L) {
-      p1 <- catalogue %>% filter(StationID == target) %>% select(Longitude, Latitude) %>% unlist
+      p1 <- catalogue %>% filter(.data$StationID == target) %>%
+        select(.data$Longitude, .data$Latitude) %>% unlist()
     } else if (length(target) == 2L) {
       p1 <- c(target[2], target[1])
     } else stop("error: check target format")
     filt <-  rowwise(filt) %>%
-      mutate(Dist = distGeo(p1, c(Longitude, Latitude))/1000) %>%
-      filter(Dist >= min(dist) & Dist <= max(dist))
-    if (sort == TRUE) filt <- arrange(filt, Dist)
+      mutate(Dist = distGeo(p1, c(.data$Longitude, .data$Latitude))/1000) %>%
+      filter(.data$Dist >= min(dist) & .data$Dist <= max(dist))
+    if (sort == TRUE) filt <- arrange(filt, .data$Dist)
     attr(filt, "target_lon") <- p1[1]
     attr(filt, "target_lat") <- p1[2]
   }

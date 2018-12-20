@@ -10,26 +10,26 @@ library(senamhiR)
 library(dplyr)
 ```
 
-The package provides an automated solution for the acquisition of archived Peruvian climate and hydrology data directly within R. The data was compiled from the Senamhi website, and contains all of the data that was available as of April 10, 2018. This data was originally converted from HTML, and is stored in a MySQL database in tibble format.
+The package provides an automated solution for the acquisition of archived Peruvian climate and hydrology data directly within R. The data was compiled from the Senamhi website, and contains all of the data that was available as of April 10, 2018. This data was originally converted from HTML, and is now accessible via an API hosted by the package author. 
 
 It is important to note that the info on the Senamhi website has not undergone quality control, however, this package includes a helper function to perform the most common quality control operations for the temperature variables. More functions will be added in the future.
 
 ## Installing
 
-This package is under active development, and is not available from the official Comprehensive R Archive Network (CRAN). To make installation easier, I have written a script that will install the `git2r` and `remotes` packages (if necessary), and then install `senamhiR` and all dependencies. Use the following command to run this script:
+This package is under active development, and is not available from the official Comprehensive R Archive Network (CRAN). To make installation easier, I have written a script that should facilitate the installation of the package and its dependencies. Use the following command to run this script:
 ``` {r, eval = FALSE}
 source("https://gitlab.com/ConorIA/senamhiR/raw/master/install_senamhiR.R")
 ```
 _Note: It is always a good idea to review code before you run it. Click the URL in the above command to see the commands that we will run to install._
 
-Once the packages have installed, load `senamhiR` by:
+Once the packages have installed, load **senamhiR** by:
 ``` {r, eval = FALSE}
 library(senamhiR)
 ```
 
 ## Basic workflow
 
-The functions contained in the `senamhiR` functions allow for the discovery and visualization of meteorological and hydrological stations, and the acquisition of daily climate data from these stations.
+The functions contained in the **senamhiR** functions allow for the discovery and visualization of meteorological and hydrological stations, and the acquisition of daily climate data from these stations.
 
 ### `station_search()`
 
@@ -39,9 +39,9 @@ To search for a station by name, use the `station_search()` function. For instan
 station_search("Santa")
 ```
 
-Note that the `tibble` object (a special sort of `data.frame`) won't print more than the first 10 rows by default. To see all of the results, you can wrap the command in `View()` so that it becomes `View(find_station("Santa"))`.
+Note that the `tbl_df` object (a special sort of `data.frame`) won't print more than the first 10 rows by default. To see all of the results, you can wrap the command in `View()` so that it becomes `View(find_station("Santa"))`.
 
-Note that you can also use wildcards as supported by the `glob2rx()` from the `utils` package by passing the argument `glob = TRUE`, as in the following example.
+Note that you can also use wildcards as supported by the `glob2rx()` from the **utils** package by passing the argument `glob = TRUE`, as in the following example.
 
 ```{r}
 station_search("San*", glob = TRUE)
@@ -87,7 +87,7 @@ Make sure to use the assignment operator (`<-`) to save the data into an R objec
 
 ### `map_stations()`
 
-Sometimes a long list of stations is hard to visualize spatially. The `map_stations()` function helps to overcome this. This function takes a list of stations and shows them on a map powered by the [Leaflet](http://leafletjs.com/) library. Like the previous function, the map function is even smart enough to take a search as its list of stations as per the example below.
+Sometimes a long list of stations is hard to visualize spatially. The `map_stations()` function helps to overcome this. This function takes a list of stations and shows them on a map powered by the [Leaflet](http://leafletjs.com/) library. Like the previous function, the map function is even smart enough to take a search as its list of stations as per the example below. Note that this mapping functionality requires the **leaflet** package to be installed, and it is not included as a dependency of **senamhiR**.
 
 #### Show a map of all stations that are between 30 and 50 km of Machu Picchu
 ```{r, eval=FALSE}

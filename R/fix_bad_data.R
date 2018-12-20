@@ -2,9 +2,10 @@
   # First, let's see where this is happening.
   yearmon <- as.yearmon(bad_table$Fecha[bad_row])
   # Let's look at all months other than the bad month
-  context <- filter(bad_table, !as.yearmon(Fecha) == yearmon & format(Fecha, format = "%m") == format(yearmon, format = "%m"))
+  context <- filter(bad_table, !as.yearmon(.data$Fecha) == yearmon &
+                      format(.data$Fecha, format = "%m") == format(yearmon, format = "%m"))
   # Let's make sure we don't have other bad data
-  context <- filter(context, var > -50 & var < 50)
+  context <- filter(context, .data$var > -50 & .data$var < 50)
   context <- unlist(context$var)
   # We should now have *fairly* clean context
   bad_data <- unlist(bad_table$var[bad_row])
