@@ -131,7 +131,7 @@ function() {
 #* @param station The station
 #* @param year A vector of years to return
 #* @post /get
-function(station, year) {
+function(station, year = NULL) {
   catalogue <- .get_catalogue()
 
   if (nchar(station) < 6) {
@@ -154,7 +154,7 @@ function(station, year) {
     stop("There was an error getting that table.")
   }
   
-  if (length(year) == 0) {
+  if (is.null(year) | length(year) == 0) {
     dat <- as_tibble(dbReadTable(conn, sql_table, row.names = NULL))
   } else {
     start <- min(year)
