@@ -8,3 +8,5 @@
 ^README\..*$
 ^LICENSE\.md$
 ^install_senamhiR\.R$
+^pcd$
+^Dockerfile$

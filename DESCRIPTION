@@ -13,11 +13,10 @@ Description: A collection of functions to obtain archived Peruvian climatologica
 Depends:
     R (>= 3.1.0)
 Imports:
-    DBI,
     dplyr,
     geosphere,
+    httr,
     leaflet,
-    RMySQL,
     tibble,
     utils,
     zoo
