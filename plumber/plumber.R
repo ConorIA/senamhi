@@ -154,7 +154,7 @@ function(station, year) {
     stop("There was an error getting that table.")
   }
   
-  if (missing(year) || is.null(year)) {
+  if (length(year) == 0) {
     dat <- as_tibble(dbReadTable(conn, sql_table, row.names = NULL))
   } else {
     start <- min(year)

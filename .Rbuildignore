@@ -8,5 +8,6 @@
 ^README\..*$
 ^LICENSE\.md$
 ^install_senamhiR\.R$
-^pcd$
-^Dockerfile$
+^plumber$
+^docker-compose.yml$
+^updateip.sh$
