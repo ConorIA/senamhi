@@ -9,7 +9,7 @@
 ##' @author Conor I. Anderson
 ##' 
 ##' @importFrom tibble tibble
-##' @importFrom httr content POST stop_for_status
+##' @importFrom httr add_headers content POST stop_for_status
 ##' 
 ##' @export
 ##' 
