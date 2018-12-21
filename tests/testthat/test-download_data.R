@@ -39,5 +39,5 @@ test_that("download_data() can pad with zeroes", {
 
 ## should fail when no correct station is given
 test_that("download_data() fails when an incorrect station is requested", {
-  expect_error(download_data("foo"), "Station ID appears invalid.", fixed=TRUE)
+  expect_error(download_data("foo"), "Internal Server Error (HTTP 500).", fixed=TRUE) #FIXME
 })

@@ -2,9 +2,9 @@
 % Please edit documentation in R/download_data.R
 \name{download_data}
 \alias{download_data}
-\title{Access data from the Peruvian National Hydrological and Meterological Service via MySQL}
+\title{Access data from the Peruvian National Hydrological and Meterological Service via API}
 \usage{
-download_data(station, year)
+download_data(station, year = NULL)
 }
 \arguments{
 \item{station}{character; the station id number to process.}
@@ -15,7 +15,7 @@ download_data(station, year)
 tbl_df
 }
 \description{
-Download Peruvian historical climate data from the Senamhi via a MySQL archive.
+Download archived Peruvian historical climate data from the Senamhi via an independent API.
 }
 \examples{
 \dontrun{download_data('000401')}

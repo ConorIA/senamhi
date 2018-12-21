@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+
+  plumber:
+    build: ./plumber
+    restart: always
+    volumes:
+      - ./plumber/plumber_settings.R:/plumber_settings.R:ro
+      - /data/pcd:/data/pcd

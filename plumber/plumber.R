@@ -1,18 +1,12 @@
-#' Clean up table names and types
-#'
-#' @param datain the data.frame to process
-#' @param config the station configuration
-#' @param type the station type
-#' @param clean_names Boolean; whether to clean up table names
-#' @param remove_missing Boolean; whether to remove missing value codes, e.g. -888, -999
-#' @param fix_types Boolean; whether to fix column types
-#'
-#' @return tbl_df
-#' 
-#' @importFrom tibble has_name
-#' @keywords internal
-#'
-#' @author Conor I. Anderson
+library(plumber)
+library(DBI)
+library(RMySQL)
+library(tibble)
+library(storr)
+
+source("plumber_settings.R")
+
+st_pcd <- storr_rds("/data/pcd/")
 
 .clean_table <- function(datain, config, type, clean_names = FALSE, remove_missing = FALSE, fix_types = FALSE) {
   
@@ -102,4 +96,89 @@
     }
   }
   datain
+}
+
+#* Return the requested table
+#* @serializer contentType list(type="application/octet-stream")
+#* @get /catalogue
+function() {
+  catalogue <- st_pcd$get("catalogue")
+  serialize(catalogue, NULL)
+}
+
+get_mariadb <- function(station, year = NULL) {
+  
+  catalogue <- st_pcd$get("catalogue")
+
+  station_data <- catalogue[catalogue$StationID == station, ]
+  type = station_data$Type
+  config = station_data$Configuration
+  
+  conn <- dbConnect(MySQL(), user = username, password = password, host = "pcd.conr.ca", dbname = "pcd")
+  on.exit(dbDisconnect(conn))
+  
+  sql_table <- paste0("ID_", station)
+  if (sum(dbListTables(conn) %in% sql_table) != 1) {
+    dbDisconnect(conn)
+    stop("There was an error getting that table.")
+  }
+  
+  if (is.null(year) | length(year) == 0) {
+    dat <- as_tibble(dbReadTable(conn, sql_table, row.names = NULL))
+  } else {
+    start <- min(year)
+    end <- max(year)
+    dat <- as_tibble(dbGetQuery(conn, paste0("SELECT * FROM ", sql_table, " WHERE Fecha BETWEEN \"", start, "-01-01\" AND \"", end, "-12-31\";")))
+  }
+  dat <- .clean_table(dat, config, type, clean_names = TRUE, fix_types = TRUE)
+  dat
+}
+
+del_mariadb <- function(station) {
+  
+  conn <- dbConnect(MySQL(), user = username, password = password, host = "pcd.conr.ca", dbname = "pcd")
+  on.exit(dbDisconnect(conn))
+  
+  sql_table <- paste0("ID_", station)
+  if (sum(dbListTables(conn) %in% sql_table) == 1) {
+    dbRemoveTable(conn, sql_table)
+  } else {
+    warning("Table doesn't exist")
+  }
+
+}
+
+#* Return the requested table
+#* @serializer contentType list(type="application/octet-stream")
+#* @param station The station
+#* @param year A vector of years to return
+#* @post /get
+function(station, year = NULL) {
+  
+  catalogue <- st_pcd$get("catalogue")
+  
+  if (nchar(station) < 6) {
+    station <- suppressWarnings(try(sprintf("%06d", as.numeric(station)), silent = TRUE))
+    if (inherits(station, "try-error") | !station %in% catalogue$StationID) {
+      stop("Station ID appears invalid.")
+    }
+  }
+  
+  if (st_pcd$exists(station)) {
+    dat <- st_pcd$get(station)
+  } else {
+    message("Moving data from mariadb to plumber")
+    dat <- try(get_mariadb(station, NULL))
+    if (inherits(dat, "type-error")) {
+      stop("We encountered an error!")
+    }
+    st_pcd$set(station, value = dat)
+    del_mariadb(station)
+  }
+  
+  if (!is.null(year) && length(year) > 0) {
+    dat <- dat[dat$Fecha >= paste0(min(year), "-01-01") & dat$Fecha <= paste0(max(year), "-12-31"),]
+  }
+  
+  serialize(dat, NULL)
 }

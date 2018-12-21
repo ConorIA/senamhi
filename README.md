@@ -5,7 +5,8 @@ The package provides an automated solution for the acquisition of
 archived Peruvian climate and hydrology data directly within R. The data
 was compiled from the Senamhi website, and contains all of the data that
 was available as of April 10, 2018. This data was originally converted
-from HTML, and is stored in a MySQL database in tibble format.
+from HTML, and is now accessible via an API hosted by the package
+author.
 
 It is important to note that the info on the Senamhi website has not
 undergone quality control, however, this package includes a helper
@@ -16,9 +17,9 @@ temperature variables. More functions will be added in the future.
 
 This package is under active development, and is not available from the
 official Comprehensive R Archive Network (CRAN). To make installation
-easier, I have written a script that will install the `git2r` and
-`remotes` packages (if necessary), and then install `senamhiR` and all
-dependencies. Use the following command to run this
+easier, I have written a script that should facilitate the installation
+of the package and its dependencies. Use the following command to run
+this
 script:
 
 ``` r
@@ -29,7 +30,7 @@ source("https://gitlab.com/ConorIA/senamhiR/raw/master/install_senamhiR.R")
 the URL in the above command to see the commands that we will run to
 install.*
 
-Once the packages have installed, load `senamhiR` by:
+Once the packages have installed, load **senamhiR** by:
 
 ``` r
 library(senamhiR)
@@ -37,7 +38,7 @@ library(senamhiR)
 
 ## Basic workflow
 
-The functions contained in the `senamhiR` functions allow for the
+The functions contained in the **senamhiR** functions allow for the
 discovery and visualization of meteorological and hydrological stations,
 and the acquisition of daily climate data from these stations.
 
@@ -52,29 +53,29 @@ station_search("Santa")
 ```
 
     ## # A tibble: 43 x 14
-    ##    Station           StationID Type  Configuration `Data Start` `Data End`
-    ##    <chr>             <chr>     <chr> <chr>         <chr>        <chr>     
-    ##  1 SANTA MARIA DE N… 000256    CON   M             1951         2018      
-    ##  2 SANTA             000433    CON   M             1964         1986      
-    ##  3 SANTA ISABEL DE … 158201    CON   M             1964         1982      
-    ##  4 SANTA RITA        000829    CON   M             1977         1992      
-    ##  5 SANTA ELENA       000834    CON   M             1963         1973      
-    ##  6 SANTA CRUZ DE HO… 113248    SUT   M             2015         2016      
-    ##  7 SANTA CATALINA D… 153200    CON   M             1963         1983      
-    ##  8 SANTA CRUZ        000351    CON   M             1963         2018      
-    ##  9 HACIENDA SANTA I… 000766    CON   M             1954         1955      
-    ## 10 SANTA ANA         000515    CON   M             1942         1947      
+    ##    Station StationID Type  Configuration `Data Start` `Data End`
+    ##    <chr>   <chr>     <chr> <chr>         <chr>        <chr>     
+    ##  1 SANTA … 000256    CON   M             1951         2018      
+    ##  2 SANTA   000433    CON   M             1964         1986      
+    ##  3 SANTA … 158201    CON   M             1964         1982      
+    ##  4 SANTA … 000829    CON   M             1977         1992      
+    ##  5 SANTA … 000834    CON   M             1963         1973      
+    ##  6 SANTA … 113248    SUT   M             2015         2016      
+    ##  7 SANTA … 153200    CON   M             1963         1983      
+    ##  8 SANTA … 000351    CON   M             1963         2018      
+    ##  9 HACIEN… 000766    CON   M             1954         1955      
+    ## 10 SANTA … 000515    CON   M             1942         1947      
     ## # ... with 33 more rows, and 8 more variables: `Period (Yr)` <dbl>,
     ## #   `Station Status` <chr>, Latitude <dbl>, Longitude <dbl>,
     ## #   Altitude <dbl>, Region <chr>, Province <chr>, District <chr>
 
-Note that the `tibble` object (a special sort of `data.frame`) won’t
+Note that the `tbl_df` object (a special sort of `data.frame`) won’t
 print more than the first 10 rows by default. To see all of the results,
 you can wrap the command in `View()` so that it becomes
 `View(find_station("Santa"))`.
 
 Note that you can also use wildcards as supported by the `glob2rx()`
-from the `utils` package by passing the argument `glob = TRUE`, as in
+from the **utils** package by passing the argument `glob = TRUE`, as in
 the following example.
 
 ``` r
@@ -82,18 +83,18 @@ station_search("San*", glob = TRUE)
 ```
 
     ## # A tibble: 139 x 14
-    ##    Station           StationID Type  Configuration `Data Start` `Data End`
-    ##    <chr>             <chr>     <chr> <chr>         <chr>        <chr>     
-    ##  1 SAN RAFAEL        152222    CON   M             1965         1966      
-    ##  2 SANTA MARIA DE N… 000256    CON   M             1951         2018      
-    ##  3 SAN PEDRO         211404    CON   H             2009         2018      
-    ##  4 SANTIAGO ANTUNEZ… 000426    CON   M             1998         2018      
-    ##  5 SAN DIEGO         000420    CON   M             1959         1962      
-    ##  6 SAN LORENZO # 5   000430    CON   M             1966         1972      
-    ##  7 SAN JACINTO DE N… 000424    CON   M             1956         1968      
-    ##  8 SAN JACINTO       201901    CON   H             1947         1990      
-    ##  9 SANTA             000433    CON   M             1964         1986      
-    ## 10 SANTA ISABEL DE … 158201    CON   M             1964         1982      
+    ##    Station StationID Type  Configuration `Data Start` `Data End`
+    ##    <chr>   <chr>     <chr> <chr>         <chr>        <chr>     
+    ##  1 SAN RA… 152222    CON   M             1965         1966      
+    ##  2 SANTA … 000256    CON   M             1951         2018      
+    ##  3 SAN PE… 211404    CON   H             2009         2018      
+    ##  4 SANTIA… 000426    CON   M             1998         2018      
+    ##  5 SAN DI… 000420    CON   M             1959         1962      
+    ##  6 SAN LO… 000430    CON   M             1966         1972      
+    ##  7 SAN JA… 000424    CON   M             1956         1968      
+    ##  8 SAN JA… 201901    CON   H             1947         1990      
+    ##  9 SANTA   000433    CON   M             1964         1986      
+    ## 10 SANTA … 158201    CON   M             1964         1982      
     ## # ... with 129 more rows, and 8 more variables: `Period (Yr)` <dbl>,
     ## #   `Station Status` <chr>, Latitude <dbl>, Longitude <dbl>,
     ## #   Altitude <dbl>, Region <chr>, Province <chr>, District <chr>
@@ -111,18 +112,18 @@ station_search(region = "SAN MARTIN")
 ```
 
     ## # A tibble: 72 x 14
-    ##    Station           StationID Type  Configuration `Data Start` `Data End`
-    ##    <chr>             <chr>     <chr> <chr>         <chr>        <chr>     
-    ##  1 CUZCO             000389    CON   M             1966         1970      
-    ##  2 DOS DE MAYO (J. … 153225    CON   M             1963         2018      
-    ##  3 CUZCO-BIAVO       153345    CON   M             1996         2018      
-    ##  4 BIAVO             221804    CON   H             1969         2018      
-    ##  5 LA UNION          000384    CON   M             1970         2018      
-    ##  6 NUEVO LIMA        153312    CON   M             1963         2017      
-    ##  7 BELLAVISTA        000382    CON   M             1963         2018      
-    ##  8 SAN PABLO         153307    CON   M             1967         2018      
-    ##  9 SISA              000381    CON   M             1964         1988      
-    ## 10 ALAO              003308    CON   M             1972         2018      
+    ##    Station StationID Type  Configuration `Data Start` `Data End`
+    ##    <chr>   <chr>     <chr> <chr>         <chr>        <chr>     
+    ##  1 CUZCO   000389    CON   M             1966         1970      
+    ##  2 DOS DE… 153225    CON   M             1963         2018      
+    ##  3 CUZCO-… 153345    CON   M             1996         2018      
+    ##  4 BIAVO   221804    CON   H             1969         2018      
+    ##  5 LA UNI… 000384    CON   M             1970         2018      
+    ##  6 NUEVO … 153312    CON   M             1963         2017      
+    ##  7 BELLAV… 000382    CON   M             1963         2018      
+    ##  8 SAN PA… 153307    CON   M             1967         2018      
+    ##  9 SISA    000381    CON   M             1964         1988      
+    ## 10 ALAO    003308    CON   M             1972         2018      
     ## # ... with 62 more rows, and 8 more variables: `Period (Yr)` <dbl>,
     ## #   `Station Status` <chr>, Latitude <dbl>, Longitude <dbl>,
     ## #   Altitude <dbl>, Region <chr>, Province <chr>, District <chr>
@@ -134,18 +135,18 @@ station_search("Santa", period = 1971:2000)
 ```
 
     ## # A tibble: 10 x 14
-    ##    Station           StationID Type  Configuration `Data Start` `Data End`
-    ##    <chr>             <chr>     <chr> <chr>         <chr>        <chr>     
-    ##  1 SANTA MARIA DE N… 000256    CON   M             1951         2018      
-    ##  2 SANTA CRUZ        000351    CON   M             1963         2018      
-    ##  3 SANTA CRUZ        155202    CON   M             1963         2018      
-    ##  4 SANTA EULALIA     155213    CON   M             1963         2018      
-    ##  5 SANTA ROSA        000536    CON   M             1967         2006      
-    ##  6 SANTA CRUZ        152303    CON   M             1963         2008      
-    ##  7 SANTA RITA DE CA… 152401    CON   M             1963         2018      
-    ##  8 SANTA MARIA DE N… 152409    CON   M             1963         2018      
-    ##  9 SANTA CLOTILDE    000177    CON   M             1963         2017      
-    ## 10 SANTA ROSA        000823    CON   M             1956         2017      
+    ##    Station StationID Type  Configuration `Data Start` `Data End`
+    ##    <chr>   <chr>     <chr> <chr>         <chr>        <chr>     
+    ##  1 SANTA … 000256    CON   M             1951         2018      
+    ##  2 SANTA … 000351    CON   M             1963         2018      
+    ##  3 SANTA … 155202    CON   M             1963         2018      
+    ##  4 SANTA … 155213    CON   M             1963         2018      
+    ##  5 SANTA … 000536    CON   M             1967         2006      
+    ##  6 SANTA … 152303    CON   M             1963         2008      
+    ##  7 SANTA … 152401    CON   M             1963         2018      
+    ##  8 SANTA … 152409    CON   M             1963         2018      
+    ##  9 SANTA … 000177    CON   M             1963         2017      
+    ## 10 SANTA … 000823    CON   M             1956         2017      
     ## # ... with 8 more variables: `Period (Yr)` <dbl>, `Station Status` <chr>,
     ## #   Latitude <dbl>, Longitude <dbl>, Altitude <dbl>, Region <chr>,
     ## #   Province <chr>, District <chr>
@@ -157,18 +158,18 @@ station_search(target = "000401", dist = 0:100)
 ```
 
     ## # A tibble: 58 x 15
-    ##    Station     StationID Type  Configuration `Data Start` `Data End`
-    ##    <chr>       <chr>     <chr> <chr>         <chr>        <chr>     
-    ##  1 TARAPOTO    000401    CON   M             1998         2018      
-    ##  2 CUNUMBUQUE  153311    CON   M             1963         2018      
-    ##  3 CUMBAZA     221801    CON   H             1968         2018      
-    ##  4 LAMAS       000383    CON   M             1963         2018      
-    ##  5 SAN ANTONIO 153314    CON   M             1963         2018      
-    ##  6 SHANAO      221802    CON   H             1965         2018      
-    ##  7 SHANAO      210006    SUT   H             2016         2018      
-    ##  8 SHANAO      153328    CON   M             2002         2018      
-    ##  9 TABALOSOS   000322    CON   M             1963         2018      
-    ## 10 EL PORVENIR 000310    CON   M             1964         2018      
+    ##    Station StationID Type  Configuration `Data Start` `Data End`
+    ##    <chr>   <chr>     <chr> <chr>         <chr>        <chr>     
+    ##  1 TARAPO… 000401    CON   M             1998         2018      
+    ##  2 CUNUMB… 153311    CON   M             1963         2018      
+    ##  3 CUMBAZA 221801    CON   H             1968         2018      
+    ##  4 LAMAS   000383    CON   M             1963         2018      
+    ##  5 SAN AN… 153314    CON   M             1963         2018      
+    ##  6 SHANAO  221802    CON   H             1965         2018      
+    ##  7 SHANAO  210006    SUT   H             2016         2018      
+    ##  8 SHANAO  153328    CON   M             2002         2018      
+    ##  9 TABALO… 000322    CON   M             1963         2018      
+    ## 10 EL POR… 000310    CON   M             1964         2018      
     ## # ... with 48 more rows, and 9 more variables: `Period (Yr)` <dbl>,
     ## #   `Station Status` <chr>, Latitude <dbl>, Longitude <dbl>,
     ## #   Altitude <dbl>, Region <chr>, Province <chr>, District <chr>,
@@ -181,28 +182,28 @@ station_search(target = c(-13.163333, -72.545556), dist = 0:50)
 ```
 
     ## # A tibble: 20 x 15
-    ##    Station        StationID Type  Configuration `Data Start` `Data End`
-    ##    <chr>          <chr>     <chr> <chr>         <chr>        <chr>     
-    ##  1 MACHU PICCHU   000679    CON   M             1964         2018      
-    ##  2 HUYRO          000678    CON   M             1964         1981      
-    ##  3 CHILCA         472A9204  SUT   M             2015         2018      
-    ##  4 ECHARATE       000716    CON   M             1981         1982      
-    ##  5 MARANURA       000676    CON   M             1970         1978      
-    ##  6 OLLANTAYTAMBO  47295014  SUT   M             2011         2014      
-    ##  7 QUILLABAMBA    4729B3E6  SUT   M1            2000         2018      
-    ##  8 QUILLABAMBA    000606    CON   M             1964         2018      
-    ##  9 OCOBAMBA       000681    CON   M             1964         1983      
-    ## 10 MOLLEPATA      000680    CON   M             1963         1978      
-    ## 11 CUNYAC         156224    CON   M             2002         2018      
-    ## 12 ECHARATE       156300    CON   M             1963         1981      
-    ## 13 PUENTE CUNYA   472C44A2  SUT   H             2016         2018      
-    ## 14 PUENTE CUNYAC  230503    CON   H             1995         2018      
-    ## 15 ZURITE         000682    CON   M             1963         1983      
-    ## 16 CURAHUASI      000677    CON   M             1963         2018      
-    ## 17 URUBAMBA       113131    DAV   M             2006         2008      
-    ## 18 URUBAMBA       000683    CON   M             1963         2018      
-    ## 19 ANTA ANCACHURO 000684    CON   M             1964         2018      
-    ## 20 HUACHIBAMBA    156303    CON   M             1963         1978      
+    ##    Station StationID Type  Configuration `Data Start` `Data End`
+    ##    <chr>   <chr>     <chr> <chr>         <chr>        <chr>     
+    ##  1 MACHU … 000679    CON   M             1964         2018      
+    ##  2 HUYRO   000678    CON   M             1964         1981      
+    ##  3 CHILCA  472A9204  SUT   M             2015         2018      
+    ##  4 ECHARA… 000716    CON   M             1981         1982      
+    ##  5 MARANU… 000676    CON   M             1970         1978      
+    ##  6 OLLANT… 47295014  SUT   M             2011         2014      
+    ##  7 QUILLA… 4729B3E6  SUT   M1            2000         2018      
+    ##  8 QUILLA… 000606    CON   M             1964         2018      
+    ##  9 OCOBAM… 000681    CON   M             1964         1983      
+    ## 10 MOLLEP… 000680    CON   M             1963         1978      
+    ## 11 CUNYAC  156224    CON   M             2002         2018      
+    ## 12 ECHARA… 156300    CON   M             1963         1981      
+    ## 13 PUENTE… 472C44A2  SUT   H             2016         2018      
+    ## 14 PUENTE… 230503    CON   H             1995         2018      
+    ## 15 ZURITE  000682    CON   M             1963         1983      
+    ## 16 CURAHU… 000677    CON   M             1963         2018      
+    ## 17 URUBAM… 113131    DAV   M             2006         2008      
+    ## 18 URUBAM… 000683    CON   M             1963         2018      
+    ## 19 ANTA A… 000684    CON   M             1964         2018      
+    ## 20 HUACHI… 156303    CON   M             1963         1978      
     ## # ... with 9 more variables: `Period (Yr)` <dbl>, `Station Status` <chr>,
     ## #   Latitude <dbl>, Longitude <dbl>, Altitude <dbl>, Region <chr>,
     ## #   Province <chr>, District <chr>, Dist <dbl>
@@ -245,7 +246,7 @@ requ
     ## # ... with 10,947 more rows, and 7 more variables: `TBH07 (C)` <dbl>,
     ## #   `TBH13 (C)` <dbl>, `TBH19 (C)` <dbl>, `Prec07 (mm)` <dbl>, `Prec19
     ## #   (mm)` <dbl>, `Direccion del Viento` <chr>, `Velocidad del Viento
-    ## #   (m/s)` <int>
+    ## #   (m/s)` <dbl>
 
 Make sure to use the assignment operator (`<-`) to save the data into an
 R object, otherwise the data will just print out to the console, and
@@ -260,8 +261,10 @@ Sometimes a long list of stations is hard to visualize spatially. The
 list of stations and shows them on a map powered by the
 [Leaflet](http://leafletjs.com/) library. Like the previous function,
 the map function is even smart enough to take a search as its list of
-stations as per the example
-below.
+stations as per the example below. Note that this mapping functionality
+requires the **leaflet** package to be installed, and it is not included
+as a dependency of
+**senamhiR**.
 
 #### Show a map of all stations that are between 30 and 50 km of Machu Picchu
 
@@ -328,12 +331,12 @@ requ_qc %>% filter(Observations != "") %>% select(Fecha, `Tmax (C)`, `Tmin (C)`,
 ```
 
     ## # A tibble: 5 x 5
-    ##   Fecha      `Tmax (C)` `Tmin (C)` `Tmean (C)` Observations               
-    ##   <date>          <dbl>      <dbl>       <dbl> <chr>                      
-    ## 1 2013-02-27       34         22.2        28.1 "Tmax dps: 3.4 -> 34 (1.4)…
-    ## 2 2013-05-08       31.4       20.8        26.1 Tmax dps: 314 -> 31.4 (0.2…
-    ## 3 2013-07-18       30.8       NA          NA   Tmin err: 221.2 -> NA      
-    ## 4 2013-10-28       33.4       23.2        28.3 Tmin dps: 232 -> 23.2 (1.0…
+    ##   Fecha      `Tmax (C)` `Tmin (C)` `Tmean (C)` Observations                
+    ##   <date>          <dbl>      <dbl>       <dbl> <chr>                       
+    ## 1 2013-02-27       34         22.2        28.1 "Tmax dps: 3.4 -> 34 (1.4) "
+    ## 2 2013-05-08       31.4       20.8        26.1 Tmax dps: 314 -> 31.4 (0.25)
+    ## 3 2013-07-18       30.8       NA          NA   Tmin err: 221.2 -> NA       
+    ## 4 2013-10-28       33.4       23.2        28.3 Tmin dps: 232 -> 23.2 (1.03)
     ## 5 2013-12-24       30         23.6        26.8 "Tmax dps: 3 -> 30 (0.77) "
 
 For now, the data has been tested for decimal place-errors with the

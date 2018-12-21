@@ -1,8 +1,8 @@
 Package: senamhiR
 Type: Package
 Title: A Collection of Functions to Obtain Peruvian Climate Data
-Version: 0.6.5
-Date: 2018-06-27
+Version: 0.7.0
+Date: 2018-12-20
 Authors@R: c(person(given = c("Conor", "I."), family = "Anderson", 
            role = c("aut","cre"), email = "conor.anderson@utoronto.ca"),
            person(given = c("William", "A."), family = "Gough", role = "ths",
@@ -13,15 +13,15 @@ Description: A collection of functions to obtain archived Peruvian climatologica
 Depends:
     R (>= 3.1.0)
 Imports:
-    DBI,
     dplyr,
     geosphere,
-    leaflet,
-    RMySQL,
+    httr,
+    rlang,
     tibble,
     utils,
     zoo
-Suggests: 
+Suggests:
+    leaflet,
     testthat,
     covr
 License: GPL (>= 3)

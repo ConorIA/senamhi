@@ -9,6 +9,6 @@ r-base:
     - apt-get update -qq
     - apt-get install -y --no-install-recommends libmariadbclient-dev libcurl4-openssl-dev libssh2-1-dev libssl-dev libxml2-dev git
     - Rscript -e 'install.packages(c("devtools", "roxygen2", "testthat", "covr"), repos = "https://cran.rstudio.com/")'
-    - Rscript -e 'devtools::install_deps()'
+    - Rscript -e 'devtools::install_deps(dependencies = TRUE)'
     - Rscript -e 'devtools::check()'
     - Rscript -e 'covr::codecov(type = "all", quiet = FALSE)'

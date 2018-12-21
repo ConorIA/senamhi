@@ -36,6 +36,7 @@ senamhiR <- function(station, year, collapse = FALSE) {
   }
   
   pull_data <- function(stn, year) {
+    
     rtn <- download_data(stn, year)
     attributes(rtn) <- append(attributes(rtn), catalogue[catalogue$StationID == stn,])
     rownames(rtn) <- NULL
