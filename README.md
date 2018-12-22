@@ -321,8 +321,45 @@ quick_audit(toca, "Tmean", by = "month", report = "n")
 ### `qc()`
 
 There is an incomplete and experimental function to perform automated
-quality control on climate data acquired thought this package. For
-instance:
+quality control on data acquired through this package. Fow now, the
+package tests temperature and river level only. The logic used between
+these two types of data is different. Note that these methods are not
+necessarily statistically robust, and have not been subjected to
+rigourous testing. Your mileage may vary. In all cases, the original
+values are archived in an “observations” column, so you can always
+restore the original values manually.
+
+#### Temperature variables
+
+##### Case 1: Missing decimal point
+
+Any number above 100 °C or below -100 °C is tested:
+
+If the number appears to have missed a decimal place (e.g. 324 -\> 32.4;
+251 -\> 25.1), we try to divide that number by 10. If the result is
+within 1.5 standard deviations of all values 30 days before and after
+the day in question, we keep the result, otherwise, we discard it.
+
+If the number seems to be the result of some other typographical error
+(e.g. 221.2), we discard the data point.
+
+##### Case 2: *T*<sub>max</sub> \< *T*<sub>min</sub>
+
+We perform the same tests for both *T*<sub>max</sub> and
+*T*<sub>min</sub>. If the number is within 1.5 standard deviations of
+all values 30 days before and after the day in question, we leave the
+number alone. (Note: this is often the case for *T*<sub>min</sub> but
+seldom the case for *T*<sub>max</sub>). If the number does not fall
+within 1.5 standard deviations, we perform an additional level of
+testing to check if the number is the result of a premature decimal
+point (e.g. 3.4 -\> 34.0; 3 -\> 30.0). In this case, we try to multiply
+the number by 10. If this new result is within 1.5 standard deviations
+of all values 30 days before and after the day in question, we keep the
+result, otherwise, we discard it.
+
+*I have less confidence in this solution than I do for Case 1.*
+
+##### Example:
 
 ``` r
 requ_dirty <- senamhiR("000280") #1960 to 2018
@@ -339,54 +376,66 @@ requ_qc %>% filter(Observations != "") %>% select(Fecha, `Tmax (C)`, `Tmin (C)`,
     ## 4 2013-10-28       33.4       23.2        28.3 Tmin dps: 232 -> 23.2 (1.03)
     ## 5 2013-12-24       30         23.6        26.8 "Tmax dps: 3 -> 30 (0.77) "
 
-For now, the data has been tested for decimal place-errors with the
-following logic:
-
-##### Case 1: Missing decimal point
-
-Any number above 100 °C or below -100 °C is tested:
-
-If the number appears to have missed a decimal place (e.g. 324 -\> 32.4;
-251 -\> 25.1), we try to divide that number by 10. If the result is
-within 1.5 standard deviations of all values 30 days before and after
-the day in question, we keep the result, otherwise, we discard it.
-
-If the number seems to be the result of some other typographical error
-(e.g. 221.2), we discard the data point.
-
-##### Case 2: *T*<sub>max</sub> \< *T*<sub>min</sub>
-
-In case 2, we perform the same tests for both *T*<sub>max</sub> and
-*T*<sub>min</sub>. If the number is within 1.5 standard deviations of
-all values 30 days before and after the day in question, we leave the
-number alone. (Note: this is often the case for *T*<sub>min</sub> but
-seldom the case for *T*<sub>max</sub>). If the number does not fall
-within 1.5 standard deviations, we perform an additional level of
-testing to check if the number is the result of a premature decimal
-point (e.g. 3.4 -\> 34.0; 3 -\> 30.0). In this case, we try to multiply
-the number by 10. If this new result is within 1.5 standard deviations
-of all values 30 days before and after the day in question, we keep the
-result, otherwise, we discard it.
-
-*I have less confidence in this solution than I do for Case 1.*
-
-#### Cases that are currently missed:
+##### Cases that are currently missed:
 
   - Cases where *T*<sub>min</sub> is small because of a typo.
   - Cases where *T*<sub>max</sub> is small because of a typo, but not
     smaller than *T*<sub>min</sub>.
 
-#### Cases where this function is plain wrong:
+##### Cases where this function is plain wrong:
 
   - When there are a number of similar errors within the 60-day period,
     bad data is sometimes considered okay. This is especially apparent
     at, for instance, Station 47287402.
+
+#### River level:
+
+##### Case 1: Suspected decimal place shift
+
+The function first calculates the daily range in river level across the
+four daily observations. If any range is greater than the (somewhat
+arbitrary) value of ten times the average range, then we extract a slice
+of the level observations corresponding to two days before and two days
+after the day in question. We standardize the slice of data; if any
+*single* standardized value is above 1 (below -1), we try to multiply
+(divide) the value by 10. If the new value falls within 1.5 standard
+deviations of the mean of the “good” values, then we keep the modified
+value and call it a decimal place error, otherwise, we set the value to
+missing and label it as an error.
+
+##### Example:
+
+``` r
+pico_dirty <- senamhiR("230715") #2003 to 2018
+pico_qc <- qc(pico_dirty)
+pico_qc %>% filter(Observations != "") %>% select(Fecha, starts_with("Nivel"), Observations)
+```
+
+    ## # A tibble: 2 x 6
+    ##   Fecha      `Nivel06 (m)` `Nivel10 (m)` `Nivel14 (m)` `Nivel18 (m)` Observations 
+    ##   <date>             <dbl>         <dbl>         <dbl>         <dbl> <chr>                
+    ## 1 2011-03-25          17.1          17.1          NA            17.5 Level err: 12.2 -> NA
+    ## 2 2011-12-06          15.8          15.8          15.8          NA   Level err: 1.83 -> NA
+
+##### Cases that are currently missed:
+
+  - Cases where there is an error in more than one of the 20 river level
+    observations used for context.
+  - Cases where one of the river level observations is missing.
+
+##### Cases where this function is plain wrong:
+
+  - It may be the case that there is a quick spike in the river level
+    due to a precipitation event. This function may incorrectly detect
+    such spikes as human entry errors. Any correction made by the
+    function should be confirmed manually.
 
 #### Variables controlled for:
 
   - *T*<sub>max</sub>
   - *T*<sub>min</sub>
   - *T*<sub>mean</sub>
+  - River Level
 
 **No other variables are currently tested; hydrological data is not
 tested. This data should not be considered “high quality”, use of the
