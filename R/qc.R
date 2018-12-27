@@ -19,7 +19,7 @@
 
 qc <- function(dat) {
   
-  attrs_to_append <- append(attributes(dat)[4:length(attributes(dat))], list(`QC Date` = Sys.Date()))
+  attrs_to_append <- append(attributes(dat)[4:length(attributes(dat)) - 2], list(`QC Date` = Sys.Date()))
   
   if (inherits(dat, "character") & !inherits(dat, "data.frame")) {
     if (length(dat) > 1L) {
