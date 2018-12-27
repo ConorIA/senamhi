@@ -18,7 +18,7 @@ It is important to note that the info on the Senamhi website has not undergone q
 
 This package is under active development, and is not available from the official Comprehensive R Archive Network (CRAN). To make installation easier, I have written a script that should facilitate the installation of the package and its dependencies. Use the following command to run this script:
 ``` {r, eval = FALSE}
-source("https://gitlab.com/ConorIA/senamhiR/raw/master/install_senamhiR.R")
+source("https://gitlab.com/snippets/1793256/raw");install("senamhiR")
 ```
 _Note: It is always a good idea to review code before you run it. Click the URL in the above command to see the commands that we will run to install._
 

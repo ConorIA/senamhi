@@ -19,11 +19,10 @@ This package is under active development, and is not available from the
 official Comprehensive R Archive Network (CRAN). To make installation
 easier, I have written a script that should facilitate the installation
 of the package and its dependencies. Use the following command to run
-this
-script:
+this script:
 
 ``` r
-source("https://gitlab.com/ConorIA/senamhiR/raw/master/install_senamhiR.R")
+source("https://gitlab.com/snippets/1793256/raw");install("senamhiR")
 ```
 
 *Note: It is always a good idea to review code before you run it. Click
@@ -66,8 +65,8 @@ station_search("Santa")
     ##  9 HACIEN… 000766    CON   M             1954         1955      
     ## 10 SANTA … 000515    CON   M             1942         1947      
     ## # ... with 33 more rows, and 8 more variables: `Period (Yr)` <dbl>,
-    ## #   `Station Status` <chr>, Latitude <dbl>, Longitude <dbl>,
-    ## #   Altitude <dbl>, Region <chr>, Province <chr>, District <chr>
+    ## #   `Station Status` <fct>, Latitude <dbl>, Longitude <dbl>,
+    ## #   Altitude <int>, Region <chr>, Province <chr>, District <chr>
 
 Note that the `tbl_df` object (a special sort of `data.frame`) won’t
 print more than the first 10 rows by default. To see all of the results,
@@ -96,8 +95,8 @@ station_search("San*", glob = TRUE)
     ##  9 SANTA   000433    CON   M             1964         1986      
     ## 10 SANTA … 158201    CON   M             1964         1982      
     ## # ... with 129 more rows, and 8 more variables: `Period (Yr)` <dbl>,
-    ## #   `Station Status` <chr>, Latitude <dbl>, Longitude <dbl>,
-    ## #   Altitude <dbl>, Region <chr>, Province <chr>, District <chr>
+    ## #   `Station Status` <fct>, Latitude <dbl>, Longitude <dbl>,
+    ## #   Altitude <int>, Region <chr>, Province <chr>, District <chr>
 
 You can filter your search results by region, by station type, by a
 given period, and by proximity to another station or a vector of
@@ -119,14 +118,14 @@ station_search(region = "SAN MARTIN")
     ##  3 CUZCO-… 153345    CON   M             1996         2018      
     ##  4 BIAVO   221804    CON   H             1969         2018      
     ##  5 LA UNI… 000384    CON   M             1970         2018      
-    ##  6 NUEVO … 153312    CON   M             1963         2017      
+    ##  6 NUEVO … 153312    CON   M             1963         2018      
     ##  7 BELLAV… 000382    CON   M             1963         2018      
     ##  8 SAN PA… 153307    CON   M             1967         2018      
     ##  9 SISA    000381    CON   M             1964         1988      
     ## 10 ALAO    003308    CON   M             1972         2018      
     ## # ... with 62 more rows, and 8 more variables: `Period (Yr)` <dbl>,
-    ## #   `Station Status` <chr>, Latitude <dbl>, Longitude <dbl>,
-    ## #   Altitude <dbl>, Region <chr>, Province <chr>, District <chr>
+    ## #   `Station Status` <fct>, Latitude <dbl>, Longitude <dbl>,
+    ## #   Altitude <int>, Region <chr>, Province <chr>, District <chr>
 
 #### Find stations named “Santa”, with data available between 1971 to 2000
 
@@ -147,8 +146,8 @@ station_search("Santa", period = 1971:2000)
     ##  8 SANTA … 152409    CON   M             1963         2018      
     ##  9 SANTA … 000177    CON   M             1963         2017      
     ## 10 SANTA … 000823    CON   M             1956         2017      
-    ## # ... with 8 more variables: `Period (Yr)` <dbl>, `Station Status` <chr>,
-    ## #   Latitude <dbl>, Longitude <dbl>, Altitude <dbl>, Region <chr>,
+    ## # ... with 8 more variables: `Period (Yr)` <dbl>, `Station Status` <fct>,
+    ## #   Latitude <dbl>, Longitude <dbl>, Altitude <int>, Region <chr>,
     ## #   Province <chr>, District <chr>
 
 #### Find all stations between 0 and 100 km from Station No. 000401
@@ -171,8 +170,8 @@ station_search(target = "000401", dist = 0:100)
     ##  9 TABALO… 000322    CON   M             1963         2018      
     ## 10 EL POR… 000310    CON   M             1964         2018      
     ## # ... with 48 more rows, and 9 more variables: `Period (Yr)` <dbl>,
-    ## #   `Station Status` <chr>, Latitude <dbl>, Longitude <dbl>,
-    ## #   Altitude <dbl>, Region <chr>, Province <chr>, District <chr>,
+    ## #   `Station Status` <fct>, Latitude <dbl>, Longitude <dbl>,
+    ## #   Altitude <int>, Region <chr>, Province <chr>, District <chr>,
     ## #   Dist <dbl>
 
 #### Find all stations that are within 50 km of Machu Picchu
@@ -204,8 +203,8 @@ station_search(target = c(-13.163333, -72.545556), dist = 0:50)
     ## 18 URUBAM… 000683    CON   M             1963         2018      
     ## 19 ANTA A… 000684    CON   M             1964         2018      
     ## 20 HUACHI… 156303    CON   M             1963         1978      
-    ## # ... with 9 more variables: `Period (Yr)` <dbl>, `Station Status` <chr>,
-    ## #   Latitude <dbl>, Longitude <dbl>, Altitude <dbl>, Region <chr>,
+    ## # ... with 9 more variables: `Period (Yr)` <dbl>, `Station Status` <fct>,
+    ## #   Latitude <dbl>, Longitude <dbl>, Altitude <int>, Region <chr>,
     ## #   Province <chr>, District <chr>, Dist <dbl>
 
 ### Acquire data: `senamhiR()`
@@ -412,10 +411,14 @@ pico_qc %>% filter(Observations != "") %>% select(Fecha, starts_with("Nivel"), O
 ```
 
     ## # A tibble: 2 x 6
-    ##   Fecha      `Nivel06 (m)` `Nivel10 (m)` `Nivel14 (m)` `Nivel18 (m)` Observations 
-    ##   <date>             <dbl>         <dbl>         <dbl>         <dbl> <chr>                
-    ## 1 2011-03-25          17.1          17.1          NA            17.5 Level err: 12.2 -> NA
-    ## 2 2011-12-06          15.8          15.8          15.8          NA   Level err: 1.83 -> NA
+    ##   Fecha      `Nivel06 (m)` `Nivel10 (m)` `Nivel14 (m)` `Nivel18 (m)`
+    ##   <date>             <dbl>         <dbl>         <dbl>         <dbl>
+    ## 1 2011-03-25          17.1          17.1          NA            17.5
+    ## 2 2011-12-06          15.8          15.8          15.8          NA  
+    ##   Observations         
+    ##   <chr>                
+    ## 1 Level err: 12.2 -> NA
+    ## 2 Level err: 1.83 -> NA
 
 ##### Cases that are currently missed:
 
