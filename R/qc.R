@@ -91,47 +91,69 @@ qc <- function(dat) {
     
   } else {
     
-    # Try to find bad river levels
-    levels <- select(dat, starts_with("Nivel"))
-    ranges <- apply(levels, 1, function(x) {max(x) - min(x)})
-    while (max(ranges, na.rm = TRUE) > 10 * mean(ranges, na.rm = TRUE)) {
-      index <- which.max(ranges)
-      slice <- index + -2:2
-      current_tab <- data.matrix(levels[slice,])
-      std_tab <- (current_tab - mean(current_tab))/sd(current_tab)
-      if (sum(std_tab > 1 | std_tab < -1) == 1) {
-        if (sum(std_tab > 1) == 1) {
-          bad_val <- which.max(std_tab)
-          coords <- which(levels[slice,] == current_tab[bad_val], arr.ind = TRUE)
-          ul <- mean(current_tab[-bad_val]) + 1.5 * sd(current_tab[-bad_val])
-          ll <- mean(current_tab[-bad_val]) - 1.5 * sd(current_tab[-bad_val])
-          if (current_tab[bad_val] / 10 <= ul & current_tab[bad_val] / 10 >= ll) {
-            observations[index] <- paste("Level dps:", current_tab[bad_val], "->", current_tab[bad_val] / 10)
-            levels[slice,][coords[1], coords[2]] <- current_tab[bad_val] / 10
+    if (any(grepl("Nivel[0-9]{2}", names(dat)))) {
+    
+      # Try to find bad river levels
+      levels <- select(dat, starts_with("Nivel"))
+      ranges <- apply(levels, 1, function(x) {max(x) - min(x)})
+      while (max(ranges, na.rm = TRUE) > 10 * mean(ranges, na.rm = TRUE)) {
+        index <- which.max(ranges)
+        slice <- index + -2:2
+        current_tab <- data.matrix(levels[slice,])
+        std_tab <- (current_tab - mean(current_tab))/sd(current_tab)
+        if (sum(std_tab > 1 | std_tab < -1) == 1) {
+          if (sum(std_tab > 1) == 1) {
+            bad_val <- which.max(std_tab)
+            coords <- which(levels[slice,] == current_tab[bad_val], arr.ind = TRUE)
+            ul <- mean(current_tab[-bad_val]) + 1.5 * sd(current_tab[-bad_val])
+            ll <- mean(current_tab[-bad_val]) - 1.5 * sd(current_tab[-bad_val])
+            if (current_tab[bad_val] / 10 <= ul & current_tab[bad_val] / 10 >= ll) {
+              observations[index] <- paste("Level dps:", current_tab[bad_val], "->", current_tab[bad_val] / 10)
+              levels[slice,][coords[1], coords[2]] <- current_tab[bad_val] / 10
+            } else {
+              observations[index] <- paste("Level err:", current_tab[bad_val], "-> NA")
+              levels[slice,][coords[1], coords[2]] <- NA
+            }
           } else {
-            observations[index] <- paste("Level err:", current_tab[bad_val], "-> NA")
-            levels[slice,][coords[1], coords[2]] <- NA
-          }
+            bad_val <- which.min(std_tab)
+            coords <- which(levels[slice,] == current_tab[bad_val], arr.ind = TRUE)
+            ul <- mean(current_tab[-bad_val]) + 1.5 * sd(current_tab[-bad_val])
+            ll <- mean(current_tab[-bad_val]) - 1.5 * sd(current_tab[-bad_val])
+            if (current_tab[bad_val] * 10 <= ul & current_tab[bad_val] * 10 >= ll) {
+              observations[index] <- paste("Level dps:", current_tab[bad_val], "->", current_tab[bad_val] *10)
+              levels[slice,][coords[1], coords[2]]  <- current_tab[bad_val] * 10
+            } else {
+              observations[index] <- paste("Level err:", current_tab[bad_val], "-> NA")
+              levels[slice,][coords[1], coords[2]] <- NA
+            }
+        }
+        ranges[index] <- apply(levels[index,], 1, function(x) {max(x) - min(x)})
         } else {
-          bad_val <- which.min(std_tab)
-          coords <- which(levels[slice,] == current_tab[bad_val], arr.ind = TRUE)
-          ul <- mean(current_tab[-bad_val]) + 1.5 * sd(current_tab[-bad_val])
-          ll <- mean(current_tab[-bad_val]) - 1.5 * sd(current_tab[-bad_val])
-          if (current_tab[bad_val] * 10 <= ul & current_tab[bad_val] * 10 >= ll) {
-            observations[index] <- paste("Level dps:", current_tab[bad_val], "->", current_tab[bad_val] *10)
-            levels[slice,][coords[1], coords[2]]  <- current_tab[bad_val] * 10
-          } else {
-            observations[index] <- paste("Level err:", current_tab[bad_val], "-> NA")
-            levels[slice,][coords[1], coords[2]] <- NA
-          }
+          break
+        }
       }
-      ranges[index] <- apply(levels[index,], 1, function(x) {max(x) - min(x)})
-      } else {
-        break
+      # Replace all of the old data
+      dat[,grep("Nivel", names(dat))] <- levels
+    }
+
+  
+    if (any(grepl("Nivel Medio", names(dat)))) {
+      Observations <- rep('', nrow(dat))
+      Observations[!is.na(dat$`Nivel Medio (m)`) &
+                            dat$`Nivel Medio (m)` < 0] <- paste(
+                              "Level err:",
+                              dat$`Nivel Medio (m)`[!is.na(dat$`Nivel Medio (m)`) &
+                                                      dat$`Nivel Medio (m)` < 0],
+                              "-> NA")
+      dat$`Nivel Medio (m)`[dat$`Nivel Medio (m)` < 0] <- NA
+      while (any(dat$`Nivel Medio (m)` > 10 * mean(dat$`Nivel Medio (m)`, na.rm = TRUE), na.rm = TRUE)) {
+        co <- which.max(dat$`Nivel Medio (m)`)
+        Observations[co] <- paste("Level err:",
+                                  dat$`Nivel Medio (m)`[co],
+                                  "-> NA")
+        dat$`Nivel Medio (m)`[co] <- NA
       }
     }
-    # Replace all of the old data
-    dat[,grep("Nivel", names(dat))] <- levels
   }
   
   # Add observations column to data
