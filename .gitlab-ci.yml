@@ -1,8 +1,4 @@
-before_script:
-  - export _R_CHECK_CRAN_INCOMING_=FALSE
-  - export _R_CHECK_FORCE_SUGGESTS_=TRUE
-
-r-base:
+test:
   stage: test
   image: r-base
   script:

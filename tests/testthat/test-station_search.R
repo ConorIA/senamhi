@@ -23,7 +23,7 @@ test_that("station_search() can locate a station by period", {
 test_that("station_search() can locate a station by period (years)", {
   df <- station_search(period = 55)
   expect_that(df, is_a("tbl_df"))
-  expect_output(str(df), "335 obs")
+  expect_output(str(df), "3[0-9]{2} obs")
   expect_output(str(df), "14 variables")
 })
 

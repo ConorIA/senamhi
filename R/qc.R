@@ -34,8 +34,8 @@ qc <- function(dat) {
     stop("You've passed a one-year table. We need (many) additional years of data for context.")
   }
   
-  if (grepl("Observations", colnames(dat)[15])) {
-    observations <- select(dat, 15) %>% unlist()
+  if (grepl("Observations", colnames(dat)[ncol(dat)])) {
+    observations <- select(dat, ncol(dat)) %>% unlist()
   } else {
     observations <- rep(NA, nrow(dat))
   }
@@ -139,8 +139,8 @@ qc <- function(dat) {
 
   
     if (any(grepl("Nivel Medio", names(dat)))) {
-      Observations <- rep('', nrow(dat))
-      Observations[!is.na(dat$`Nivel Medio (m)`) &
+      observations <- rep('', nrow(dat))
+      observations[!is.na(dat$`Nivel Medio (m)`) &
                             dat$`Nivel Medio (m)` < 0] <- paste(
                               "Level err:",
                               dat$`Nivel Medio (m)`[!is.na(dat$`Nivel Medio (m)`) &
@@ -149,7 +149,7 @@ qc <- function(dat) {
       dat$`Nivel Medio (m)`[dat$`Nivel Medio (m)` < 0] <- NA
       while (any(dat$`Nivel Medio (m)` > 10 * mean(dat$`Nivel Medio (m)`, na.rm = TRUE), na.rm = TRUE)) {
         co <- which.max(dat$`Nivel Medio (m)`)
-        Observations[co] <- paste("Level err:",
+        observations[co] <- paste("Level err:",
                                   dat$`Nivel Medio (m)`[co],
                                   "-> NA")
         dat$`Nivel Medio (m)`[co] <- NA

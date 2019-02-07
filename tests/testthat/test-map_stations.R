@@ -1,6 +1,6 @@
 library("testthat")
 library("senamhiR")
-df <- station_search("Lima")
+df <- station_search(target = "000401")
 
 context("Test `map_stations()`")
 
